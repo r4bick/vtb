@@ -1,0 +1,149 @@
+@import "variables.scss";
+/**
+ * Здесь должны быть дефолтные стили элементов
+ */
+
+/**
+ * Reset default styles
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  font-variant: no-common-ligatures;
+  font-family: $inter-font;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance:none;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+#__layout, #__nuxt {
+  height: 100%;
+}
+body {
+  line-height: 1;
+  height: 100%;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+button, input, span {
+  border: none;
+  outline: none;
+  font-family: $inter-font;
+}
+
+img {
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+
+/**
+ * Transition to pages
+ */
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
+
+/**
+ * Default styles
+ */
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 136.02%;
+}
+h2 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 136.02%;
+}
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 136.52%;
+}
+h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+}
+h5 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 25px;
+}
+h6 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+}
+.base-p {
+  color: $gray-500;
+  font-size: 14px;
+  line-height: 23px;
+}
+
+// scrollbar styles
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: $gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $gray-300;
+  border-radius: 8px;
+}
+
+

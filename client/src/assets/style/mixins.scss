@@ -1,14 +1,8 @@
-@import './variables.scss';
-
-@mixin card-container() {
-  padding: 16px;
-  background: $base-white;
-  box-shadow: $shadow-sm;
-  border-radius: $all-sides-large;
-  transition: 0.07s ease-in-out;
-
-  &:hover {
-    box-shadow: $shadow-lg;
+@mixin remove-scrollbar() {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -50,22 +44,3 @@
   }
 }
 
-@mixin line-truncate() {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@mixin dashed-border() {
-  background-image: repeating-linear-gradient(-1deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(89deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(179deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(269deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px);
-  background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
-  background-position: 0 0, 0 0, 100% 0, 0 100%;
-  background-repeat: no-repeat;
-
-  &:hover {
-    background-image: repeating-linear-gradient(-1deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(89deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(179deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(269deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px);
-    background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
-    background-position: 0 0, 0 0, 100% 0, 0 100%;
-    background-repeat: no-repeat;
-  }
-}
