@@ -30,6 +30,7 @@ import { LayoutHeader } from '@/components'
   .content {
     width: 100%;
     min-height: calc(100vh - 49px); // высота хэдера;
+    background-color: $gray-100-vtb;
   }
 }
 </style>

@@ -1,3 +1,5 @@
+@import '@/assets/style/variables.scss';
+
 @mixin remove-scrollbar() {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -43,4 +45,55 @@
     }
   }
 }
+
+
+
+@mixin h4() {
+  font-weight: $h4-font-style;
+  font-size: $h4-font-size;
+  line-height: 19px;
+  color: $gray-700;
+}
+
+@mixin h5() {
+  font-weight: $h5-font-style;
+  font-size: $h5-font-size;
+  line-height: 19px;
+  color: $gray-700;
+}
+
+@mixin h7() {
+  font-weight: $h7-font-style;
+  font-size: $h7-font-size;
+  line-height: 15px;
+  color: $gray-700;
+}
+
+@mixin p5() {
+  font-weight: 400;
+  font-size: $p5-font-size;
+  line-height: 17px;
+  color: $gray-800;
+}
+
+@mixin card() {
+  background: $base-white;
+  box-shadow: $shadow-default;
+  border-radius: $all-sides-2xl;
+}
+
+@mixin badge() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border: 0.5px solid $gray-400-vtb;
+  border-radius: $all-sides-large;
+
+  font-weight: $h7-font-style;
+  font-size: $h7-font-size;
+  line-height: 15px;
+  color: $gray-600;
+}
+
 
