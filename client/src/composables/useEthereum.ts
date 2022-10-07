@@ -28,8 +28,8 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
 
   const tokenId = ref('')
 
-  const usdcBalance = ref(0)
-  const loapBalance = ref(0)
+  const maticBalance = ref(0)
+  const rubleBalance = ref(0)
 
   const allowance = ref(0)
 
@@ -65,8 +65,8 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
       // $toast.error('You are not connected to the Polygon Network!', {
       //   duration: 3000,
       // })
-      loapBalance.value = 0
-      usdcBalance.value = 0
+      rubleBalance.value = 0
+      maticBalance.value = 0
     } else {
       initSetup()
 
@@ -115,8 +115,8 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
 
   const updateBalances = async () => {
     if (currentChainId.value === MAIN_CHAIN) {
-      await getUSDCBalance()
-      await getLOAPBalance()
+      await getMaticBalance()
+      await getRubleBalance()
     }
   }
 
@@ -140,11 +140,11 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
-  const getUSDCBalance = async () => {
+  const getMaticBalance = async () => {
     // await usdcConnectedContract
     //   .balanceOf(currentAccount.value)
     //   .then((res: any) => {
-    //     usdcBalance.value = parseFloat(res) / 1000000
+    //     maticBalance.value = parseFloat(res) / 1000000
     //   })
     //   .catch((err: any) => {
     //     console.log(err)
@@ -154,11 +154,11 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     // })
   }
 
-  const getLOAPBalance = async () => {
+  const getRubleBalance = async () => {
     // await connectedContract
     //   .balanceOf(currentAccount.value)
     //   .then((res: any) => {
-    //     loapBalance.value = parseFloat(ethers.utils.formatUnits(res, 18))
+    //     rubleBalance.value = parseFloat(ethers.utils.formatUnits(res, 18))
     //   })
     //   .catch((err: any) => {
     //     console.log(err)
@@ -366,8 +366,8 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     currentChainId,
     isTransfering,
     tokenId,
-    usdcBalance,
-    loapBalance,
+    maticBalance,
+    rubleBalance,
     allowance,
     setupEventListener,
     checkIfWalletIsConnected,
