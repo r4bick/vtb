@@ -3,7 +3,7 @@ import axios from 'axios'
 const Http = async (
   method: string,
   url: string,
-  data: any,
+  data?: any,
   /* responseType: string, */
 ) => {
   // axios.defaults.withCredentials = true
