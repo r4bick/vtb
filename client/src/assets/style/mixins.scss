@@ -1,0 +1,71 @@
+@import './variables.scss';
+
+@mixin card-container() {
+  padding: 16px;
+  background: $base-white;
+  box-shadow: $shadow-sm;
+  border-radius: $all-sides-large;
+  transition: 0.07s ease-in-out;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+  }
+}
+
+@mixin line-clamp($lines: 5) {
+  & {
+    position: relative;
+    //height: 2.4em;
+    overflow: hidden;
+  }
+
+  &:after {
+    content: '';
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 1.2em;
+    background: linear-gradient(
+                    to right,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, 1) 80%
+    );
+  }
+
+  /* Now add in code for the browsers that support -webkit-line-clamp and overwrite the non-supportive stuff */
+  @supports (-webkit-line-clamp: 5) {
+    & {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: $lines;
+      -webkit-box-orient: vertical;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+}
+
+@mixin line-truncate() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin dashed-border() {
+  background-image: repeating-linear-gradient(-1deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(89deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(179deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(269deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px);
+  background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
+  background-position: 0 0, 0 0, 100% 0, 0 100%;
+  background-repeat: no-repeat;
+
+  &:hover {
+    background-image: repeating-linear-gradient(-1deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(89deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(179deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px), repeating-linear-gradient(269deg, #3099eb, #3099eb 20px, transparent 20px, transparent 50px, #3099eb 50px);
+    background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
+    background-position: 0 0, 0 0, 100% 0, 0 100%;
+    background-repeat: no-repeat;
+  }
+}
