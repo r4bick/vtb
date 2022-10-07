@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Component, computed } from 'vue'
+import { computed } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 const layout = computed(() => {
-  return DefaultLayout as Component
+  return DefaultLayout
 })
 </script>
 
