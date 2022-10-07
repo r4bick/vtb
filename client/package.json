@@ -17,6 +17,7 @@
     "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
+    "ethers": "^5.6.9",
     "@egalteam/widget-library": "^1.0.0-beta.36",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
