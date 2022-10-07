@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+// @ts-ignore
 import { ethers } from 'ethers'
 // import loapContract from '../utils/loapContract.json'
 // import usdcAbi from '../utils/usdcAbi.json'
