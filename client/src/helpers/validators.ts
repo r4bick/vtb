@@ -1,4 +1,5 @@
 import { Validator } from '@/types/types'
+
 import { formatWordEnding } from '@/helpers/formatters'
 
 export function required(value: string): string {
