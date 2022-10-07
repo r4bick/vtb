@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 // import loapContract from '../utils/loapContract.json'
 // import usdcAbi from '../utils/usdcAbi.json'
 import 'mosha-vue-toastify/dist/style.css'
+import API from '@/api/Http'
 
 export const MAIN_CHAIN = '0x89' //Chain Polygon Mainnet in hex
 
@@ -199,6 +200,7 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // Для автоматического переключения chain на Polygon
   const switchChain = async () => {
     try {
       await ethereum.request({
@@ -238,12 +240,14 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // Добавление токена Digital Rubles
   const addToken = async (token: 'loap' | 'usdc') => {
     let tokenAddress = ''
     let tokenSymbol = ''
     let tokenDecimals = undefined as unknown as number
     let tokenImage = ''
 
+    //TODO
     if (token === 'loap') {
       tokenAddress = CONTRACT_ADDRESS
       tokenSymbol = 'LOAP'
@@ -278,6 +282,7 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // Подтверждение транзакции
   const approveTransaction = async (amount: number) => {
     // $toast.clear()
     return new Promise((resolve, reject) => {
@@ -361,6 +366,12 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // ---- VTB wallet methods ---
+  const createWallet = () => {
+    API.Http('post', `${process.env.VUE_POLYGON}/v1/wallets/new`).then((r) => {
+      console.log('wallet created')
+    })
+  }
   return {
     currentAccount,
     currentChainId,
