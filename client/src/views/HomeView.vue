@@ -162,6 +162,12 @@ const config = {
   display: flex;
   gap: 24px;
   margin-bottom: 40px;
+  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 24px;
+  grid-row-gap: 32px;
+  margin-top: 64px;
 }
 .nft {
   display: flex;
@@ -280,5 +286,11 @@ const config = {
   padding: 0 !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+@media (max-width: 1440px) {
+  .rounds {
+    display: none;
+  }
 }
 </style>
