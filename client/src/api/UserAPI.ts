@@ -1,12 +1,14 @@
-// import { useCookies } from 'vue3-cookies'
-import axios from 'axios'
 import { IAuthData } from '@/types/interfaces'
-
-// const { cookies } = useCookies()
+import axios from 'axios'
 
 class UserAPIModel {
   async login(data: IAuthData) {
-    console.log(data)
+    return axios
+      .post(`${process.env.VUE_APP_API_BASE_URL}/auth/login`, data)
+      .then((resp) => resp.data)
+      .catch((error) => {
+        throw error.response.data
+      })
   }
 }
 

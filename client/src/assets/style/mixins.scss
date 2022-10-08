@@ -46,6 +46,13 @@
   }
 }
 
+@mixin h2() {
+  font-weight: 700;
+  font-size: $h2-font-size;
+  line-height: 39px;
+  color: $gray-700;
+}
+
 @mixin h3() {
   font-weight: $h3-font-style;
   font-size: $h3-font-size;
@@ -79,6 +86,13 @@
   font-size: $h7-font-size;
   line-height: 15px;
   color: $gray-700;
+}
+
+@mixin p2() {
+  font-weight: 500;
+  font-size: $p2-font-size;
+  line-height: 22px;
+  color: $gray-800;
 }
 
 @mixin p5() {
