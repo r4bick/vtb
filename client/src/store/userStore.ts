@@ -18,13 +18,21 @@ export const useUserStore = defineStore('userStore', {
 
   actions: {
     async login(authData: IAuthData) {
+      cookies.remove('bearer')
+
       return UserAPI.login(authData)
+        .then((response) => {
+          cookies.set('bearer', response.access_token)
+        })
+        .catch((error) => {
+          throw error
+        })
     },
   },
 
   getters: {
     isLoggedIn() {
-      return !!cookies.get('core')
+      return !!cookies.get('bearer')
     },
   },
 })
