@@ -35,6 +35,12 @@ const onClose = () => {
   })
   emit('close')
 }
+
+const emitSave = () => {
+  const isEmpty = !Object.values(currentDep).some((x) => x !== null && x !== '')
+
+  isEmpty ? emit('close') : emit('save', currentDep)
+}
 </script>
 
 <template>
@@ -120,7 +126,7 @@ const onClose = () => {
       <template #footer>
         <div class="departments__modal-footer">
           <EButton @click="onClose">Отменить</EButton>
-          <EButton @click="emit('save', currentDep)">Сохранить</EButton>
+          <EButton @click="emitSave">Сохранить</EButton>
         </div>
       </template>
     </ModalWindow>
