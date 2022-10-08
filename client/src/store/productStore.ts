@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import API from '@/api/Http'
 import { API_URL } from '@/helpers/globalVariables'
-// import { ITask } from '@/types/interfaces'
+import { IProduct } from '@/types/interfaces'
 
 interface ProductStoreState {
-  products: any[]
+  products: IProduct[]
 }
 
 export const useProductStore = defineStore('useProductStore', {
@@ -21,7 +21,7 @@ export const useProductStore = defineStore('useProductStore', {
           this.products = data
         })
         .catch((error) => {
-          console.log(error)
+          throw new error()
         })
     },
   },
