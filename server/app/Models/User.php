@@ -7,6 +7,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
@@ -27,8 +28,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $keyType = 'string';
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var string[]
      */
     protected $fillable = [
@@ -37,8 +36,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
-     * The attributes excluded from the model's JSON form.
-     *
      * @var string[]
      */
     protected $hidden = [
@@ -75,5 +72,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class, 'id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function account(): HasOne
+    {
+        return $this->hasOne(Account::class, 'id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function departureOwner(): HasMany
+    {
+        return $this->hasMany(Departure::class, 'head_id', 'id');
     }
 }

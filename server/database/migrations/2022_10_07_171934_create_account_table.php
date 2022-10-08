@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('account', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('first_name');
             $table->string('last_name');
@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->foreign('departure_id')->on('departures')->references('id')->restrictOnDelete();
             $table->foreign('id')->on('users')->references('id')->restrictOnDelete();
+
+            $table->timestamps();
         });
     }
 
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('account');
+        Schema::dropIfExists('accounts');
     }
 };

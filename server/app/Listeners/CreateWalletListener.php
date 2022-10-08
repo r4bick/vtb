@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Listeners\UserListeners;
+namespace App\Listeners;
 
 use App\Constants\WalletTypes;
 use App\Facades\MaticFacade;
-use App\Listeners\Listener;
+use App\Models\Departure;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Model;
@@ -15,18 +15,20 @@ class CreateWalletListener extends Listener
 {
 
     /**
-     * @param User|Model $model
+     * @param User|Departure|Model $model
      *
      * @return void
      * @throws Throwable
      */
-    public function execute(User|Model $model): void
+    public function execute(User|Departure|Model $model): void
     {
         $keys = MaticFacade::createWallet()->getResponse();
         $keys = $this->keyToSnakeKeys($keys);
 
+        $type = $model instanceof User ? WalletTypes::USER : WalletTypes::DEPARTURE;
+
         $wallet = new Wallet();
-        $wallet->forceFill([...$keys, ...['id' => $model->getKey(), 'type' => WalletTypes::USER]]);
+        $wallet->forceFill([...$keys, ...['id' => $model->getKey(), 'type' => $type]]);
         $wallet->saveOrFail();
     }
 

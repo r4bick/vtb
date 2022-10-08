@@ -10,11 +10,20 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
      * @var string
      */
     protected $model = User::class;
+    public static array $stubEmails = [
+        'edenesik@example.com',
+        'effertz.stella@example.com',
+        'marty.dooley@example.net',
+        'gtreutel@example.org',
+        'tatum.lesch@example.net',
+        'kovacek.vivien@example.org',
+        'zheller@example.com',
+        'juana.sipes@example.com',
+        'rey39@example.net',
+    ];
 
     /**
      * Define the model's default state.

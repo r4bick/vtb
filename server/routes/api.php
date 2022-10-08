@@ -24,6 +24,7 @@ Route::group(['prefix' => 'auth'], function (Router $router) {
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function (Router $router) {
+    Route::get('/', 'UserController@showAll');
     Route::get('me', 'UserController@me');
     Route::get('/{id}', 'UserController@show');
 });

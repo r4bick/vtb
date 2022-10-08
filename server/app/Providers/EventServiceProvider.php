@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\DepartureEvents\DepartureCreatedEvent;
 use App\Events\UserEvents\UserCreatedEvent;
-use App\Listeners\UserListeners\CreateWalletListener;
+use App\Listeners\CreateWalletListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         UserCreatedEvent::class => [
+            CreateWalletListener::class,
+        ],
+        DepartureCreatedEvent::class => [
             CreateWalletListener::class,
         ],
     ];
