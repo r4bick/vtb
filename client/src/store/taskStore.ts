@@ -3,12 +3,12 @@ import API from '@/api/Http'
 import { ITask } from '@/types/interfaces'
 import { API_URL } from '@/helpers/globalVariables'
 
-interface UserStoreState {
+interface TaskStoreState {
   tasks: ITask[]
 }
 
 export const useTaskStore = defineStore('useTaskStore', {
-  state: (): UserStoreState => {
+  state: (): TaskStoreState => {
     return {
       tasks: [],
     }
