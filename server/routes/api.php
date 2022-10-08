@@ -39,3 +39,7 @@ Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $
     Route::get('/{id}', 'ProductController@show');
 });
 
+Route::group(['prefix' => 'wallet', 'middleware' => 'auth'], function (Router $router) {
+    Route::put('/{public_key}', 'WalletController@transferDigitalRubles');
+});
+

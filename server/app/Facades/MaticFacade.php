@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static Response createWallet()
+ * @method static Response transferDigitalRubles(string $from_private_key, string $to_public_key, float $amount)
+ * @method static Response transferMatic(string $from_private_key, string $to_public_key, float $amount)
  *
  * @see MaticClient
  */

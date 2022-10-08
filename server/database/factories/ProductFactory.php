@@ -100,7 +100,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Python разработчик (Skillbox)',
             'description' => 'Python — идеальный язык для новичка. Код на Python легко писать и читать, язык стабильно занимает высокие места в рейтингах популярности, а «питонисты» востребованы почти во всех сферах IT — программировании, анализе данных, системном администрировании и тестировании. Курс рассчитан на 10 месяцев.',
-            'photo' => 'https://gifts.ru/id/65496',
+            'photo' => 'https://skillbox.ru/course/profession-python/',
             'price' => '13550',
             'type' => ProductTypes::DIGITAL,
             'features' => [],
@@ -108,7 +108,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Data-Scientist разработчик (Skillbox)',
             'description' => 'Освойте Data Science с нуля. Вы попробуете силы в аналитике данных, машинном обучении, дата-инженерии и подробно изучите направление, которое нравится вам больше. Отточите навыки на реальных проектах и станете востребованным специалистом.',
-            'photo' => 'https://gifts.ru/id/65496',
+            'photo' => 'https://skillbox.ru/course/profession-data-analyst/',
             'price' => '15600',
             'type' => ProductTypes::DIGITAL,
             'features' => [],
@@ -116,7 +116,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Java-разработчик (Skillbox)',
             'description' => 'Java — один из самых популярных языков программирования в мире. На нём создают надёжные приложения для банков, IT-корпораций и стриминговых сервисов, разрабатывают интернет-магазины, игры и облачные решения. ',
-            'photo' => 'https://gifts.ru/id/65496',
+            'photo' => 'https://skillbox.ru/course/profession-1c/',
             'price' => '15600',
             'type' => ProductTypes::DIGITAL,
             'features' => [],
