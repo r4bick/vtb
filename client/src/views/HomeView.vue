@@ -5,19 +5,32 @@ import TaskCard from '@/components/TaskCard/TaskCard'
 import { orangeButton, outlineButton } from '@/assets/EgalStyles/EButton'
 import NftCard from '@/components/NFT/NftCard.vue'
 import { useUserStore } from '@/store/userStore'
+import { useCookies } from 'vue3-cookies'
+import { useEthereum } from '@/composables/useEthereum'
+
 const taskStore = useTaskStore()
 const userStore = useUserStore()
-const name = ref('')
-onMounted(async () => {
-  // let currentUser
+const { cookies } = useCookies()
+const { coinBalance } = useEthereum()
 
-  const res = await userStore.getCurrentUser()
-  const currentUser = await userStore.getUserById(res.id)
+const name = ref('')
+const currentUser = ref()
+
+onMounted(async () => {
+  if (Object.keys(userStore.user).length) {
+    currentUser.value = userStore.user
+  } else {
+    const uid = cookies.get('id')
+    currentUser.value = await userStore.getUserById(uid)
+  }
 
   await taskStore.getTasks()
   name.value =
-    currentUser.account.first_name + ' ' + currentUser.account.last_name
+    currentUser.value.account.first_name +
+    ' ' +
+    currentUser.value.account.last_name
 })
+
 const nfts = [
   { title: '200 релизов', image: '1' },
   { title: 'Поднял продакшн', image: '2' },
@@ -69,16 +82,16 @@ const config = {
             <div class="header">
               {{ name }}
             </div>
-            <div class="badges">
-              <div class="badge">ivanovsergey@mail.ru</div>
-              <div class="badge">12 уровень</div>
+            <div class="badges" v-if="currentUser">
+              <div class="badge">{{ currentUser?.email }}</div>
+              <div class="badge">{{ currentUser?.account.level }} уровень</div>
               <div class="badge">Клан захватчиков</div>
             </div>
           </div>
           <div class="card card--balance">
             <div class="header">
               <span class="title">Баланс</span>
-              <span class="balance">254.00 Р</span>
+              <span class="balance">{{ coinBalance || '0.00' }} &#8381; </span>
             </div>
             <div class="buttons">
               <EButton :style-config="orangeButton">Перевести монеты</EButton>
@@ -92,7 +105,6 @@ const config = {
         </div>
       </div>
       <div class="card--image card">
-        <!--        todo передалть отображение images чтобы не терялось качетсво -->
         <img class="rounds" src="@/assets/img/orbit.svg" alt="" />
         <img class="spaceman" src="@/assets/img/Frock_3.svg" alt="" />
       </div>
@@ -199,7 +211,7 @@ const config = {
       font-weight: 700;
       font-size: 36px;
       line-height: 44px;
-
+      height: 44px;
       display: flex;
       align-items: center;
       text-align: center;
