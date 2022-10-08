@@ -16,6 +16,6 @@ export const taskDirectionsAPIConstants: ConstantsIndexSignature<TaskDirections>
   }
 
 export const productTypeAPIConstants: ConstantsIndexSignature<string> = {
-  physical: 'мерч компании',
-  digital: 'подписки на сервисы',
+  physical: 'физический',
+  digital: 'виртуальный',
 }

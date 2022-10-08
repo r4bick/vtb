@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BadgeToggle, TaskCard } from '@/components'
-import { TaskDirections, TaskTypes } from '@/types/enums'
+import { TaskDirections, TaskTypes, TaskStatuses } from '@/types/enums'
 import { onMounted, ref } from 'vue'
 import { useTaskStore } from '@/store/taskStore'
 
@@ -77,6 +77,7 @@ const toggleTaskDirection = (direction: TaskDirections) => {
         :type="task.type"
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"
+        :status="TaskStatuses.Done"
         :key="task.id"
         v-for="task in taskStore.tasks"
       />
@@ -114,10 +115,6 @@ const toggleTaskDirection = (direction: TaskDirections) => {
     grid-column-gap: 24px;
     grid-row-gap: 32px;
     margin-top: 64px;
-
-    &__task {
-      //flex: 1 1 25%;
-    }
   }
 }
 </style>

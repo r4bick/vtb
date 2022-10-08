@@ -1,4 +1,4 @@
-import { UserRoles } from '@/types/enums'
+import { GoodTypes, TaskStatuses } from '@/types/enums'
 
 export interface IAuthData {
   email: string
@@ -7,8 +7,8 @@ export interface IAuthData {
 
 export interface IUser {
   id: string
-  email: string //'edenesik@example.com'
-  status: string //'active'
+  email: string
+  status: string
   account: IAccount
 }
 
@@ -31,52 +31,35 @@ export interface ITask {
   end_at: string
   participant_number: number
   type: string
-  status: string // TODO enum 'open'
+  status: TaskStatuses
   category: string
   reward: number
   author: IUser
+  validator: IUser
   like_number: number
   dislike_number: number
   created_at: string
   updated_at: string
 }
 
-// author: {
-//   id: '38fd17dc-331a-496e-a391-07ee7d7a14a4'
-//   email: 'edenesik@example.com'
-//   status: 'active'
-//   created_at: '2022-10-08T12:55:21.000000Z'
-//   updated_at: '2022-10-08T12:55:21.000000Z'
-//   account: {
-//     id: '38fd17dc-331a-496e-a391-07ee7d7a14a4'
-//     first_name: 'Анна'
-//     last_name: 'Кулаченков'
-//     family_name: 'Николаевич'
-//     level: '0'
-//     departure_id: '85133bfe-27c4-45d3-92ae-44e1b75f3dbe'
-//     created_at: '2022-10-08T12:55:22.000000Z'
-//     updated_at: '2022-10-08T12:55:22.000000Z'
-//   }
-// }
-// validator: {
-//   id: '38fd17dc-331a-496e-a391-07ee7d7a14a4'
-//   email: 'edenesik@example.com'
-//   status: 'active'
-//   created_at: '2022-10-08T12:55:21.000000Z'
-//   updated_at: '2022-10-08T12:55:21.000000Z'
-//   account: {
-//     id: '38fd17dc-331a-496e-a391-07ee7d7a14a4'
-//     first_name: 'Анна'
-//     last_name: 'Кулаченков'
-//     family_name: 'Николаевич'
-//     level: '0'
-//     departure_id: '85133bfe-27c4-45d3-92ae-44e1b75f3dbe'
-//     created_at: '2022-10-08T12:55:22.000000Z'
-//     updated_at: '2022-10-08T12:55:22.000000Z'
-//   }
-// }
-
 export interface IHeaderLink {
   to: string
   label: string
+}
+
+export interface IProduct {
+  id: string
+  name: string
+  description: string
+  photo: string
+  price: number
+  type: GoodTypes
+  features: {
+    size: string
+    weight: string
+    package: string
+    material: string
+  }
+  created_at: string
+  updated_at: string
 }

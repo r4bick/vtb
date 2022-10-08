@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, onMounted } from 'vue'
-import { TaskPopup } from '@/components'
+import { ref, defineProps } from 'vue'
 import { orangeButton, outlineWhiteButton } from '@/assets/EgalStyles/EButton'
 import { OnClickOutside } from '@vueuse/components'
-import { getRandomInt } from '@/helpers/mixins'
-import { TaskImages } from '@/types/enums'
-import { useDateFormat } from '@vueuse/core'
 import { productTypeAPIConstants } from '@/helpers/apiConstantsDictionary'
 
 interface GoodCardProps {
@@ -16,18 +12,9 @@ interface GoodCardProps {
   price: number
   type: string
 }
-const props = defineProps<GoodCardProps>()
+defineProps<GoodCardProps>()
 
 const isOpened = ref(false)
-
-const image = computed(() => {
-  return `background-image: url(${props.photo})`
-})
-
-const infoList = [
-  'диаметр купола 104 см, длина 83 см',
-  'полиэстер, 170T; металл; дерево',
-]
 </script>
 
 <template>

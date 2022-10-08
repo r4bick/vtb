@@ -1,14 +1,20 @@
 export const primaryButton = {
-  backgroundColor: '#FEC10B',
-  color: '#1D1D23',
+  backgroundColor: '#0066FF',
+  borderColor: '#0066FF',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  color: '#FFFFFF',
+  fontFamily: 'Inter',
   hover: {
-    backgroundColor: '#FFD864',
+    borderColor: '#0066FF',
   },
   active: {
-    backgroundColor: '#F7B100',
+    borderColor: '#0066FF',
+    color: '#0066FF',
   },
   disabled: {
-    backgroundColor: '#E2E8F0',
+    backgroundColor: 'transparent',
+    borderColor: '#A0AEC0',
     color: '#A0AEC0',
   },
 }
@@ -63,6 +69,73 @@ export const outlineButton = {
     backgroundColor: 'transparent',
     borderColor: '#A0AEC0',
     color: '#A0AEC0',
+  },
+}
+
+export const outlineSuccessButton = {
+  backgroundColor: 'transparent',
+  borderColor: '#66cb9f',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  color: '#11998E',
+  fontFamily: 'Inter',
+  justifyContent: 'center',
+  hover: {
+    backgroundColor: 'transparent',
+    borderColor: '#66cb9f',
+    color: '#11998E',
+  },
+  active: {
+    backgroundColor: 'transparent',
+    borderColor: '#66cb9f',
+    color: '#11998E',
+  },
+  disabled: {
+    backgroundColor: 'transparent',
+    borderColor: '#A0AEC0',
+    color: '#A0AEC0',
+  },
+}
+
+export const outlineGrayButton = {
+  backgroundColor: 'transparent',
+  borderColor: '#A0AEC0',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  color: '#A0AEC0',
+  fontFamily: 'Inter',
+  hover: {
+    backgroundColor: 'transparent',
+    borderColor: '#A0AEC0',
+    color: '#A0AEC0',
+  },
+  active: {
+    backgroundColor: 'transparent',
+    borderColor: '#A0AEC0',
+    color: '#A0AEC0',
+  },
+  disabled: {
+    backgroundColor: 'transparent',
+    borderColor: '#A0AEC0',
+    color: '#A0AEC0',
+  },
+}
+
+export const outlineLightGrayButton = {
+  backgroundColor: 'transparent',
+  borderColor: '#F7FAFC',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  color: '#FFFFFF',
+  fontFamily: 'Inter',
+  hover: {
+    color: '#FFFFF',
+  },
+  active: {
+    color: '#FFFFF',
+  },
+  disabled: {
+    color: '#FFFFF',
   },
 }
 

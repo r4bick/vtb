@@ -1,24 +1,13 @@
 <script setup lang="ts">
 import { BadgeToggle, GoodCard } from '@/components'
-import { TaskDirections, TaskTypes, GoodCategories } from '@/types/enums'
+import { GoodCategories } from '@/types/enums'
 import { inputDataConfig } from '@/assets/EgalData/EInput'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useProductStore } from '@/store/productStore'
 
 const productStore = useProductStore()
 
-const selectedTaskType = ref<TaskTypes>(TaskTypes.All)
-
-const selectedCategory = reactive<TaskDirections[]>([])
-const toggleSelectedCategory = (direction: TaskDirections) => {
-  const foundDirectionIndex = selectedCategory.indexOf(direction)
-
-  if (foundDirectionIndex === -1) {
-    selectedCategory.push(direction)
-  } else {
-    selectedCategory.splice(foundDirectionIndex, 1)
-  }
-}
+const selectedCategory = ref<GoodCategories>()
 
 onMounted(() => {
   productStore.getProducts()
@@ -32,12 +21,12 @@ onMounted(() => {
         <p class="badge-list__title">Категория товара</p>
         <div class="badge-list__list">
           <BadgeToggle
-            :active="type === selectedTaskType"
-            :key="type"
-            v-for="type in GoodCategories"
-            @click="selectedTaskType = type"
+            :active="category === selectedCategory"
+            :key="category"
+            v-for="category in GoodCategories"
+            @click="selectedCategory = category"
           >
-            {{ type }}
+            {{ category }}
           </BadgeToggle>
         </div>
       </div>
@@ -61,8 +50,8 @@ onMounted(() => {
         :features="product.features"
         :price="product.price"
         :type="product.type"
-        v-for="product in productStore.products"
         :key="product.id"
+        v-for="product in productStore.products"
       />
     </div>
   </div>
