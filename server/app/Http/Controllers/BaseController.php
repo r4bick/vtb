@@ -62,9 +62,14 @@ class BaseController extends LumenBaseController
      * @param Request $request
      *
      * @return array
+     * @throws Exception
      */
     public function create(Request $request): array
     {
-        return [];
+        $instance = static::getModelInstance();
+        $instance->fill($request->get('attributes'));
+        $instance->save();
+
+        return $instance->toArray();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\TaskStatuses;
+use App\Events\TaskEvents\TaskCreatingEvent;
 use Carbon\Traits\Date;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,7 +39,8 @@ class Task extends Model
         'description',
         'author_id',
         'validator_id',
-        'expire_at',
+        'begin_at',
+        'end_at',
         'participant_number',
         'type',
         'status',
@@ -49,6 +51,10 @@ class Task extends Model
     protected $attributes = [
         'status' => TaskStatuses::OPEN,
         'participant_number' => 1,
+    ];
+
+    protected $dispatchesEvents = [
+        'creating' => TaskCreatingEvent::class,
     ];
 
     /**

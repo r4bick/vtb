@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Lumen\Routing\Router;
 
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -32,5 +31,6 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function (Router $rou
 Route::group(['prefix' => 'task', 'middleware' => 'auth'], function (Router $router) {
     Route::get('/', 'TaskController@showAll');
     Route::get('/{id}', 'TaskController@show');
+    Route::post('', 'TaskController@create');
 });
 
