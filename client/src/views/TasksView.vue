@@ -29,6 +29,11 @@ const toggleTaskDirection = (direction: TaskDirections) => {
     selectedTaskDirections.value.splice(foundDirectionIndex, 1)
   }
 }
+
+const acceptTask = async (taskId: string) => {
+  await taskStore.acceptTask(taskId)
+  taskStore.getTasks()
+}
 </script>
 
 <template>
@@ -79,6 +84,7 @@ const toggleTaskDirection = (direction: TaskDirections) => {
         :dislike_number="task.dislike_number"
         :status="TaskStatuses.Done"
         :key="task.id"
+        @accept-task="acceptTask(task.id)"
         v-for="task in taskStore.tasks"
       />
     </div>

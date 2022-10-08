@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, onMounted } from 'vue'
+import { ref, computed, defineProps, defineEmits, onMounted } from 'vue'
 import { ThumbUpSVG, ThumbDownSVG, XIconSVG } from '@/components/SvgIcons'
 import { TaskPopup } from '@/components'
 import {
@@ -31,6 +31,11 @@ interface TaskCardProps {
   status: TaskStatuses
 }
 const props = defineProps<TaskCardProps>()
+
+interface TaskCardEmits {
+  (e: 'accept-task'): void
+}
+const emits = defineEmits<TaskCardEmits>()
 
 const isOpened = ref(false)
 const isPopupShowing = ref(false)
@@ -149,7 +154,11 @@ const formattedDate = computed(() => {
             </EButton>
           </div>
           <div class="controls" v-else>
-            <EButton class="controls__button" :style-config="outlineButton">
+            <EButton
+              class="controls__button"
+              :style-config="outlineButton"
+              @click="emits('accept-task')"
+            >
               Принять вызов
             </EButton>
           </div>
