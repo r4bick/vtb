@@ -1,28 +1,56 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { ref, computed, defineProps, onMounted } from 'vue'
 import { ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
 import { TaskPopup } from '@/components'
 import { outlineButton } from '@/assets/EgalStyles/EButton'
 import { OnClickOutside } from '@vueuse/components'
 import { getRandomInt } from '@/helpers/mixins'
+import { TaskImages } from '@/types/enums'
+import { useDateFormat } from '@vueuse/core'
+import {
+  taskTypeAPIConstants,
+  taskDirectionsAPIConstants,
+} from '@/helpers/apiConstantsDictionary'
 
-import { TaskDirections, TaskImages } from '@/types/enums'
+interface TaskCardProps {
+  name: string
+  description: string
+  author_id: string
+  begin_at: string
+  end_at: string
+  category: string
+  type: string
+  reward: number
+  author_email: string
+  like_number: number
+  dislike_number: number
+}
+const props = defineProps<TaskCardProps>()
 
 const isOpened = ref(false)
 const isPopupShowing = ref(false)
-
-const taskDirections = reactive<TaskDirections[]>([
-  TaskDirections.Learning,
-  TaskDirections.Community,
-])
+const imageName = ref('')
 
 const taskImage = computed(() => {
-  const imageName = Object.values(TaskImages)[getRandomInt(0, 4)]
+  if (!imageName.value) return ''
+
   const imageFullName = isOpened.value
-    ? `${imageName}-fill.png`
-    : `${imageName}-line.svg`
+    ? `${imageName.value}-fill.png`
+    : `${imageName.value}-line.svg`
 
   return require(`@/assets/img/${imageFullName}`)
+})
+
+const getRandomImageName = () => {
+  return Object.values(TaskImages)[getRandomInt(0, 5)]
+}
+
+onMounted(() => {
+  imageName.value = getRandomImageName()
+})
+
+const formattedDate = computed(() => {
+  return useDateFormat(props.end_at, 'DD.MM.YYYY').value
 })
 </script>
 
@@ -35,23 +63,23 @@ const taskImage = computed(() => {
         @click="isOpened = !isOpened"
       >
         <div class="header">
-          <div class="header__badge">$2574</div>
-          <div class="header__badge">до 15.08.2022</div>
+          <div class="header__badge">{{ reward }}₽</div>
+          <div class="header__badge">до {{ formattedDate }}</div>
         </div>
         <div class="body">
-          <p class="body__title">Заголовок задачи</p>
+          <p class="body__title">{{ name }}</p>
           <img class="body__image" :src="taskImage" alt="Task image" />
         </div>
         <div class="footer">
           <div class="voices">
             <div class="positive-voices">
-              <span class="positive-voices__amount">245</span>
+              <span class="positive-voices__amount">{{ like_number }}</span>
               <button class="positive-voices__button">
                 <ThumbUpSVG :fill="isOpened ? '#ffffff' : '#66cb9f'" />
               </button>
             </div>
             <div class="negative-voices">
-              <span class="negative-voices__amount">15</span>
+              <span class="negative-voices__amount">{{ dislike_number }}</span>
               <button class="negative-voices__button">
                 <ThumbDownSVG :fill="isOpened ? '#ffffff' : '#f16063'" />
               </button>
@@ -61,38 +89,51 @@ const taskImage = computed(() => {
       </div>
 
       <div class="under-card" v-if="isOpened">
+        <div class="header">
+          <div class="task-directions">
+            <div class="task-directions__badge">
+              {{ taskDirectionsAPIConstants[category] }}
+            </div>
+            <div class="task-directions__badge">
+              {{ taskTypeAPIConstants[type] }}
+            </div>
+          </div>
+        </div>
+
         <div class="body">
           <div class="body__description">
-            NFT Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру
-            сгенерировать несколько абзацев более менее осмысленного текста рыбы
-            на русском языке, а начинающему оратору отточить навык публичных
-            выступлений в домашних условиях. При создании генератора мы
-            использовали небезизвестный универсальный код речей.
+            {{ description }}
           </div>
 
           <button class="body__more" @click="isPopupShowing = true">
             Подробнее о задаче...
           </button>
-
-          <div class="task-directions">
-            <div
-              class="task-directions__badge"
-              v-for="direction in taskDirections"
-              :key="direction"
-            >
-              {{ direction }}
-            </div>
-          </div>
         </div>
 
         <div class="footer">
-          <EButton class="" :style-config="outlineButton">Выполнить</EButton>
-          <router-link class="footer__link" to="#">Автор: 234567</router-link>
+          <EButton class="footer__button" :style-config="outlineButton">
+            Принять вызов
+          </EButton>
+          <router-link class="footer__link" to="#">Автор</router-link>
         </div>
       </div>
     </div>
 
-    <TaskPopup v-if="isPopupShowing" @close="isPopupShowing = false" />
+    <TaskPopup
+      :name="name"
+      :description="description"
+      :reward="reward"
+      :begin_at="begin_at"
+      :end_at="end_at"
+      :author_id="author_id"
+      :category="category"
+      :type="type"
+      :author_email="author_email"
+      :like_number="like_number"
+      :dislike_number="dislike_number"
+      @close="isPopupShowing = false"
+      v-if="isPopupShowing"
+    />
   </OnClickOutside>
 </template>
 
@@ -222,7 +263,25 @@ const taskImage = computed(() => {
     padding: 74px 16px 16px 16px;
     z-index: 0;
 
+    .header {
+      .task-directions {
+        display: flex;
+        gap: 8px;
+
+        &__badge {
+          @include badge();
+          color: $gray-700;
+          background-color: $gray-300;
+          font-weight: 700;
+          font-size: 10px;
+          line-height: 12px;
+        }
+      }
+    }
+
     .body {
+      margin-top: 16px;
+
       &__description {
         @include p5();
       }
@@ -235,21 +294,6 @@ const taskImage = computed(() => {
         color: $default-accent-vtb;
         padding: 0;
         margin-top: 17px;
-      }
-
-      .task-directions {
-        display: flex;
-        gap: 8px;
-        margin-top: 16px;
-
-        &__badge {
-          @include badge();
-          color: $gray-700;
-          background-color: $gray-300;
-          font-weight: 700;
-          font-size: 10px;
-          line-height: 12px;
-        }
       }
     }
 
