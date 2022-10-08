@@ -34,6 +34,7 @@
     justify-content: flex-end;
     width: 100%;
     margin-top: 19px;
+    margin-right: 195px;
   }
   .header {
     padding: 43px 0 0 50px;
