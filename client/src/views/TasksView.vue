@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import { BadgeToggle, TaskCard } from '@/components'
 import { TaskDirections, TaskTypes } from '@/types/enums'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 
 const selectedTaskType = ref<TaskTypes>(TaskTypes.All)
 
-const selectedTaskDirections = reactive<TaskDirections[]>([])
+const selectedTaskDirections = ref<TaskDirections[]>([TaskDirections.All])
 const toggleTaskDirection = (direction: TaskDirections) => {
-  const foundDirectionIndex = selectedTaskDirections.indexOf(direction)
+  if (direction === TaskDirections.All) {
+    selectedTaskDirections.value = [TaskDirections.All]
+    return
+  } else if (selectedTaskDirections.value.includes(TaskDirections.All)) {
+    selectedTaskDirections.value = []
+  }
+
+  const foundDirectionIndex = selectedTaskDirections.value.indexOf(direction)
 
   if (foundDirectionIndex === -1) {
-    selectedTaskDirections.push(direction)
+    selectedTaskDirections.value.push(direction)
   } else {
-    selectedTaskDirections.splice(foundDirectionIndex, 1)
+    selectedTaskDirections.value.splice(foundDirectionIndex, 1)
   }
 }
 </script>

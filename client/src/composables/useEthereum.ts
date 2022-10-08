@@ -48,34 +48,13 @@ export function useEthereum() {
     } else {
       initSetup()
 
-      await updateBalances()
+      // await updateBalances()
 
       // $toast.success('Chain changed to Polygon', {
       //   duration: 3000,
       // })
     }
   }
-
-  // listens if account changed
-  // const accountListener = async (accounts: string[]) => {
-  //   if (!currentAccount.value && accounts.length > 0) {
-  //     // $toast.success('You are connected', {
-  //     //   duration: 3000,
-  //     // })
-  //   } else if (currentAccount.value.length > 0 && accounts.length === 0) {
-  //     // $toast.info('Account is blocked', {
-  //     //   duration: 3000,
-  //     // })
-  //   } else if (currentAccount.value.length > 0 && accounts.length > 0) {
-  //     const accounts = await ethereum.request({ method: 'eth_accounts' })
-  //     await checkAccountAndChain(accounts)
-  //
-  //     // $toast.info('Accounts are switched', {
-  //     //   duration: 3000,
-  //     // })
-  //   }
-  //   currentAccount.value = accounts[0]
-  // }
 
   const setupEventListener = async () => {
     try {
@@ -91,27 +70,17 @@ export function useEthereum() {
     }
   }
 
-  const updateBalances = async () => {
-    if (currentChainId.value === MAIN_CHAIN) {
-      await getBalance()
-    }
-  }
-
-  const checkAccountAndChain = async (accounts?: string[]) => {
-    if (accounts?.length !== 0 || connected.value) {
-      // currentAccount.value = accounts[0]
-      currentChainId.value = await ethereum.request({ method: 'eth_chainId' })
-
-      if (currentChainId.value === MAIN_CHAIN) {
-        await updateBalances()
-      }
-    }
-  }
-
   const getBalance = async () => {
+    const key = cookies.get('public')
+    if (!key) {
+      coinBalance.value = 0
+      maticBalance.value = 0
+      return
+    }
     await API.Http(
       'get',
-      `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/balance`,
+      `${process.env.VUE_APP_POLYGON}/v1/wallets/${key}/balance`,
+      false,
     )
       .then(({ data }: any) => {
         coinBalance.value = data.coinsAmount
@@ -120,45 +89,6 @@ export function useEthereum() {
       .catch((err: any) => {
         console.log(err)
       })
-
-    //   .then((res: any) => {
-    //     maticBalance.value = parseFloat(res) / 1000000
-    //   })
-  }
-
-  const checkIfWalletIsConnected = async () => {
-    if (!ethereum) {
-      // $toast.error('Make sure you have metamask!', {
-      //   duration: 3000,
-      // })
-      return
-    }
-
-    try {
-      if (cookies.get('private') && cookies.get('public')) {
-        connected.value = true
-      }
-      await setupEventListener()
-      await checkAccountAndChain()
-    } catch (err) {
-      console.log(err)
-      // $toast.error('MetaMask Error', {
-      //   duration: 3000,
-      // })
-    }
-  }
-
-  // Подключение кошелька к сайту
-  const connectWallet = async () => {
-    try {
-      const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
-      await checkAccountAndChain(accounts)
-    } catch (err) {
-      console.log(err)
-      // $toast.error('MetaMask Error', {
-      //   duration: 3000,
-      // })
-    }
   }
 
   // Для автоматического переключения chain на Polygon
@@ -200,50 +130,6 @@ export function useEthereum() {
     }
   }
 
-  // todo не исправлено: поправить на добавление токена Digital rubles (если это вообще нужно)
-  // Добавление токена Digital Rubles
-  const addToken = async (token: 'loap' | 'usdc') => {
-    let tokenAddress = ''
-    let tokenSymbol = ''
-    let tokenDecimals = undefined as unknown as number
-    let tokenImage = ''
-
-    //TODO
-    if (token === 'loap') {
-      // tokenAddress = CONTRACT_ADDRESS
-      tokenAddress = 'CONTRACT_ADDRESS'
-      tokenSymbol = 'LOAP'
-      tokenDecimals = 18
-    } else if (token === 'usdc') {
-      // tokenAddress = USDC_CONTRACT_ADDRESS
-      tokenSymbol = 'USDC'
-      tokenDecimals = 18
-      tokenImage =
-        'https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png'
-    }
-
-    try {
-      const wasAdded = await ethereum.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: tokenAddress,
-            symbol: tokenSymbol,
-            decimals: tokenDecimals,
-            image: tokenImage,
-          },
-        },
-      })
-    } catch (error) {
-      console.log(error)
-      // @ts-ignore
-      $toast.error('Metamask error', {
-        duration: 3000,
-      })
-    }
-  }
-
   // ---- VTB wallet methods ---
   const privateKey = computed(() => {
     return cookies.get('private') || ''
@@ -252,17 +138,6 @@ export function useEthereum() {
     return cookies.get('public') || ''
   })
   const connected = ref(false)
-
-  const createWallet = async () => {
-    await API.Http(
-      'post',
-      `${process.env.VUE_APP_POLYGON}/v1/wallets/new`,
-    ).then(({ data }: any) => {
-      connected.value = true
-      cookies.set('private', data.privateKey)
-      cookies.set('public', data.publicKey)
-    })
-  }
 
   //Метод перевода с кошелька на кошелек
   const sendCurrency = async (
@@ -273,6 +148,7 @@ export function useEthereum() {
     await API.Http(
       'post',
       `${process.env.VUE_APP_POLYGON}/v1/transfers/${currency}`,
+      false,
       {
         fromPrivateKey: privateKey.value,
         toPublicKey,
@@ -292,6 +168,7 @@ export function useEthereum() {
     await API.Http(
       'post',
       `${process.env.VUE_APP_POLYGON}/v1/transfers/status/${transactionHash}`,
+      false,
     ).then(({ data }) => {
       console.log('status: ', data.status)
     })
@@ -302,6 +179,7 @@ export function useEthereum() {
     await API.Http(
       'get',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/nft/balance`,
+      false,
     ).then(({ data }) => {
       console.log('data: ', data)
     })
@@ -312,6 +190,7 @@ export function useEthereum() {
     await API.Http(
       'get',
       `${process.env.VUE_APP_POLYGON}/v1/nft/generate/${transactionHash}`,
+      false,
     ).then(({ data }) => {
       console.log('data: ', data)
     })
@@ -326,6 +205,7 @@ export function useEthereum() {
     await API.Http(
       'post',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/history`,
+      false,
       {
         page,
         offset,
@@ -337,8 +217,9 @@ export function useEthereum() {
   }
 
   initSetup()
-  checkIfWalletIsConnected().then()
+  // checkIfWalletIsConnected().then()
   // setupEventListener()
+  getBalance().then()
 
   return {
     currentChainId,
@@ -346,15 +227,11 @@ export function useEthereum() {
     tokenId,
     maticBalance,
     coinBalance,
-
     setupEventListener,
-    checkIfWalletIsConnected,
-    connectWallet,
     switchChain,
-    addToken,
 
     /* VTB methods: */
-    createWallet,
+
     sendCurrency,
     getBalance,
     publicKey,
