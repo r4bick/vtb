@@ -46,7 +46,12 @@
   }
 }
 
-
+@mixin h3() {
+  font-weight: $h3-font-style;
+  font-size: $h3-font-size;
+  line-height: 29px;
+  color: $gray-700;
+}
 
 @mixin h4() {
   font-weight: $h4-font-style;
@@ -62,6 +67,13 @@
   color: $gray-700;
 }
 
+@mixin h6() {
+  font-weight: $h6-font-style;
+  font-size: $h6-font-size;
+  line-height: 17px;
+  color: $gray-700;
+}
+
 @mixin h7() {
   font-weight: $h7-font-style;
   font-size: $h7-font-size;
@@ -72,6 +84,13 @@
 @mixin p5() {
   font-weight: 400;
   font-size: $p5-font-size;
+  line-height: 17px;
+  color: $gray-800;
+}
+
+@mixin p6() {
+  font-weight: 500;
+  font-size: $p6-font-size;
   line-height: 17px;
   color: $gray-800;
 }
