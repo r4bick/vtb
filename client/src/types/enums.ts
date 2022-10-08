@@ -22,3 +22,5 @@ export enum cryptoCurrency {
   Matic = 'matic',
   Ruble = 'ruble',
 }
+
+export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
