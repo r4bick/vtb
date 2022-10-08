@@ -3,7 +3,7 @@ import axios from 'axios'
 const Http = async (
   method: string,
   url: string,
-  data: any,
+  data?: any,
   /* responseType: string, */
 ) => {
   // axios.defaults.withCredentials = true
@@ -11,8 +11,8 @@ const Http = async (
     return await axios({
       method: method,
       // responseType: responseType,
-      url: `${process.env.api_url}${url}`,
-      data: data,
+      url,
+      data,
       // headers: {
       // }
     })

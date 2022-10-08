@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { Component, computed } from 'vue'
+import { computed } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const layout = computed(() => {
-  return DefaultLayout as Component
+  if (route.meta?.layout === 'admin') {
+    return AdminLayout
+  }
+  return DefaultLayout
 })
 </script>
 

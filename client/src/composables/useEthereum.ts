@@ -1,23 +1,18 @@
 import { ref } from 'vue'
+// @ts-ignore
 import { ethers } from 'ethers'
-// import loapContract from '../utils/loapContract.json'
-// import usdcAbi from '../utils/usdcAbi.json'
-import 'mosha-vue-toastify/dist/style.css'
+import API from '@/api/Http'
+import { cryptoCurrency } from '@/types/enums'
 
-export const MAIN_CHAIN = '0x89' //Chain Polygon Mainnet in hex
-
-// import {
-//   LOAP_CONTRACT_ADDRESS,
-//   MAIN_CHAIN,
-//   USDC_CONTRACT_ADDRESS,
-// } from '@/assets/scripts/globalCryptoVariables'
+export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
 
 interface ApiError {
   code: number
   message: string
 }
 
-export function useEthereum(CONTRACT_ADDRESS: string) {
+// export function useEthereum(CONTRACT_ADDRESS: string) {
+export function useEthereum() {
   // @ts-ignore
   const { ethereum } = window
 
@@ -27,50 +22,34 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
 
   const tokenId = ref('')
 
-  const usdcBalance = ref(0)
-  const loapBalance = ref(0)
-
-  const allowance = ref(0)
+  const maticBalance = ref(0)
+  const coinBalance = ref(0)
 
   let provider = undefined
   let signer = undefined
-
-  // let connectedContract = undefined as any
-  // let usdcConnectedContract = undefined as any
 
   const initSetup = () => {
     if (ethereum) {
       provider = new ethers.providers.Web3Provider(ethereum)
       signer = provider.getSigner()
-      // connectedContract = new ethers.Contract(
-      //   CONTRACT_ADDRESS,
-      //   // loapContract.abi,
-      //   signer,
-      // )
-      // usdcConnectedContract = new ethers.Contract(
-      //   USDC_CONTRACT_ADDRESS,
-      //   // usdcAbi.abi,
-      //   signer,
-      // )
     }
   }
 
-  initSetup()
-
   const chainListener = async (chainId: string) => {
+    console.log(chainId)
     currentChainId.value = chainId
 
     if (chainId !== MAIN_CHAIN) {
       // $toast.error('You are not connected to the Polygon Network!', {
       //   duration: 3000,
       // })
-      loapBalance.value = 0
-      usdcBalance.value = 0
+      coinBalance.value = 0
+      maticBalance.value = 0
     } else {
       initSetup()
 
       await updateBalances()
-      await checkAllowance()
+
       // $toast.success('Chain changed to Polygon', {
       //   duration: 3000,
       // })
@@ -114,17 +93,8 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
 
   const updateBalances = async () => {
     if (currentChainId.value === MAIN_CHAIN) {
-      await getUSDCBalance()
-      await getLOAPBalance()
+      await getBalance()
     }
-  }
-
-  const checkAllowance = async () => {
-    // const allow = await usdcConnectedContract.allowance(
-    //   currentAccount.value,
-    //   LOAP_CONTRACT_ADDRESS,
-    // )
-    // allowance.value = parseInt(allow)
   }
 
   const checkAccountAndChain = async (accounts: string[]) => {
@@ -134,37 +104,30 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
 
       if (currentChainId.value === MAIN_CHAIN) {
         await updateBalances()
-        await checkAllowance()
       }
     }
   }
 
-  const getUSDCBalance = async () => {
-    // await usdcConnectedContract
-    //   .balanceOf(currentAccount.value)
-    //   .then((res: any) => {
-    //     usdcBalance.value = parseFloat(res) / 1000000
-    //   })
-    //   .catch((err: any) => {
-    //     console.log(err)
-    // $toast.error('Metamask error', {
-    //   duration: 3000,
-    // })
-    // })
-  }
+  const getBalance = async () => {
+    await API.Http(
+      'get',
+      `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/balance`,
+    )
+      .then((res: any) => {
+        // баланс всех валют кошелька
+        // {
+        //   "maticAmount": 0.27,
+        //     "coinsAmount": 547.34
+        // }
+        console.log(res.data)
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
 
-  const getLOAPBalance = async () => {
-    // await connectedContract
-    //   .balanceOf(currentAccount.value)
     //   .then((res: any) => {
-    //     loapBalance.value = parseFloat(ethers.utils.formatUnits(res, 18))
+    //     maticBalance.value = parseFloat(res) / 1000000
     //   })
-    //   .catch((err: any) => {
-    //     console.log(err)
-    // $toast.error('Metamask error', {
-    //   duration: 3000,
-    // })
-    // })
   }
 
   const checkIfWalletIsConnected = async () => {
@@ -186,6 +149,7 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // Подключение кошелька к сайту
   const connectWallet = async () => {
     try {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
@@ -198,6 +162,7 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // Для автоматического переключения chain на Polygon
   const switchChain = async () => {
     try {
       await ethereum.request({
@@ -212,10 +177,9 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
             params: [
               {
                 chainId: MAIN_CHAIN,
-                // chainId: ethers.utils.hexValue(137),
-                chainName: 'Polygon',
-                rpcUrls: ['https://polygon-rpc.com'],
-                blockExplorerUrls: ['https://polygonscan.com'],
+                rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+                blockExplorerUrls: ['https://mumbai.polygonscan.com'],
+                chainName: 'Mumbai',
               },
             ],
           })
@@ -237,14 +201,18 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // todo не исправлено
+  // Добавление токена Digital Rubles
   const addToken = async (token: 'loap' | 'usdc') => {
     let tokenAddress = ''
     let tokenSymbol = ''
     let tokenDecimals = undefined as unknown as number
     let tokenImage = ''
 
+    //TODO
     if (token === 'loap') {
-      tokenAddress = CONTRACT_ADDRESS
+      // tokenAddress = CONTRACT_ADDRESS
+      tokenAddress = 'CONTRACT_ADDRESS'
       tokenSymbol = 'LOAP'
       tokenDecimals = 18
     } else if (token === 'usdc') {
@@ -277,6 +245,8 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // todo не исправлено
+  // Подтверждение транзакции
   const approveTransaction = async (amount: number) => {
     // $toast.clear()
     return new Promise((resolve, reject) => {
@@ -287,13 +257,13 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
           _amount = 100000 * 1e6
         }
 
-        if (allowance.value < _amount) {
-          if (amount === 0) {
-            _amount = 100000 * 1e6
-          } else {
-            _amount = _amount + 100000 * 1e6
-          }
-        }
+        // if (allowance.value < _amount) {
+        //   if (amount === 0) {
+        //     _amount = 100000 * 1e6
+        //   } else {
+        //     _amount = _amount + 100000 * 1e6
+        //   }
+        // }
 
         // $toast.info('Pending approval...', {
         //   duration: 0,
@@ -330,10 +300,10 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
 
       // await
       updateBalances()
-      checkAllowance()
     })
   }
 
+  // todo не исправлено
   const initTransaction = async (amount: string | number) => {
     // $toast.clear()
     try {
@@ -344,7 +314,6 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
       // await wasTransfered.wait()
       isTransfering.value = false
       await updateBalances()
-      await checkAllowance()
 
       // $toast.clear()
       // $toast.success('Transaction complete', {
@@ -360,14 +329,64 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     }
   }
 
+  // ---- VTB wallet methods ---
+  //todo получить ключи если кошелек существует
+  const privateKey = ref('')
+  const publicKey = ref('')
+
+  const createWallet = async () => {
+    await API.Http(
+      'post',
+      `${process.env.VUE_APP_POLYGON}/v1/wallets/new`,
+    ).then((res: any) => {
+      // todo сохранить ответ (cookie?)
+      // ключи выдаются один раз, поэтому необходимо их сохранить, чтобы в дальнейшем была возможность осуществлять операции при помощи полученного кошелька.
+      // {
+      //   "privateKey": "f65eb3320a3e9dd51eaf2d67d71e609459081cf63aefd32fda79c425c296f257",
+      //     "publicKey": "0x15Cc4abzz27647ec9fE70D892E55586074263dF0"
+      // }
+
+      privateKey.value = res.data.privateKey
+      publicKey.value = res.data.publicKey
+
+      console.log('wallet created')
+    })
+  }
+
+  const sendCurrency = async (
+    amount: number,
+    toPublicKey: string,
+    currency: cryptoCurrency,
+  ) => {
+    await API.Http(
+      'post',
+      `${process.env.VUE_APP_POLYGON}/v1/transfers/${currency}`,
+      {
+        fromPrivateKey: privateKey.value,
+        toPublicKey,
+        amount,
+      },
+    ).then((res) => {
+      // todo
+      // для совершения переводов в валютах Rubles необходимо наличие Matic, т.к. со счета Matic берется комиссия за совершение транзакций.
+      // При нулевом балансе Matic транзакция выполнена не будет!
+      console.log('send ', currency)
+      console.log('сигнатура транзакции', res.data.transactionHash)
+    })
+  }
+
+  initSetup()
+  checkIfWalletIsConnected()
+  setupEventListener()
+
   return {
     currentAccount,
     currentChainId,
     isTransfering,
     tokenId,
-    usdcBalance,
-    loapBalance,
-    allowance,
+    maticBalance,
+    coinBalance,
+
     setupEventListener,
     checkIfWalletIsConnected,
     connectWallet,
@@ -375,5 +394,10 @@ export function useEthereum(CONTRACT_ADDRESS: string) {
     addToken,
     approveTransaction,
     initTransaction,
+
+    /* VTB methods: */
+    createWallet,
+    sendCurrency,
+    getBalance,
   }
 }
