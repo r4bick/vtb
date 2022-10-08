@@ -17,3 +17,8 @@ export enum TaskDirections {
   Mentoring = 'наставничество',
   SocialProjects = 'социальные проекты',
 }
+
+export enum cryptoCurrency {
+  Matic = 'matic',
+  Ruble = 'ruble',
+}

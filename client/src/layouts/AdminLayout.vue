@@ -7,16 +7,24 @@ const links = [
     label: 'Профиль',
   },
   {
-    to: '/tasks',
-    label: 'Задания',
+    to: '/',
+    label: 'Пользователи',
   },
   {
-    to: '/shop',
-    label: 'Магазин',
+    to: '/',
+    label: 'Задачи',
   },
   {
-    to: '/members',
-    label: 'Участники',
+    to: '/departments',
+    label: 'Орг. структура',
+  },
+  {
+    to: '/',
+    label: 'Статистика',
+  },
+  {
+    to: '/',
+    label: 'Казна',
   },
 ]
 </script>
@@ -50,6 +58,17 @@ const links = [
     min-height: calc(100vh - 56px); // высота хэдера;
     background-color: $gray-100-vtb;
     padding: 40px 50px 170px 50px;
+  }
+
+  :deep(.layout-header) {
+    .links-list {
+      justify-content: center;
+      margin-right: -286px;
+    }
+
+    .info {
+      flex: 1 1;
+    }
   }
 }
 </style>

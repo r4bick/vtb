@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TasksView from '../views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
+import DepartmentStructure from '@/views/Admin/DepartmentStructure.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,6 +19,15 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tasks',
     name: 'Tasks',
     component: TasksView,
+  },
+  //  admin routes
+  {
+    path: '/departments',
+    name: 'Admin Departments',
+    component: DepartmentStructure,
+    meta: {
+      layout: 'admin',
+    },
   },
 ]
 
