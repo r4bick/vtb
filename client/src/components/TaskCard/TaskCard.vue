@@ -42,7 +42,7 @@ const taskImage = computed(() => {
 })
 
 const getRandomImageName = () => {
-  return Object.values(TaskImages)[getRandomInt(0, 4)]
+  return Object.values(TaskImages)[getRandomInt(0, 5)]
 }
 
 onMounted(() => {
