@@ -4,8 +4,7 @@ import { ethers } from 'ethers'
 import API from '@/api/Http'
 import { cryptoCurrency } from '@/types/enums'
 import { useCookies } from 'vue3-cookies'
-
-export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
+import { MAIN_CHAIN } from '@/types/enums'
 
 interface ApiError {
   code: number
@@ -40,7 +39,7 @@ export function useEthereum() {
   const chainListener = async (chainId: string) => {
     currentChainId.value = chainId
 
-    if (chainId !== MAIN_CHAIN) {
+    if (chainId !== MAIN_CHAIN || !connected.value) {
       // $toast.error('You are not connected to the Polygon Network!', {
       //   duration: 3000,
       // })
@@ -139,7 +138,7 @@ export function useEthereum() {
       if (cookies.get('private') && cookies.get('public')) {
         connected.value = true
       }
-
+      await setupEventListener()
       await checkAccountAndChain()
     } catch (err) {
       console.log(err)
