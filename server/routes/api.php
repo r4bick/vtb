@@ -35,6 +35,14 @@ Route::group(['prefix' => 'task', 'middleware' => 'auth'], function (Router $rou
     Route::put('/{id}', 'TaskController@update');
 });
 
+Route::group(['prefix' => 'task_user', 'middleware' => 'auth'], function (Router $router) {
+    Route::post('', 'TaskUserController@create');
+});
+
+Route::group(['prefix' => 'task_departure', 'middleware' => 'auth'], function (Router $router) {
+    Route::post('', 'TaskDepartureController@create');
+});
+
 Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $router) {
     Route::get('/', 'ProductController@showAll');
     Route::get('/{id}', 'ProductController@show');
