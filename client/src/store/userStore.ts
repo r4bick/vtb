@@ -26,7 +26,7 @@ export const useUserStore = defineStore('userStore', {
         true,
         {},
         {
-          withs: ['wallet'],
+          withs: ['wallet', 'account'],
         },
       ).then(({ data }) => {
         return data
