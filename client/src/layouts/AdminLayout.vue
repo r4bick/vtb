@@ -3,15 +3,15 @@ import { LayoutHeader } from '@/components'
 
 const links = [
   {
-    to: '/',
+    to: '/admin',
     label: 'Профиль',
   },
   {
-    to: '/',
+    to: '/admin-users',
     label: 'Пользователи',
   },
   {
-    to: '/',
+    to: '/admin-tasks',
     label: 'Задачи',
   },
   {
@@ -19,7 +19,7 @@ const links = [
     label: 'Орг. структура',
   },
   {
-    to: '/',
+    to: '/statistics',
     label: 'Статистика',
   },
   {
@@ -27,7 +27,7 @@ const links = [
     label: 'Казна',
   },
   {
-    to: '/',
+    to: '/shop',
     label: 'Магазин мерча',
   },
 ]
