@@ -365,8 +365,6 @@ const taskDeadline = computed(() => {
         }
 
         &__object-sm {
-          //width: 60px;
-          //height: 60px;
           left: 0;
           top: 50%;
           transform: translate(-30%, -30%) scale(0.6);

@@ -15,7 +15,7 @@ const links = [
     label: 'Магазин',
   },
   {
-    to: '/members',
+    to: '/leader-board',
     label: 'Участники',
   },
 ]

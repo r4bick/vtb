@@ -10,7 +10,6 @@ export const primaryButton = {
   },
   active: {
     borderColor: '#0066FF',
-    color: '#0066FF',
   },
   disabled: {
     backgroundColor: 'transparent',
