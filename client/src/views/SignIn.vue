@@ -8,6 +8,10 @@ import { useUserStore } from '@/store/userStore'
 import { useRouter } from 'vue-router'
 import { errorDictionary } from '@/helpers/errorDictionary'
 
+import { useCookies } from 'vue3-cookies'
+import { useEthereum } from '@/composables/useEthereum'
+const { cookies } = useCookies()
+const { getBalance } = useEthereum()
 const userStore = useUserStore()
 const router = useRouter()
 
@@ -24,8 +28,14 @@ const isSubmitDisabled = computed(() => {
 const login = () => {
   userStore
     .login(authData)
-    .then(() => {
-      router.push('/')
+    .then(async () => {
+      await router.push('/')
+      const currentUser = await userStore.getCurrentUser()
+
+      const currentUserDetails = await userStore.getUserById(currentUser.id)
+
+      cookies.set('public', currentUserDetails.wallet.public_key)
+      await getBalance()
     })
     .catch((error) => {
       apiError.value = errorDictionary[error.error]
