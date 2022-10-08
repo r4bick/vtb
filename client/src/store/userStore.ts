@@ -37,7 +37,6 @@ export const useUserStore = defineStore('userStore', {
       return await API.Http('get', `${API_URL}/user/me`, true).then(
         ({ data }) => {
           cookies.set('id', data.id)
-
           return data
         },
       )

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, defineProps, onMounted } from 'vue'
 
-import { OnClickOutside } from '@vueuse/components'
-
 interface NftCardProps {
   title: string
   image: string
@@ -15,18 +13,16 @@ const taskImage = computed(() => {
 </script>
 
 <template>
-  <OnClickOutside>
-    <div class="task-card">
-      <div class="card">
-        <div class="body">
-          <img class="body__image" :src="taskImage" alt="Task image" />
-        </div>
-        <div class="footer">
-          {{ title }}
-        </div>
+  <div class="task-card">
+    <div class="card">
+      <div class="body">
+        <img class="body__image" :src="taskImage" alt="Task image" />
+      </div>
+      <div class="footer">
+        {{ title }}
       </div>
     </div>
-  </OnClickOutside>
+  </div>
 </template>
 
 <style scoped lang="scss">

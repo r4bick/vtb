@@ -15,8 +15,8 @@ import {
 interface TaskCardProps {
   name: string
   description: string
-  author_id: string
-  begin_at: string
+  author_id?: string
+  begin_at?: string
   end_at: string
   category: string
   type: string

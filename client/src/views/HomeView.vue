@@ -9,7 +9,11 @@ const taskStore = useTaskStore()
 const userStore = useUserStore()
 const name = ref('')
 onMounted(async () => {
-  const currentUser = userStore.user
+  // let currentUser
+
+  const res = await userStore.getCurrentUser()
+  const currentUser = await userStore.getUserById(res.id)
+
   await taskStore.getTasks()
   name.value =
     currentUser.account.first_name + ' ' + currentUser.account.last_name
@@ -107,7 +111,7 @@ const config = {
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"
         :key="task.id"
-        v-for="task in taskStore.tasks.slice(0, 4)"
+        v-for="task in taskStore.tasks"
       />
     </div>
     <div class="title-list">NFT</div>
