@@ -23,8 +23,12 @@ const links = [
     label: 'Статистика',
   },
   {
-    to: '/',
+    to: '/coins',
     label: 'Казна',
+  },
+  {
+    to: '/',
+    label: 'Магазин мерча',
   },
 ]
 </script>
@@ -63,7 +67,7 @@ const links = [
   :deep(.layout-header) {
     .links-list {
       justify-content: center;
-      margin-right: -286px;
+      margin-right: -286px; // 286 -   width of info__value
     }
 
     .info {

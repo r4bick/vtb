@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import TasksView from '../views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
 import DepartmentStructure from '@/views/Admin/DepartmentStructure.vue'
+import AdminCoins from '@/views/Admin/AdminCoins.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/departments',
     name: 'Admin Departments',
     component: DepartmentStructure,
+    meta: {
+      layout: 'admin',
+    },
+  },
+  {
+    path: '/coins',
+    name: 'Admin Coins',
+    component: AdminCoins,
     meta: {
       layout: 'admin',
     },
