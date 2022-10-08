@@ -66,6 +66,30 @@ export const outlineButton = {
   },
 }
 
+export const outlineWhiteButton = {
+  backgroundColor: 'transparent',
+  borderColor: '#FFFFFF',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  color: '#FFFFFF',
+  fontFamily: 'Inter',
+  hover: {
+    backgroundColor: 'transparent',
+    borderColor: '#FFFFFF',
+    color: '#FFFFFF',
+  },
+  active: {
+    backgroundColor: 'transparent',
+    borderColor: '#FFFFFF',
+    color: '#FFFFFF',
+  },
+  disabled: {
+    backgroundColor: 'transparent',
+    borderColor: '#A0AEC0',
+    color: '#A0AEC0',
+  },
+}
+
 export const outlineButtonDanger = {
   backgroundColor: '#fff',
   borderColor: '#F16063',
@@ -126,6 +150,9 @@ export const deleteButton = {
 
 export const orangeButton = {
   fontFamily: 'Inter',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  borderColor: '#FE7942',
   backgroundColor: '#FE7942',
   justifyContent: 'center',
   color: '#FFFFFF',
@@ -138,6 +165,7 @@ export const orangeButton = {
     color: '#FFFFFF',
   },
   disabled: {
+    borderColor: '#E2E8F0',
     backgroundColor: '#E2E8F0',
     color: '#A0AEC0',
   },

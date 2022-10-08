@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import API from '@/api/Http'
 import { ITask } from '@/types/interfaces'
+import { API_URL } from '@/helpers/globalVariables'
 
 interface UserStoreState {
   tasks: ITask[]
@@ -17,7 +18,7 @@ export const useTaskStore = defineStore('useTaskStore', {
     async getTasks() {
       return await API.Http(
         'get',
-        `${process.env.VUE_APP_BASE_URL}/task`,
+        `${API_URL}/task`,
         true,
         {},
         {
