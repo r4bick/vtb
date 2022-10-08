@@ -9,6 +9,7 @@ import TaskItem from '@/components/Admin/Tasks/TaskItem.vue'
 
 import TaskModalBody from '@/components/Admin/Tasks/TaskModalBody.vue'
 import BadgeToggle from '@/components/BadgeToggle/BadgeToggle.vue'
+import { TaskAPI } from '@/api/Admin/TaskAPI'
 
 const openModal = ref(false)
 const isEditMode = ref(false)
@@ -68,8 +69,10 @@ const closeModal = () => {
 
 const saveChanges = (form: ITask) => {
   if (!isEditMode.value) {
+    console.log(form)
     tasks.value.push(form)
-    closeModal()
+    TaskAPI.addTask({ attributes: form }).then(() => closeModal())
+
     return
   }
 

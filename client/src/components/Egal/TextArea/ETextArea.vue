@@ -240,7 +240,7 @@ export default {
     textarea {
       //min-width: 400px;
       width: -webkit-fill-available;
-      min-height: 85px;
+      min-height: 50px;
       padding: 16px;
       border-radius: 8px;
       font-size: 14px;
