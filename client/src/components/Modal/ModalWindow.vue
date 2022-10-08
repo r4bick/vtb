@@ -147,7 +147,6 @@ const close = (e: any) => {
     border-radius: 0;
   }
 
-  //  todo check
   .modal-header {
     h3 {
       font-size: 16px;

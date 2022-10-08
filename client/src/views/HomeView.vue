@@ -9,11 +9,10 @@ const taskStore = useTaskStore()
 const userStore = useUserStore()
 const name = ref('')
 onMounted(async () => {
-  const res = await userStore.getCurrentUser()
-  const acc = await userStore.getUserById(res.id)
+  const currentUser = userStore.user
   await taskStore.getTasks()
-
-  name.value = acc.account.first_name + ' ' + acc.account.last_name
+  name.value =
+    currentUser.account.first_name + ' ' + currentUser.account.last_name
 })
 const nfts = [
   { title: '200 релизов', image: '1' },
@@ -89,6 +88,7 @@ const config = {
         </div>
       </div>
       <div class="card--image card">
+        <!--        todo передалть отображение images чтобы не терялось качетсво -->
         <img class="rounds" src="@/assets/img/orbit.svg" alt="" />
         <img class="spaceman" src="@/assets/img/Frock_3.svg" alt="" />
       </div>
@@ -107,7 +107,7 @@ const config = {
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"
         :key="task.id"
-        v-for="task in taskStore.tasks"
+        v-for="task in taskStore.tasks.slice(0, 4)"
       />
     </div>
     <div class="title-list">NFT</div>
@@ -160,12 +160,19 @@ const config = {
   }
 }
 .tasks {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   margin-bottom: 40px;
+  :deep(.task-card) {
+    .card {
+      min-width: 285px;
+    }
+  }
 }
 .nft {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 

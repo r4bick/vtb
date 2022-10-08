@@ -29,6 +29,7 @@ export const useUserStore = defineStore('userStore', {
           withs: ['wallet', 'account'],
         },
       ).then(({ data }) => {
+        this.user = data
         return data
       })
     },
@@ -36,6 +37,7 @@ export const useUserStore = defineStore('userStore', {
       return await API.Http('get', `${API_URL}/user/me`, true).then(
         ({ data }) => {
           cookies.set('id', data.id)
+
           return data
         },
       )

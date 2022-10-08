@@ -162,7 +162,6 @@ const updateCat = (option: any) => {
               modelValue: currentTask.description,
             }"
           ></ETextArea>
-          <!--          todo files -->
           <EFileUploader :data="{ label: 'Вложенные файлы' }" />
           <EInput
             class="form__input form__field"
