@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('task_departure', function (Blueprint $table) {
             $table->id();
+            $table->uuid('departure_id')->index();
+            $table->uuid('task_id')->index();
+
+            $table->foreign('departure_id')->on('departures')->references('id')->restrictOnDelete();
+            $table->foreign('task_id')->on('tasks')->references('id')->restrictOnDelete();
+
             $table->timestamps();
         });
     }
