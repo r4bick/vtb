@@ -26,15 +26,9 @@ const { coinBalance, createWallet, connected, currentChainId, switchChain } =
       </router-link>
     </div>
 
-    <div class="info" v-if="connected && currentChainId === MAIN_CHAIN">
+    <div class="info">
       <span class="info__label">Баланс</span>
       <span class="info__value">{{ coinBalance || '0.00' }}</span>
-    </div>
-    <!--    <div class="info" v-else-if="connected && currentChainId !== MAIN_CHAIN">-->
-    <!--      <EButton @click="switchChain">Подключиться к Mumbai</EButton>-->
-    <!--    </div>-->
-    <div class="info" v-else-if="!connected">
-      <EButton @click="createWallet">Создать кошелек</EButton>
     </div>
   </div>
 </template>
