@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia'
-import API from '@/api/Http'
 import { ITask } from '@/types/interfaces'
-import { API_URL } from '@/helpers/globalVariables'
+import { TaskAPI } from '@/api/TaskAPI'
 
-interface UserStoreState {
+interface TaskStoreState {
   tasks: ITask[]
 }
 
 export const useTaskStore = defineStore('useTaskStore', {
-  state: (): UserStoreState => {
+  state: (): TaskStoreState => {
     return {
       tasks: [],
     }
@@ -16,21 +15,19 @@ export const useTaskStore = defineStore('useTaskStore', {
 
   actions: {
     async getTasks() {
-      return await API.Http(
-        'get',
-        `${API_URL}/task`,
-        true,
-        {},
-        {
-          withs: ['author.account', 'validator.account'],
-        },
-      )
-        .then(({ data }) => {
-          this.tasks = data
+      return TaskAPI.getTasks()
+        .then((tasks) => {
+          this.tasks = tasks
         })
         .catch((error) => {
-          console.log(error)
+          throw error
         })
+    },
+
+    async acceptTask(taskId: string) {
+      return TaskAPI.acceptTask(taskId).catch((error) => {
+        throw error
+      })
     },
   },
 })

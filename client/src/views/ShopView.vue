@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import { BadgeToggle, TaskCard } from '@/components'
-import { TaskDirections, TaskTypes, GoodCategories } from '@/types/enums'
+import { BadgeToggle, GoodCard, ModalWindow } from '@/components'
+import { GoodCategories } from '@/types/enums'
 import { inputDataConfig } from '@/assets/EgalData/EInput'
-import { ref, reactive } from 'vue'
-import GoodCard from '@/components/GoodCard/GoodCard.vue'
+import { inputStyleConfigWhiteOutline } from '@/assets/EgalStyles/EInput'
+import { orangeButton } from '@/assets/EgalStyles/EButton'
+import { ref, onMounted } from 'vue'
+import { useProductStore } from '@/store/productStore'
 
-const selectedTaskType = ref<TaskTypes>(TaskTypes.All)
+const productStore = useProductStore()
 
-const selectedCategory = reactive<TaskDirections[]>([])
-const toggleSelectedCategory = (direction: TaskDirections) => {
-  const foundDirectionIndex = selectedCategory.indexOf(direction)
+const selectedCategory = ref<GoodCategories>()
 
-  if (foundDirectionIndex === -1) {
-    selectedCategory.push(direction)
-  } else {
-    selectedCategory.splice(foundDirectionIndex, 1)
-  }
+const isModalOpen = ref(false)
+const whoseGift = ref('')
+const closeModal = () => {
+  whoseGift.value = ''
+  isModalOpen.value = false
 }
+
+onMounted(() => {
+  productStore.getProducts()
+})
 </script>
 
 <template>
@@ -26,12 +30,12 @@ const toggleSelectedCategory = (direction: TaskDirections) => {
         <p class="badge-list__title">Категория товара</p>
         <div class="badge-list__list">
           <BadgeToggle
-            :active="type === selectedTaskType"
-            :key="type"
-            v-for="type in GoodCategories"
-            @click="selectedTaskType = type"
+            :active="category === selectedCategory"
+            :key="category"
+            v-for="category in GoodCategories"
+            @click="selectedCategory = category"
           >
-            {{ type }}
+            {{ category }}
           </BadgeToggle>
         </div>
       </div>
@@ -47,14 +51,57 @@ const toggleSelectedCategory = (direction: TaskDirections) => {
     </div>
 
     <div class="goods-list">
-      <GoodCard class="goods-list__task" v-for="n in 10" :key="n" />
+      <GoodCard
+        class="goods-list__task"
+        :name="product.name"
+        :photo="product.photo"
+        :description="product.description"
+        :features="product.features"
+        :price="product.price"
+        :type="product.type"
+        :key="product.id"
+        @send-gift="isModalOpen = true"
+        v-for="product in productStore.products"
+      />
     </div>
+
+    <ModalWindow
+      class="modal modal--send-gift"
+      :show="isModalOpen"
+      @click.stop
+      @close="closeModal"
+    >
+      <template #header>
+        <span class="title">Отправить подарок</span>
+      </template>
+      <template #body>
+        <div class="modal-body">
+          <EInput
+            class="modal-body__input"
+            :data="{
+              ...inputDataConfig,
+              label: 'Кому подарим?',
+              modelValue: whoseGift,
+            }"
+            :style-config="inputStyleConfigWhiteOutline"
+            v-model="whoseGift"
+          />
+          <EButton class="modal-body__submit" :style-config="orangeButton">
+            Подарить
+          </EButton>
+        </div>
+      </template>
+    </ModalWindow>
   </div>
 </template>
 
 <style scoped lang="scss">
 @import '@/assets/style/variables.scss';
 @import '@/assets/style/mixins.scss';
+
+:deep(.modal-container) {
+  @include modalBlue();
+}
 
 .goods {
   .filters {
@@ -88,6 +135,23 @@ const toggleSelectedCategory = (direction: TaskDirections) => {
     grid-column-gap: 24px;
     grid-row-gap: 32px;
     margin-top: 64px;
+  }
+
+  .modal {
+    &--send-gift {
+      .title {
+        @include h3();
+        color: $base-white;
+      }
+
+      .modal-body {
+        margin-top: 32px;
+
+        &__submit {
+          margin-top: 32px;
+        }
+      }
+    }
   }
 }
 </style>

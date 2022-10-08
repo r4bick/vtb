@@ -136,4 +136,12 @@
   color: $gray-600;
 }
 
+@mixin modalBlue() {
+  background: $radiant-gradient-2-vtb;
+
+  .close {
+    fill: $base-white;
+    stroke: $base-white;
+  }
+}
 

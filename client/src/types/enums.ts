@@ -25,6 +25,14 @@ export enum TaskDirections {
   All = 'все',
 }
 
+export enum TaskStatuses {
+  Open = 'open',
+  InProcess = 'in_processed',
+  Done = 'done',
+  Completed = 'completed',
+  Rejected = 'rejected',
+}
+
 export enum GoodCategories {
   Merch = 'мерч компании',
   Courses = 'обучающие курсы',
@@ -32,6 +40,11 @@ export enum GoodCategories {
   Concerts = 'концерты',
   ServiceSubscriptions = 'подписки на сервисы',
   ForWork = 'для комфортной работы',
+}
+
+export enum GoodTypes {
+  Physical = 'физический',
+  Digital = 'виртуальный',
 }
 
 export enum cryptoCurrency {

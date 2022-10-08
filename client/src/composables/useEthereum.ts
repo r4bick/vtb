@@ -1,75 +1,14 @@
 import { computed, ref } from 'vue'
-// @ts-ignore
-import { ethers } from 'ethers'
 import API from '@/api/Http'
 import { cryptoCurrency } from '@/types/enums'
 import { useCookies } from 'vue3-cookies'
-import { MAIN_CHAIN } from '@/types/enums'
 import { API_POLYGON } from '@/helpers/globalVariables'
-
-interface ApiError {
-  code: number
-  message: string
-}
 
 const { cookies } = useCookies()
 
-// export function useEthereum(CONTRACT_ADDRESS: string) {
 export function useEthereum() {
-  // @ts-ignore
-  const { ethereum } = window
-
-  // const currentAccount = ref('')
-  const currentChainId = ref('')
-  const isTransfering = ref(true)
-
-  const tokenId = ref('')
-
   const maticBalance = ref(0)
   const coinBalance = ref(0)
-
-  let provider = undefined
-
-  const initSetup = () => {
-    if (ethereum) {
-      provider = new ethers.providers.Web3Provider(ethereum)
-    }
-  }
-
-  // listens if chain changed
-  const chainListener = async (chainId: string) => {
-    currentChainId.value = chainId
-
-    if (chainId !== MAIN_CHAIN || !connected.value) {
-      // $toast.error('You are not connected to the Polygon Network!', {
-      //   duration: 3000,
-      // })
-      coinBalance.value = 0
-      maticBalance.value = 0
-    } else {
-      initSetup()
-
-      // await updateBalances()
-
-      // $toast.success('Chain changed to Polygon', {
-      //   duration: 3000,
-      // })
-    }
-  }
-
-  const setupEventListener = async () => {
-    try {
-      if (ethereum) {
-        ethereum.on('chainChanged', chainListener)
-        // ethereum.on('accountsChanged', accountListener)
-      }
-    } catch (err) {
-      console.log(err)
-      // $toast.error('Metamask error', {
-      //   duration: 3000,
-      // })
-    }
-  }
 
   const getBalance = async () => {
     const key = cookies.get('public')
@@ -88,70 +27,24 @@ export function useEthereum() {
       })
   }
 
-  // Для автоматического переключения chain на Polygon
-  const switchChain = async () => {
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: MAIN_CHAIN }],
-      })
-    } catch (switchError) {
-      if ((switchError as ApiError).code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: MAIN_CHAIN,
-                rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
-                blockExplorerUrls: ['https://mumbai.polygonscan.com'],
-                chainName: 'Mumbai',
-              },
-            ],
-          })
-
-          // $toast.success('New chain added', {
-          //   duration: 3000,
-          // })
-        } catch (err) {
-          console.log(err)
-          // $toast.error('MetaMask Error: ', {
-          //   duration: 3000,
-          // })
-
-          return
-        }
-      }
-
-      console.log(switchError)
-    }
-  }
-
-  // ---- VTB wallet methods ---
-  const privateKey = computed(() => {
-    return cookies.get('private') || ''
-  })
-  const publicKey = computed(() => {
-    return cookies.get('public') || ''
-  })
-  const connected = ref(false)
+  const publicKey = cookies.get('public') || ''
 
   //Метод перевода с кошелька на кошелек
   const sendCurrency = async (
     amount: number,
     toPublicKey: string,
+    fromPrivateKey: string,
     currency: cryptoCurrency,
   ) => {
     await API.Http('post', `${API_POLYGON}/v1/transfers/${currency}`, false, {
-      fromPrivateKey: privateKey.value,
+      fromPrivateKey,
       toPublicKey,
       amount,
     }).then(({ data }) => {
-      // todo
       // для совершения переводов в валютах Rubles необходимо наличие Matic, т.к. со счета Matic берется комиссия за совершение транзакций.
       // При нулевом балансе Matic транзакция выполнена не будет!
-      console.log('currency send: ', currency)
-      console.log('сигнатура транзакции', data.transactionHash)
+      // console.log('currency send: ', currency)
+      // console.log('сигнатура транзакции', data.transactionHash)
     })
   }
 
@@ -162,7 +55,7 @@ export function useEthereum() {
       `${API_POLYGON}/v1/transfers/status/${transactionHash}`,
       false,
     ).then(({ data }) => {
-      console.log('status: ', data.status)
+      // console.log('status: ', data.status)
     })
   }
 
@@ -170,10 +63,10 @@ export function useEthereum() {
   const getNFTBalance = async (transactionHash: string) => {
     await API.Http(
       'get',
-      `${API_POLYGON}/v1/wallets/${publicKey.value}/nft/balance`,
+      `${API_POLYGON}/v1/wallets/${publicKey}/nft/balance`,
       false,
     ).then(({ data }) => {
-      console.log('data: ', data)
+      // console.log('data: ', data)
     })
   }
 
@@ -184,7 +77,7 @@ export function useEthereum() {
       `${API_POLYGON}/v1/nft/generate/${transactionHash}`,
       false,
     ).then(({ data }) => {
-      console.log('data: ', data)
+      // console.log('data: ', data)
     })
   }
 
@@ -196,7 +89,7 @@ export function useEthereum() {
   ) => {
     await API.Http(
       'post',
-      `${API_POLYGON}/v1/wallets/${publicKey.value}/history`,
+      `${API_POLYGON}/v1/wallets/${publicKey}/history`,
       false,
       {
         page,
@@ -204,31 +97,18 @@ export function useEthereum() {
         sort,
       },
     ).then(({ data }) => {
-      console.log('data: ', data)
+      // console.log('data: ', data)
     })
   }
 
-  initSetup()
-  // checkIfWalletIsConnected().then()
-  // setupEventListener()
   getBalance().then()
 
   return {
-    currentChainId,
-    isTransfering,
-    tokenId,
     maticBalance,
     coinBalance,
-    setupEventListener,
-    switchChain,
-
-    /* VTB methods: */
-
     sendCurrency,
     getBalance,
     publicKey,
-    privateKey,
-    connected,
     getTransactionStatus,
     getNFTBalance,
     getGeneratedNfts,

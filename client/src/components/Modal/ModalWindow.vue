@@ -3,22 +3,27 @@
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <!--        v-click-out="close" -->
+
         <div class="modal-container" ref="modal" id="modal">
-          <div class="modal-header" :class="{ flex: !showCloseIcon }">
-            <h3><slot name="header"></slot></h3>
+          <OnClickOutside @trigger="close">
+            <div class="wrapper">
+              <div class="modal-header" :class="{ flex: !showCloseIcon }">
+                <h3><slot name="header"></slot></h3>
 
-            <div v-if="showCloseIcon" @click="emit('close')" class="close">
-              <CloseSVG />
+                <div v-if="showCloseIcon" @click="emit('close')" class="close">
+                  <CloseSVG />
+                </div>
+              </div>
+
+              <div class="modal-body">
+                <slot name="body" />
+              </div>
+
+              <div class="modal-footer">
+                <slot name="footer" />
+              </div>
             </div>
-          </div>
-
-          <div class="modal-body">
-            <slot name="body" />
-          </div>
-
-          <div class="modal-footer">
-            <slot name="footer" />
-          </div>
+          </OnClickOutside>
         </div>
       </div>
     </div>
@@ -28,8 +33,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, ref, onMounted } from 'vue'
 import CloseSVG from '@/components/SvgIcons/CloseSVG.vue'
-// import BootstrapIcon from '@dvuckovic/vue3-bootstrap-icons'
-// import { useClickOutside } from '@/composables/useClickOutside'
+import { OnClickOutside } from '@vueuse/components'
 
 const props = defineProps({
   show: Boolean,
@@ -40,7 +44,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
-// const { vClickOut } = useClickOutside()
 
 const close = (e: any) => {
   emit('close')
@@ -70,13 +73,15 @@ const close = (e: any) => {
 .modal-container {
   width: 416px;
   margin: 0 auto;
-  padding: 40px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   background: #fff;
   border-radius: 28px;
 }
 
+.wrapper {
+  padding: 40px;
+}
 .modal-header {
   display: grid;
   grid-template-columns: 1fr 20px;
@@ -147,7 +152,6 @@ const close = (e: any) => {
     border-radius: 0;
   }
 
-  //  todo check
   .modal-header {
     h3 {
       font-size: 16px;
