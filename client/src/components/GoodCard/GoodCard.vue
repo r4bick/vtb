@@ -44,7 +44,12 @@ const infoList = [
           </div>
           <!--          <div class="header__badge header__badge&#45;&#45;amount">2458 шт</div>-->
         </div>
-        <div class="body" :style="{ backgroundImage: `url(${photo})` }">
+        <div class="body">
+          <div
+            class="product-photo"
+            :style="{ backgroundImage: `url(${photo})` }"
+          ></div>
+
           <div class="info">
             <p class="info__title">{{ name }}</p>
             <div class="info__price">{{ price }}₽</div>
@@ -140,10 +145,16 @@ const infoList = [
 
     .body {
       display: flex;
+      flex-direction: column;
       flex: 1;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
+
+      .product-photo {
+        flex: 1;
+        min-width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
 
       .info {
         background-color: white;
