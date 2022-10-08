@@ -11,8 +11,8 @@ const Http = async (
     return await axios({
       method: method,
       // responseType: responseType,
-      url: `${process.env.api_url}${url}`,
-      data: data,
+      url,
+      data,
       // headers: {
       // }
     })
