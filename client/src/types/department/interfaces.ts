@@ -12,12 +12,12 @@ export interface IDepartment {
 // приблизительный интерфейс задачи
 export interface ITask {
   id?: string
-  title: string
+  name: string
   description: string
   files?: string[]
-  validatorID: string
-  deadlines: string
-  prize: string
+  validator_id: string
+  end_at: string
+  reward: string
   category: TaskDirections
   type: TaskTypes
 }

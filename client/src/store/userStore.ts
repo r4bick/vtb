@@ -37,6 +37,7 @@ export const useUserStore = defineStore('userStore', {
         `${process.env.VUE_APP_API_BASE_URL}/user/me`,
         true,
       ).then(({ data }) => {
+        cookies.set('id', data.id)
         return data
       })
     },

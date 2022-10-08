@@ -154,6 +154,8 @@ class TaskFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
+            'like_number' => $this->faker->randomNumber(2),
+            'dislike_number' => $this->faker->randomNumber(2),
         ];
     }
 }

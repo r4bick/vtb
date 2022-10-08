@@ -29,6 +29,8 @@ return new class extends Migration
             $table->enum('type', TaskTypes::toArray());
             $table->enum('status', TaskStatuses::toArray());
             $table->enum('category', TaskCategories::toArray());
+            $table->bigInteger('like_number')->default(0);
+            $table->bigInteger('dislike_number')->default(0);
 
             $table->bigInteger('reward');
 

@@ -24,6 +24,8 @@ use Ramsey\Uuid\Uuid;
  * @property string $status
  * @property string $category
  * @property integer $reward
+ * @property integer $like_number
+ * @property integer $dislike_number
  */
 class Task extends Model
 {
@@ -46,11 +48,15 @@ class Task extends Model
         'status',
         'category',
         'reward',
+        'like_number',
+        'dislike_number',
     ];
 
     protected $attributes = [
         'status' => TaskStatuses::OPEN,
         'participant_number' => 1,
+        'like_number' => 0,
+        'dislike_number' => 0,
     ];
 
     protected $dispatchesEvents = [

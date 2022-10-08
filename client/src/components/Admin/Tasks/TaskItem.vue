@@ -189,6 +189,7 @@ const userOptions = [
   &__buttons {
     display: flex;
     gap: 15px;
+    align-items: center;
   }
   &__select {
     .egal-button {
