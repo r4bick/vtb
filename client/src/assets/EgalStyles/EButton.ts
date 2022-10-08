@@ -123,3 +123,21 @@ export const deleteButton = {
     color: '#F16063',
   },
 }
+
+export const orangeButton = {
+  backgroundColor: '#FE7942',
+  justifyContent: 'center',
+  color: '#FFFFFF',
+  hover: {
+    backgroundColor: '#FE7942',
+    color: '#FFFFFF',
+  },
+  active: {
+    backgroundColor: '#FE7942',
+    color: '#FFFFFF',
+  },
+  disabled: {
+    backgroundColor: '#E2E8F0',
+    color: '#A0AEC0',
+  },
+}

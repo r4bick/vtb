@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { defineProps, PropType } from 'vue'
 import { IHeaderLink } from '@/types/interfaces'
+import { useEthereum } from '@/composables/useEthereum'
+import { MAIN_CHAIN } from '@/types/enums'
 
 const props = defineProps({
   links: { type: Array as PropType<IHeaderLink[]> },
 })
+
+const { coinBalance, createWallet, connected, currentChainId, switchChain } =
+  useEthereum()
 </script>
 
 <template>
@@ -21,9 +26,15 @@ const props = defineProps({
       </router-link>
     </div>
 
-    <div class="info">
+    <div class="info" v-if="connected && currentChainId === MAIN_CHAIN">
       <span class="info__label">Баланс</span>
-      <span class="info__value">254.00</span>
+      <span class="info__value">{{ coinBalance || '0.00' }}</span>
+    </div>
+    <!--    <div class="info" v-else-if="connected && currentChainId !== MAIN_CHAIN">-->
+    <!--      <EButton @click="switchChain">Подключиться к Mumbai</EButton>-->
+    <!--    </div>-->
+    <div class="info" v-else-if="!connected">
+      <EButton @click="createWallet">Создать кошелек</EButton>
     </div>
   </div>
 </template>

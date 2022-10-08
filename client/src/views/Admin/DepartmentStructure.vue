@@ -138,4 +138,10 @@ const updateDepartmentBalance = () => {
     font-size: 20px;
   }
 }
+
+.delete-modal {
+  :deep(.modal-container) {
+    width: fit-content;
+  }
+}
 </style>

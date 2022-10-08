@@ -6,21 +6,27 @@ import DepartmentStructure from '@/views/Admin/DepartmentStructure.vue'
 import AdminCoins from '@/views/Admin/AdminCoins.vue'
 
 const routes: Array<RouteRecordRaw> = [
+  // auth
+  {
+    path: '/sign-in',
+    name: 'Sign In',
+    component: SignIn,
+    meta: {
+      layout: 'auth',
+    },
+  },
+
   {
     path: '/',
     name: 'home',
     component: HomeView,
   },
   {
-    path: '/sign-in',
-    name: 'Sign In',
-    component: SignIn,
-  },
-  {
     path: '/tasks',
     name: 'Tasks',
     component: TasksView,
   },
+
   //  admin routes
   {
     path: '/departments',
