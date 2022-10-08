@@ -14,3 +14,8 @@ export const taskDirectionsAPIConstants: ConstantsIndexSignature<TaskDirections>
     community: TaskDirections.Community,
     education: TaskDirections.Education,
   }
+
+export const productTypeAPIConstants: ConstantsIndexSignature<string> = {
+  physical: 'мерч компании',
+  digital: 'подписки на сервисы',
+}

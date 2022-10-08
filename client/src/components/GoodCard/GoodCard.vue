@@ -6,27 +6,23 @@ import { OnClickOutside } from '@vueuse/components'
 import { getRandomInt } from '@/helpers/mixins'
 import { TaskImages } from '@/types/enums'
 import { useDateFormat } from '@vueuse/core'
-import {
-  taskTypeAPIConstants,
-  taskDirectionsAPIConstants,
-} from '@/helpers/apiConstantsDictionary'
+import { productTypeAPIConstants } from '@/helpers/apiConstantsDictionary'
 
-// interface TaskCardProps {
-//   name: string
-//   description: string
-//   author_id: string
-//   begin_at: string
-//   end_at: string
-//   category: string
-//   type: string
-//   reward: number
-//   author_email: string
-//   like_number: number
-//   dislike_number: number
-// }
-// const props = defineProps<TaskCardProps>()
+interface GoodCardProps {
+  name: string
+  photo: string
+  description: string
+  features: Record<string, string>
+  price: number
+  type: string
+}
+const props = defineProps<GoodCardProps>()
 
 const isOpened = ref(false)
+
+const image = computed(() => {
+  return `background-image: url(${props.photo})`
+})
 
 const infoList = [
   'диаметр купола 104 см, длина 83 см',
@@ -43,13 +39,15 @@ const infoList = [
         @click="isOpened = !isOpened"
       >
         <div class="header">
-          <div class="header__badge header__badge--category">мерч компании</div>
-          <div class="header__badge header__badge--amount">2458 шт</div>
+          <div class="header__badge header__badge--category">
+            {{ productTypeAPIConstants[type] }}
+          </div>
+          <!--          <div class="header__badge header__badge&#45;&#45;amount">2458 шт</div>-->
         </div>
-        <div class="body">
+        <div class="body" :style="image">
           <div class="info">
-            <p class="info__title">Плед</p>
-            <div class="info__price">$2574</div>
+            <p class="info__title">{{ name }}</p>
+            <div class="info__price">{{ price }}₽</div>
           </div>
         </div>
       </div>
@@ -57,14 +55,21 @@ const infoList = [
       <div class="under-card" v-if="isOpened">
         <div class="body">
           <div class="body__description">
-            Прямой, как стрела, несгибаемый и немного консервативный зонт
-            прекрасно подойдет, чтобы выразить уверенность и устойчивость
-            компании.
+            {{ description }}
           </div>
 
           <ul class="info-list">
-            <li class="info-list__item" v-for="item in infoList" :key="item">
-              {{ item }}
+            <li class="info-list__item" v-if="features.material">
+              {{ features.material }}
+            </li>
+            <li class="info-list__item" v-if="features.package">
+              {{ features.package }}
+            </li>
+            <li class="info-list__item" v-if="features.size">
+              {{ features.size }}
+            </li>
+            <li class="info-list__item" v-if="features.weight">
+              {{ features.weight }}
             </li>
           </ul>
         </div>
@@ -134,7 +139,7 @@ const infoList = [
     .body {
       display: flex;
       flex: 1;
-      background: url('@/assets/img/good.png');
+      //background: url('@/assets/img/good.png');
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
@@ -170,6 +175,7 @@ const infoList = [
     transform: translateY(-50px);
     padding: 74px 16px 16px 16px;
     background: $radiant-gradient-2-vtb;
+    box-shadow: $shadow-lg;
     z-index: 0;
 
     .body {
