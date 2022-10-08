@@ -1,13 +1,10 @@
 import axios from 'axios'
 import API from '../Http'
+import { API_URL } from '@/helpers/globalVariables'
+
 class TaskAPIModel {
   async addTask(data: any) {
-    return API.Http(
-      'post',
-      `${process.env.VUE_APP_API_BASE_URL}/task`,
-      true,
-      data,
-    )
+    return API.Http('post', `${API_URL}/task`, true, data)
       .then((resp) => {
         console.log(resp.data)
         return resp.data

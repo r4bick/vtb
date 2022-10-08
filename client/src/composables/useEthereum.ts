@@ -5,6 +5,7 @@ import API from '@/api/Http'
 import { cryptoCurrency } from '@/types/enums'
 import { useCookies } from 'vue3-cookies'
 import { MAIN_CHAIN } from '@/types/enums'
+import { API_POLYGON } from '@/helpers/globalVariables'
 
 interface ApiError {
   code: number
@@ -77,11 +78,7 @@ export function useEthereum() {
       maticBalance.value = 0
       return
     }
-    await API.Http(
-      'get',
-      `${process.env.VUE_APP_POLYGON}/v1/wallets/${key}/balance`,
-      false,
-    )
+    await API.Http('get', `${API_POLYGON}/v1/wallets/${key}/balance`, false)
       .then(({ data }: any) => {
         coinBalance.value = data.coinsAmount
         maticBalance.value = data.maticAmount
@@ -145,16 +142,11 @@ export function useEthereum() {
     toPublicKey: string,
     currency: cryptoCurrency,
   ) => {
-    await API.Http(
-      'post',
-      `${process.env.VUE_APP_POLYGON}/v1/transfers/${currency}`,
-      false,
-      {
-        fromPrivateKey: privateKey.value,
-        toPublicKey,
-        amount,
-      },
-    ).then(({ data }) => {
+    await API.Http('post', `${API_POLYGON}/v1/transfers/${currency}`, false, {
+      fromPrivateKey: privateKey.value,
+      toPublicKey,
+      amount,
+    }).then(({ data }) => {
       // todo
       // для совершения переводов в валютах Rubles необходимо наличие Matic, т.к. со счета Matic берется комиссия за совершение транзакций.
       // При нулевом балансе Matic транзакция выполнена не будет!
@@ -167,7 +159,7 @@ export function useEthereum() {
   const getTransactionStatus = async (transactionHash: string) => {
     await API.Http(
       'post',
-      `${process.env.VUE_APP_POLYGON}/v1/transfers/status/${transactionHash}`,
+      `${API_POLYGON}/v1/transfers/status/${transactionHash}`,
       false,
     ).then(({ data }) => {
       console.log('status: ', data.status)
@@ -178,7 +170,7 @@ export function useEthereum() {
   const getNFTBalance = async (transactionHash: string) => {
     await API.Http(
       'get',
-      `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/nft/balance`,
+      `${API_POLYGON}/v1/wallets/${publicKey.value}/nft/balance`,
       false,
     ).then(({ data }) => {
       console.log('data: ', data)
@@ -189,7 +181,7 @@ export function useEthereum() {
   const getGeneratedNfts = async (transactionHash: string) => {
     await API.Http(
       'get',
-      `${process.env.VUE_APP_POLYGON}/v1/nft/generate/${transactionHash}`,
+      `${API_POLYGON}/v1/nft/generate/${transactionHash}`,
       false,
     ).then(({ data }) => {
       console.log('data: ', data)
@@ -204,7 +196,7 @@ export function useEthereum() {
   ) => {
     await API.Http(
       'post',
-      `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/history`,
+      `${API_POLYGON}/v1/wallets/${publicKey.value}/history`,
       false,
       {
         page,

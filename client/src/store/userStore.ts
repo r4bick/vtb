@@ -3,6 +3,7 @@ import { UserAPI } from '@/api/UserAPI'
 import { IAuthData } from '@/types/interfaces'
 import { useCookies } from 'vue3-cookies'
 import API from '@/api/Http'
+import { API_URL } from '@/helpers/globalVariables'
 
 const { cookies } = useCookies()
 
@@ -21,7 +22,7 @@ export const useUserStore = defineStore('userStore', {
     async getUserById(id: string) {
       return await API.Http(
         'get',
-        `${process.env.VUE_APP_API_BASE_URL}/user/${id}`,
+        `${API_URL}/user/${id}`,
         true,
         {},
         {
@@ -32,14 +33,12 @@ export const useUserStore = defineStore('userStore', {
       })
     },
     async getCurrentUser() {
-      return await API.Http(
-        'get',
-        `${process.env.VUE_APP_API_BASE_URL}/user/me`,
-        true,
-      ).then(({ data }) => {
-        cookies.set('id', data.id)
-        return data
-      })
+      return await API.Http('get', `${API_URL}/user/me`, true).then(
+        ({ data }) => {
+          cookies.set('id', data.id)
+          return data
+        },
+      )
     },
     async login(authData: IAuthData) {
       cookies.remove('bearer')
