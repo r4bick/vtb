@@ -4,6 +4,8 @@ import { ref } from 'vue'
 import { IDepartment } from '@/types/department/interfaces'
 
 import DepartmentModalBody from '@/components/Admin/Departments/DepartmentModalBody.vue'
+import ModalWindow from '@/components/Modal/ModalWindow.vue'
+import { secondaryButton } from '@/assets/EgalStyles/EButton'
 
 const openModal = ref(false)
 const isEditMode = ref(false)
@@ -48,8 +50,16 @@ const saveChanges = (form: IDepartment) => {
   closeModal()
 }
 
-const deleteDepartment = (id: string) => {
-  departments.value = departments.value.filter((i) => i.id !== id)
+const showDeleteModal = ref(false)
+const currentId = ref('')
+const openDeleteModal = (id: string): void => {
+  showDeleteModal.value = true
+  currentId.value = id
+}
+const confirmDeleteDepartment = () => {
+  showDeleteModal.value = false
+  departments.value = departments.value.filter((i) => i.id !== currentId.value)
+  currentId.value = ''
 }
 
 const updateDepartmentBalance = () => {
@@ -67,7 +77,7 @@ const updateDepartmentBalance = () => {
       <DepartmentItem
         :item="dep"
         @edit="editDepartment(dep)"
-        @delete="deleteDepartment(dep.id)"
+        @delete="openDeleteModal(dep.id)"
         @updateBalance="updateDepartmentBalance"
       />
     </div>
@@ -80,6 +90,29 @@ const updateDepartmentBalance = () => {
     @close="closeModal"
     @save="saveChanges"
   />
+  <!-- Удаление отдела -->
+  <Teleport to="body">
+    <ModalWindow
+      class="delete-modal"
+      :show="showDeleteModal"
+      @close="showDeleteModal = false"
+      :show-close-icon="false"
+    >
+      <template #header>
+        <p>Вы уверены, что хотите удалить отдел?</p>
+      </template>
+      <!--      <template #body>-->
+      <!--      </template>-->
+      <template #footer>
+        <EButton @click="confirmDeleteDepartment">Удалить</EButton>
+        <EButton
+          :style-config="secondaryButton"
+          @click="showDeleteModal = false"
+          >Отмена</EButton
+        >
+      </template>
+    </ModalWindow>
+  </Teleport>
 </template>
 
 <style scoped lang="scss">

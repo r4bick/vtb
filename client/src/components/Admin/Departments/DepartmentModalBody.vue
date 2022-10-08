@@ -4,6 +4,7 @@ import { inputStyleConfig } from '@/assets/EgalStyles/EInput'
 import { inputDataConfig } from '@/assets/EgalData/EInput'
 import { IDepartment } from '@/types/department/interfaces'
 import ModalWindow from '@/components/Modal/ModalWindow.vue'
+import { secondaryButton } from '@/assets/EgalStyles/EButton'
 
 const emit = defineEmits(['close', 'save'])
 const props = defineProps({
@@ -124,10 +125,8 @@ const emitSave = () => {
         </div>
       </template>
       <template #footer>
-        <div class="departments__modal-footer">
-          <EButton @click="onClose">Отменить</EButton>
-          <EButton @click="emitSave">Сохранить</EButton>
-        </div>
+        <EButton @click="emitSave">Сохранить</EButton>
+        <EButton @click="onClose" :style="secondaryButton">Отменить</EButton>
       </template>
     </ModalWindow>
   </Teleport>
@@ -142,10 +141,5 @@ const emitSave = () => {
 }
 
 .departments {
-  &__modal-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 25px;
-  }
 }
 </style>
