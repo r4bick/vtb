@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserEvents\UserCreatedEvent;
+use App\Listeners\UserListeners\CreateWalletListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\ExampleEvent::class => [
-            \App\Listeners\ExampleListener::class,
+        UserCreatedEvent::class => [
+            CreateWalletListener::class,
         ],
     ];
 
@@ -22,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    public function shouldDiscoverEvents()
+    public function shouldDiscoverEvents(): bool
     {
         return false;
     }
