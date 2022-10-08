@@ -51,6 +51,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/admin-shop',
+    name: 'Admin Shop',
+    component: () => import('@/views/Admin/AdminShop.vue'),
+    meta: {
+      layout: 'admin',
+    },
+  },
+  {
     path: '/coins',
     name: 'Admin Coins',
     component: () => import('@/views/Admin/AdminCoins.vue'),
