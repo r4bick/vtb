@@ -2,8 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TasksView from '../views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
-import DepartmentStructure from '@/views/Admin/DepartmentStructure.vue'
-import AdminCoins from '@/views/Admin/AdminCoins.vue'
 
 const routes: Array<RouteRecordRaw> = [
   // auth
@@ -29,9 +27,25 @@ const routes: Array<RouteRecordRaw> = [
 
   //  admin routes
   {
+    path: '/admin',
+    name: 'Admin Profile',
+    component: () => import('@/views/Admin/AdminMain.vue'),
+    meta: {
+      layout: 'admin',
+    },
+  },
+  {
     path: '/departments',
     name: 'Admin Departments',
-    component: DepartmentStructure,
+    component: () => import('@/views/Admin/DepartmentStructure.vue'),
+    meta: {
+      layout: 'admin',
+    },
+  },
+  {
+    path: '/admin-tasks',
+    name: 'Admin Tasks',
+    component: () => import('@/views/Admin/AdminTasks.vue'),
     meta: {
       layout: 'admin',
     },
@@ -39,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/coins',
     name: 'Admin Coins',
-    component: AdminCoins,
+    component: () => import('@/views/Admin/AdminCoins.vue'),
     meta: {
       layout: 'admin',
     },

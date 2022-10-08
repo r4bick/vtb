@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CoinsList from '@/components/Admin/Coins/CoinsList.vue'
 import { ref } from 'vue'
-import ETabs from '@/components/ETabs.vue'
+import ETabs from '@/components/Egal/ETabs.vue'
 
 // tabs
 const tabs = [

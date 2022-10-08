@@ -7,7 +7,6 @@ const Http = async (
   useToken = true,
   data?: any,
   params?: any,
-  /* responseType: string, */
 ) => {
   if (useToken) {
     axios.defaults.headers.common['Authorization'] =

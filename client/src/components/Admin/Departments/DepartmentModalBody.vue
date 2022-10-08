@@ -66,12 +66,6 @@ const emitSave = () => {
                   value: 'd',
                 },
               ],
-              // nonlocalOptions: rKeeperDishesOptions,
-              // searchable: true,
-              // showMoreButtonDisplay: true,
-              // showMoreButtonText: 'Показать больше...',
-              // isLocalOptions: false,
-              // nonLocalOptionsTotalCount: rKeeperDishesPagination.totalCount,
             }"
             @update:modelValue="
               (option) => (currentDep.parent = option[0].name)
@@ -93,12 +87,6 @@ const emitSave = () => {
                   value: 2,
                 },
               ],
-              // nonlocalOptions: rKeeperDishesOptions,
-              // searchable: true,
-              // showMoreButtonDisplay: true,
-              // showMoreButtonText: 'Показать больше...',
-              // isLocalOptions: false,
-              // nonLocalOptionsTotalCount: rKeeperDishesPagination.totalCount,
             }"
             @update:modelValue="(option) => (currentDep.child = option[0].name)"
           />
