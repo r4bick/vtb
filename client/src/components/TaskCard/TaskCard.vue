@@ -202,6 +202,12 @@ const formattedDate = computed(() => {
     min-height: 255px;
     padding: 16px;
     background: $base-white;
+    box-shadow: $shadow-default;
+    transition: 0.1s ease-in-out !important;
+
+    &:hover {
+      box-shadow: $shadow-2xl;
+    }
 
     .header {
       display: flex;
@@ -273,10 +279,9 @@ const formattedDate = computed(() => {
       }
     }
 
-    transition: 1s ease-in-out !important;
-
     &--opened {
       background: $radiant-gradient-2-vtb;
+      box-shadow: $shadow-2xl;
       z-index: 1;
 
       .header {

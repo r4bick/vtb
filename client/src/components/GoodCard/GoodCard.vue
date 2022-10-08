@@ -108,8 +108,15 @@ const isOpened = ref(false)
     min-height: 255px;
     padding: 16px;
     background: $base-white;
+    box-shadow: $shadow-default;
+    transition: 0.1s ease-in-out !important;
+
+    &:hover {
+      box-shadow: $shadow-2xl;
+    }
 
     &--opened {
+      box-shadow: $shadow-2xl;
       z-index: 1;
     }
 
