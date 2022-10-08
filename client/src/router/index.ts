@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TasksView from '../views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
+import ShopView from '@/views/ShopView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   // auth
@@ -23,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tasks',
     name: 'Tasks',
     component: TasksView,
+  },
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: ShopView,
   },
 
   //  admin routes

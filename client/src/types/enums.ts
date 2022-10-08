@@ -25,6 +25,15 @@ export enum TaskDirections {
   All = 'все',
 }
 
+export enum GoodCategories {
+  Merch = 'мерч компании',
+  Courses = 'обучающие курсы',
+  Sport = 'абонементы на спорт',
+  Concerts = 'концерты',
+  ServiceSubscriptions = 'подписки на сервисы',
+  ForWork = 'для комфортной работы',
+}
+
 export enum cryptoCurrency {
   Matic = 'matic',
   Ruble = 'ruble',
