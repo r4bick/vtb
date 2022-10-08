@@ -149,6 +149,7 @@ const config = {
   .info {
     display: flex;
     flex-direction: column;
+
     gap: 24px;
     &--personal {
       display: flex;
@@ -162,12 +163,6 @@ const config = {
   display: flex;
   gap: 24px;
   margin-bottom: 40px;
-  flex-wrap: wrap;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 24px;
-  grid-row-gap: 32px;
-  margin-top: 64px;
 }
 .nft {
   display: flex;
@@ -288,7 +283,7 @@ const config = {
   box-shadow: none !important;
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 1240px) {
   .rounds {
     display: none;
   }
