@@ -1,17 +1,36 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, defineEmits } from 'vue'
+import { computed, onMounted, reactive, defineEmits, defineProps } from 'vue'
 import { XIconSVG, ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
-import { TaskDirections, TaskImages } from '@/types/enums'
+import { TaskDirections, TaskImages, TaskTypes } from '@/types/enums'
 import { orangeButton } from '@/assets/EgalStyles/EButton'
 import { getRandomInt } from '@/helpers/mixins'
 import { OnClickOutside } from '@vueuse/components'
+import { useDateFormat } from '@vueuse/core'
+import {
+  taskTypeAPIConstants,
+  taskDirectionsAPIConstants,
+} from '@/helpers/apiConstantsDictionary'
+
+interface TaskPopupProps {
+  name: string
+  description: string
+  author_id: string
+  begin_at: string
+  end_at: string
+  category: string
+  reward: number
+  author_email: string
+  type: string
+  like_number: number
+  dislike_number: number
+}
+const props = defineProps<TaskPopupProps>()
 
 interface TaskPopupEmits {
   (e: 'close'): void
 }
 const emits = defineEmits<TaskPopupEmits>()
 
-const directions = [TaskDirections.Meetup, TaskDirections.Community]
 const objectImages: string[] = reactive<TaskImages[]>([])
 
 const getUniqueOrbitObjects = (): string => {
@@ -36,6 +55,12 @@ onMounted(() => {
     objectImages.push(getUniqueOrbitObjects())
   }
 })
+
+const taskDeadline = computed(() => {
+  const begin = useDateFormat(props.begin_at, 'DD.MM.YYYY').value
+  const end = useDateFormat(props.end_at, 'DD.MM.YYYY').value
+  return `${begin}-${end}`
+})
 </script>
 
 <template>
@@ -43,16 +68,12 @@ onMounted(() => {
     <div class="task-popup-wrapper">
       <div class="task-popup">
         <div class="header">
-          <div class="header__badge">$2574</div>
-          <div
-            class="header__badge"
-            v-for="direction in directions"
-            :key="direction"
-          >
-            {{ direction }}
+          <div class="header__badge">{{ reward }}₽</div>
+          <div class="header__badge">
+            {{ taskDirectionsAPIConstants[category] }}
           </div>
-          <div class="header__badge">индивидуальная</div>
-          <div class="header__badge">25.10.2022-30.11.2022</div>
+          <div class="header__badge">{{ taskTypeAPIConstants[type] }}</div>
+          <div class="header__badge">{{ taskDeadline }}</div>
           <button class="header__close" @click="emits('close')">
             <XIconSVG />
           </button>
@@ -61,39 +82,24 @@ onMounted(() => {
         <div class="body">
           <div class="main-info">
             <h1 class="body__title">
-              Выступление с докладом на Heisenbug Conf 2022
+              {{ name }}
             </h1>
             <div class="body__description">
-              Heisenbug — крупнейшая в России конференция по тестированию
-              программного обеспечения. Доклады и дискуссии для специалистов
-              разных профилей: QA-инженеров, разработчиков, тимлидов, директоров
-              по качеству. Конференция больше ориентирована на технологии, чем
-              на процессы и методологии. Ее организатор — JUG Ru Group. Говорим
-              о самом важном — практическом и хардкорном тестировании на
-              реальных проектах Автоматизация тестирования; Инструменты и
-              окружение для ручного и автоматизированного тестирования;
-              Тестирование распределённых систем; Тестирование мобильных
-              приложений; UX, Security; Нагрузочное тестирование,
-              performance-тестирование, бенчмаркинг; AI в тестировании; Мы
-              ориентированы на технологическую сторону тестирования, и, если вы
-              в ней пока новичок, это лишний повод нас посетить. Никаких
-              тест-кейсов, правил заведения багов и управления командами —
-              только технологии, только хардкор! Ссылка на
-              конференцию:https://heisenbug.ru/
+              {{ description }}
             </div>
             <div class="badges">
               <div class="badges__badge">
                 <span>Автор:</span>
-                <span>234567</span>
+                <span>{{ author_email }}</span>
               </div>
               <div class="badges__badge">
                 <span>Срок задачи:</span>
-                <span>25.10.2022-30.11.2022</span>
+                <span>{{ taskDeadline }}</span>
               </div>
             </div>
 
             <div class="accept">
-              <span class="accept__price">2574 RU</span>
+              <span class="accept__price">{{ reward }} RU</span>
               <EButton
                 class="accept__button"
                 :data="{ size: 'lg' }"
@@ -107,13 +113,13 @@ onMounted(() => {
         <div class="footer">
           <div class="voices">
             <div class="positive-voices">
-              <span class="positive-voices__amount">245</span>
+              <span class="positive-voices__amount">{{ like_number }}</span>
               <button class="positive-voices__button">
                 <ThumbUpSVG fill="#ffffff" />
               </button>
             </div>
             <div class="negative-voices">
-              <span class="negative-voices__amount">15</span>
+              <span class="negative-voices__amount">{{ dislike_number }}</span>
               <button class="negative-voices__button">
                 <ThumbDownSVG fill="#ffffff" />
               </button>
@@ -199,6 +205,7 @@ onMounted(() => {
       }
       &__description {
         white-space: pre-wrap;
+        position: relative;
         font-style: normal;
         font-weight: 500;
         font-size: 16px;
@@ -206,6 +213,7 @@ onMounted(() => {
         color: $base-white;
         margin-top: 24px;
         padding-right: 78px;
+        z-index: 1;
       }
 
       .badges {
