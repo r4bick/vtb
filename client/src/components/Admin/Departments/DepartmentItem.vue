@@ -30,7 +30,6 @@ const props = defineProps({
 
 .department {
   border-radius: 16px;
-
   position: relative;
   @include card();
   display: flex;
