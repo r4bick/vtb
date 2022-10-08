@@ -3,6 +3,7 @@
 namespace App\Curl;
 
 use CurlHandle;
+use Illuminate\Support\Facades\Log;
 
 class Curl implements CurlInterface
 {
@@ -53,6 +54,7 @@ class Curl implements CurlInterface
      */
     public function execute(): string|bool
     {
+
         return curl_exec($this->curl);
     }
 

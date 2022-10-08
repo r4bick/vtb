@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as LumenBaseController;
+use Throwable;
 
 class BaseController extends LumenBaseController
 {
@@ -63,12 +64,31 @@ class BaseController extends LumenBaseController
      *
      * @return array
      * @throws Exception
+     * @throws Throwable
      */
     public function create(Request $request): array
     {
         $instance = static::getModelInstance();
         $instance->fill($request->get('attributes'));
-        $instance->save();
+        $instance->saveOrFail();
+
+        return $instance->toArray();
+    }
+
+    /**
+     * @param Request $request
+     * @param string|int $id Entity identification.
+     *
+     * @return array
+     * @throws Exception
+     * @throws Throwable
+     */
+    public static function update(Request $request, string|int $id): array
+    {
+        $instance = static::getModelInstance();
+        $instance = $instance->newQuery()->findOrFail($id);
+        $instance->fill($request->get('attributes'));
+        $instance->saveOrFail();
 
         return $instance->toArray();
     }
