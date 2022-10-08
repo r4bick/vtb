@@ -113,6 +113,12 @@ const close = (e: any) => {
 .modal-body {
 }
 
+.modal-footer {
+  display: flex;
+  gap: 24px;
+  margin-top: 25px;
+}
+
 .modal-default-button {
   float: right;
 }
