@@ -59,10 +59,18 @@ const infoList = [
           </div>
 
           <ul class="info-list">
-            <li class="info-list__item">{{ features.material }}</li>
-            <li class="info-list__item">{{ features.package }}</li>
-            <li class="info-list__item">{{ features.size }}</li>
-            <li class="info-list__item">{{ features.weight }}</li>
+            <li class="info-list__item" v-if="features.material">
+              {{ features.material }}
+            </li>
+            <li class="info-list__item" v-if="features.package">
+              {{ features.package }}
+            </li>
+            <li class="info-list__item" v-if="features.size">
+              {{ features.size }}
+            </li>
+            <li class="info-list__item" v-if="features.weight">
+              {{ features.weight }}
+            </li>
           </ul>
         </div>
 
