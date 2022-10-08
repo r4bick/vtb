@@ -21,7 +21,7 @@ export const useUserStore = defineStore('userStore', {
     async getUserById(id: string) {
       return await API.Http(
         'get',
-        `${process.env.VUE_APP_BASE_URL}/user/${id}`,
+        `${process.env.VUE_APP_API_BASE_URL}/user/${id}`,
         true,
         {},
         {
@@ -34,7 +34,7 @@ export const useUserStore = defineStore('userStore', {
     async getCurrentUser() {
       return await API.Http(
         'get',
-        `${process.env.VUE_APP_BASE_URL}/user/me`,
+        `${process.env.VUE_APP_API_BASE_URL}/user/me`,
         true,
       ).then(({ data }) => {
         cookies.set('id', data.id)

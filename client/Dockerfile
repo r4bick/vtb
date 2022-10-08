@@ -10,7 +10,7 @@ COPY . .
 ARG API_URL="http://62.109.19.231/api"
 ARG APP_API_VTB="https://hackathon.lsp.team/hk"
 
-RUN echo "VUE_APP_BASE_URL=${API_URL}" > .env
+RUN echo "VUE_APP_API_BASE_URL=${API_URL}" > .env
 RUN echo "VUE_APP_API_VTB=${APP_API_VTB}" > .env
 RUN npm run build
 

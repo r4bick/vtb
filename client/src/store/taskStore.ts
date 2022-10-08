@@ -17,7 +17,7 @@ export const useTaskStore = defineStore('useTaskStore', {
     async getTasks() {
       return await API.Http(
         'get',
-        `${process.env.VUE_APP_BASE_URL}/task`,
+        `${process.env.VUE_APP_API_BASE_URL}/task`,
         true,
         {},
         {

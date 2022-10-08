@@ -4,7 +4,7 @@ import axios from 'axios'
 class UserAPIModel {
   async login(data: IAuthData) {
     return axios
-      .post(`${process.env.VUE_APP_BASE_URL}/auth/login`, data)
+      .post(`${process.env.VUE_APP_API_BASE_URL}/auth/login`, data)
       .then((resp) => resp.data)
       .catch((error) => {
         throw error.response.data
