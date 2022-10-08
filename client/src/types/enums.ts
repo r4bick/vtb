@@ -9,13 +9,20 @@ export enum TaskTypes {
   All = 'все',
 }
 
+export enum TaskImages {
+  Planet = 'planet',
+  Planet2 = 'planet2',
+  Star = 'star',
+  Telescope = 'telescope',
+  Comet = 'comet',
+}
+
 export enum TaskDirections {
   Learning = 'обучение',
-  Sport = 'спорт',
-  Conference = 'конференции',
-  CorporateEvents = 'корпоративные мероприятия',
   Mentoring = 'наставничество',
-  SocialProjects = 'социальные проекты',
+  Community = 'комьюнити',
+  Meetup = 'митап',
+  All = 'все',
 }
 
 export enum cryptoCurrency {

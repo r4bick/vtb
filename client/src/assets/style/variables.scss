@@ -34,10 +34,12 @@ $gray-100-vtb: #F7FAFC;
 $gray-400-vtb: #CBD5E0;
 
 $default-accent-vtb: #0066FF;
+$pressed-accent-vtb: #005CE4;
 $pressed-secondary-vtb: #76ACFB;
 
-$primary-gradient-vtb: radial-gradient(124.2% 212.6% at 100% 0%, #0085FF 0%, #0039FF 100%);
-$secondary-gradient-vtb: linear-gradient(180deg, #009CFF 0%, #0063FF 100%);
+$radiant-gradient-vtb: radial-gradient(124.2% 212.6% at 100% 0%, #0085FF 0%, #0039FF 100%);
+$radiant-gradient-2-vtb: radial-gradient(188.5% 544.38% at 3% 100%, #0085FF 0%, #001356 100%) ;
+$linear-gradient-vtb: linear-gradient(180deg, #009CFF 0%, #0063FF 100%);
 
 // yellow colors
 $yellow-100: #FEF7CE;
