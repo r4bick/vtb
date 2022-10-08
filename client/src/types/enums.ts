@@ -18,7 +18,7 @@ export enum TaskImages {
 }
 
 export enum TaskDirections {
-  Learning = 'обучение',
+  Education = 'обучение',
   Mentoring = 'наставничество',
   Community = 'комьюнити',
   Meetup = 'митап',

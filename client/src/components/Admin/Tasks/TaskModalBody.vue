@@ -33,7 +33,7 @@ const taskCategories = [
     name: TaskDirections.CorporateEvents,
   },
   {
-    name: TaskDirections.Learning,
+    name: TaskDirections.Education,
   },
   {
     name: TaskDirections.Sport,

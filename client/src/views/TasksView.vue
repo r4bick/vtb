@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { BadgeToggle, TaskCard } from '@/components'
 import { TaskDirections, TaskTypes } from '@/types/enums'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useTaskStore } from '@/store/taskStore'
+
+const taskStore = useTaskStore()
 
 const selectedTaskType = ref<TaskTypes>(TaskTypes.All)
-
 const selectedTaskDirections = ref<TaskDirections[]>([TaskDirections.All])
+
+onMounted(() => {
+  taskStore.getTasks()
+})
+
 const toggleTaskDirection = (direction: TaskDirections) => {
   if (direction === TaskDirections.All) {
     selectedTaskDirections.value = [TaskDirections.All]
@@ -59,7 +66,20 @@ const toggleTaskDirection = (direction: TaskDirections) => {
     </div>
 
     <div class="tasks-list">
-      <TaskCard class="tasks-list__task" v-for="n in 10" :key="n" />
+      <TaskCard
+        class="tasks-list__task"
+        :name="task.name"
+        :description="task.description"
+        :end_at="task.end_at"
+        :reward="task.reward"
+        :author_email="task.author.email"
+        :category="task.category"
+        :type="task.type"
+        :like_number="task.like_number"
+        :dislike_number="task.dislike_number"
+        :key="task.id"
+        v-for="task in taskStore.tasks"
+      />
     </div>
   </div>
 </template>

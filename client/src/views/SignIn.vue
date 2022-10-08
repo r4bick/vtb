@@ -29,7 +29,7 @@ const login = () => {
   userStore
     .login(authData)
     .then(async () => {
-      await router.push('/')
+      await router.push('/tasks')
       const currentUser = await userStore.getCurrentUser()
 
       const currentUserDetails = await userStore.getUserById(currentUser.id)
