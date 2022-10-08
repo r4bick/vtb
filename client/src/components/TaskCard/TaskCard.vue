@@ -1,17 +1,29 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
+import { TaskPopup } from '@/components'
 import { outlineButton } from '@/assets/EgalStyles/EButton'
 import { OnClickOutside } from '@vueuse/components'
+import { getRandomInt } from '@/helpers/mixins'
 
-import { TaskDirections } from '@/types/enums'
+import { TaskDirections, TaskImages } from '@/types/enums'
 
 const isOpened = ref(false)
+const isPopupShowing = ref(false)
 
 const taskDirections = reactive<TaskDirections[]>([
-  TaskDirections.Conference,
   TaskDirections.Learning,
+  TaskDirections.Community,
 ])
+
+const taskImage = computed(() => {
+  const imageName = Object.values(TaskImages)[getRandomInt(0, 4)]
+  const imageFullName = isOpened.value
+    ? `${imageName}-fill.png`
+    : `${imageName}-line.svg`
+
+  return require(`@/assets/img/${imageFullName}`)
+})
 </script>
 
 <template>
@@ -28,6 +40,7 @@ const taskDirections = reactive<TaskDirections[]>([
         </div>
         <div class="body">
           <p class="body__title">Заголовок задачи</p>
+          <img class="body__image" :src="taskImage" alt="Task image" />
         </div>
         <div class="footer">
           <div class="voices">
@@ -57,6 +70,10 @@ const taskDirections = reactive<TaskDirections[]>([
             использовали небезизвестный универсальный код речей.
           </div>
 
+          <button class="body__more" @click="isPopupShowing = true">
+            Подробнее о задаче...
+          </button>
+
           <div class="task-directions">
             <div
               class="task-directions__badge"
@@ -74,6 +91,8 @@ const taskDirections = reactive<TaskDirections[]>([
         </div>
       </div>
     </div>
+
+    <TaskPopup v-if="isPopupShowing" @close="isPopupShowing = false" />
   </OnClickOutside>
 </template>
 
@@ -105,10 +124,17 @@ const taskDirections = reactive<TaskDirections[]>([
     }
 
     .body {
-      margin-top: auto;
+      margin-top: 24px;
+      flex: 1;
 
       &__title {
         @include h4();
+      }
+
+      &__image {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
       }
     }
 
@@ -161,7 +187,7 @@ const taskDirections = reactive<TaskDirections[]>([
     transition: 1s ease-in-out !important;
 
     &--opened {
-      background: $primary-gradient-vtb;
+      background: $radiant-gradient-vtb;
       z-index: 1;
 
       .header {
@@ -201,6 +227,16 @@ const taskDirections = reactive<TaskDirections[]>([
         @include p5();
       }
 
+      &__more {
+        @include h7();
+        cursor: pointer;
+        background: unset;
+        border: none;
+        color: $default-accent-vtb;
+        padding: 0;
+        margin-top: 17px;
+      }
+
       .task-directions {
         display: flex;
         gap: 8px;
@@ -220,7 +256,7 @@ const taskDirections = reactive<TaskDirections[]>([
     .footer {
       display: flex;
       justify-content: space-between;
-      margin-top: 16px;
+      margin-top: 35px;
       align-items: flex-end;
 
       &__link {

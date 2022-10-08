@@ -125,6 +125,7 @@ export const deleteButton = {
 }
 
 export const orangeButton = {
+  fontFamily: 'Inter',
   backgroundColor: '#FE7942',
   justifyContent: 'center',
   color: '#FFFFFF',
