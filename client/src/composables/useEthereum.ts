@@ -1,8 +1,9 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 // @ts-ignore
 import { ethers } from 'ethers'
 import API from '@/api/Http'
 import { cryptoCurrency } from '@/types/enums'
+import { useCookies } from 'vue3-cookies'
 
 export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
 
@@ -10,6 +11,8 @@ interface ApiError {
   code: number
   message: string
 }
+
+const { cookies } = useCookies()
 
 // export function useEthereum(CONTRACT_ADDRESS: string) {
 export function useEthereum() {
@@ -98,7 +101,7 @@ export function useEthereum() {
   }
 
   const checkAccountAndChain = async (accounts: string[]) => {
-    if (accounts.length !== 0) {
+    if (accounts.length !== 0 && publicKey.value) {
       currentAccount.value = accounts[0]
       currentChainId.value = await ethereum.request({ method: 'eth_chainId' })
 
@@ -113,13 +116,9 @@ export function useEthereum() {
       'get',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/balance`,
     )
-      .then((res: any) => {
-        // баланс всех валют кошелька
-        // {
-        //   "maticAmount": 0.27,
-        //     "coinsAmount": 547.34
-        // }
-        console.log(res.data)
+      .then(({ data }: any) => {
+        coinBalance.value = data.coinsAmount
+        maticBalance.value = data.maticAmount
       })
       .catch((err: any) => {
         console.log(err)
@@ -139,6 +138,9 @@ export function useEthereum() {
     }
 
     try {
+      if (cookies.get('private') && cookies.get('public')) {
+        connected.value = true
+      }
       const accounts = await ethereum.request({ method: 'eth_accounts' })
       await checkAccountAndChain(accounts)
     } catch (err) {
@@ -330,26 +332,24 @@ export function useEthereum() {
   }
 
   // ---- VTB wallet methods ---
-  //todo получить ключи если кошелек существует
-  const privateKey = ref('')
-  const publicKey = ref('')
+
+  const privateKey = computed(() => {
+    return cookies.get('private') || ''
+  })
+  const publicKey = computed(() => {
+    return cookies.get('public') || ''
+  })
+  const connected = ref(false)
+  // const publicKey = ref('')
 
   const createWallet = async () => {
     await API.Http(
       'post',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/new`,
     ).then((res: any) => {
-      // todo сохранить ответ (cookie?)
-      // ключи выдаются один раз, поэтому необходимо их сохранить, чтобы в дальнейшем была возможность осуществлять операции при помощи полученного кошелька.
-      // {
-      //   "privateKey": "f65eb3320a3e9dd51eaf2d67d71e609459081cf63aefd32fda79c425c296f257",
-      //     "publicKey": "0x15Cc4abzz27647ec9fE70D892E55586074263dF0"
-      // }
-
-      privateKey.value = res.data.privateKey
-      publicKey.value = res.data.publicKey
-
-      console.log('wallet created')
+      connected.value = true
+      cookies.set('private', res.data.privateKey)
+      cookies.set('public', res.data.publicKey)
     })
   }
 
@@ -377,7 +377,7 @@ export function useEthereum() {
 
   initSetup()
   checkIfWalletIsConnected()
-  setupEventListener()
+  // setupEventListener()
 
   return {
     currentAccount,
@@ -399,5 +399,8 @@ export function useEthereum() {
     createWallet,
     sendCurrency,
     getBalance,
+    publicKey,
+    privateKey,
+    connected,
   }
 }
