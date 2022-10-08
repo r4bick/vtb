@@ -1,8 +1,9 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 // @ts-ignore
 import { ethers } from 'ethers'
 import API from '@/api/Http'
 import { cryptoCurrency } from '@/types/enums'
+import { useCookies } from 'vue3-cookies'
 
 export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
 
@@ -11,12 +12,14 @@ interface ApiError {
   message: string
 }
 
+const { cookies } = useCookies()
+
 // export function useEthereum(CONTRACT_ADDRESS: string) {
 export function useEthereum() {
   // @ts-ignore
   const { ethereum } = window
 
-  const currentAccount = ref('')
+  // const currentAccount = ref('')
   const currentChainId = ref('')
   const isTransfering = ref(true)
 
@@ -26,17 +29,15 @@ export function useEthereum() {
   const coinBalance = ref(0)
 
   let provider = undefined
-  let signer = undefined
 
   const initSetup = () => {
     if (ethereum) {
       provider = new ethers.providers.Web3Provider(ethereum)
-      signer = provider.getSigner()
     }
   }
 
+  // listens if chain changed
   const chainListener = async (chainId: string) => {
-    console.log(chainId)
     currentChainId.value = chainId
 
     if (chainId !== MAIN_CHAIN) {
@@ -57,31 +58,31 @@ export function useEthereum() {
   }
 
   // listens if account changed
-  const accountListener = async (accounts: string[]) => {
-    if (!currentAccount.value && accounts.length > 0) {
-      // $toast.success('You are connected', {
-      //   duration: 3000,
-      // })
-    } else if (currentAccount.value.length > 0 && accounts.length === 0) {
-      // $toast.info('Account is blocked', {
-      //   duration: 3000,
-      // })
-    } else if (currentAccount.value.length > 0 && accounts.length > 0) {
-      const accounts = await ethereum.request({ method: 'eth_accounts' })
-      await checkAccountAndChain(accounts)
-
-      // $toast.info('Accounts are switched', {
-      //   duration: 3000,
-      // })
-    }
-    currentAccount.value = accounts[0]
-  }
+  // const accountListener = async (accounts: string[]) => {
+  //   if (!currentAccount.value && accounts.length > 0) {
+  //     // $toast.success('You are connected', {
+  //     //   duration: 3000,
+  //     // })
+  //   } else if (currentAccount.value.length > 0 && accounts.length === 0) {
+  //     // $toast.info('Account is blocked', {
+  //     //   duration: 3000,
+  //     // })
+  //   } else if (currentAccount.value.length > 0 && accounts.length > 0) {
+  //     const accounts = await ethereum.request({ method: 'eth_accounts' })
+  //     await checkAccountAndChain(accounts)
+  //
+  //     // $toast.info('Accounts are switched', {
+  //     //   duration: 3000,
+  //     // })
+  //   }
+  //   currentAccount.value = accounts[0]
+  // }
 
   const setupEventListener = async () => {
     try {
       if (ethereum) {
         ethereum.on('chainChanged', chainListener)
-        ethereum.on('accountsChanged', accountListener)
+        // ethereum.on('accountsChanged', accountListener)
       }
     } catch (err) {
       console.log(err)
@@ -97,9 +98,9 @@ export function useEthereum() {
     }
   }
 
-  const checkAccountAndChain = async (accounts: string[]) => {
-    if (accounts.length !== 0) {
-      currentAccount.value = accounts[0]
+  const checkAccountAndChain = async (accounts?: string[]) => {
+    if (accounts?.length !== 0 || connected.value) {
+      // currentAccount.value = accounts[0]
       currentChainId.value = await ethereum.request({ method: 'eth_chainId' })
 
       if (currentChainId.value === MAIN_CHAIN) {
@@ -113,13 +114,9 @@ export function useEthereum() {
       'get',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/balance`,
     )
-      .then((res: any) => {
-        // баланс всех валют кошелька
-        // {
-        //   "maticAmount": 0.27,
-        //     "coinsAmount": 547.34
-        // }
-        console.log(res.data)
+      .then(({ data }: any) => {
+        coinBalance.value = data.coinsAmount
+        maticBalance.value = data.maticAmount
       })
       .catch((err: any) => {
         console.log(err)
@@ -139,8 +136,11 @@ export function useEthereum() {
     }
 
     try {
-      const accounts = await ethereum.request({ method: 'eth_accounts' })
-      await checkAccountAndChain(accounts)
+      if (cookies.get('private') && cookies.get('public')) {
+        connected.value = true
+      }
+
+      await checkAccountAndChain()
     } catch (err) {
       console.log(err)
       // $toast.error('MetaMask Error', {
@@ -201,7 +201,7 @@ export function useEthereum() {
     }
   }
 
-  // todo не исправлено
+  // todo не исправлено: поправить на добавление токена Digital rubles (если это вообще нужно)
   // Добавление токена Digital Rubles
   const addToken = async (token: 'loap' | 'usdc') => {
     let tokenAddress = ''
@@ -245,111 +245,25 @@ export function useEthereum() {
     }
   }
 
-  // todo не исправлено
-  // Подтверждение транзакции
-  const approveTransaction = async (amount: number) => {
-    // $toast.clear()
-    return new Promise((resolve, reject) => {
-      try {
-        let _amount = amount
-
-        if (!amount || amount === 0) {
-          _amount = 100000 * 1e6
-        }
-
-        // if (allowance.value < _amount) {
-        //   if (amount === 0) {
-        //     _amount = 100000 * 1e6
-        //   } else {
-        //     _amount = _amount + 100000 * 1e6
-        //   }
-        // }
-
-        // $toast.info('Pending approval...', {
-        //   duration: 0,
-        // })
-        isTransfering.value = true
-
-        //await
-        // const wasApproved = usdcConnectedContract.approve(
-        //   LOAP_CONTRACT_ADDRESS,
-        //   String(_amount),
-        // )
-
-        //await
-        // wasApproved.wait()
-
-        // if (wasApproved) {
-        // $toast.success('Approve submitted', {
-        //   duration: 0,
-        // })
-        //   resolve(true)
-        // } else {
-        //   reject(false)
-        // }
-        // $toast.clear()
-      } catch (error) {
-        // $toast.clear()
-
-        console.log(error)
-        reject(false)
-        // $toast.error('Metamask error', {
-        //   duration: 3000,
-        // })
-      }
-
-      // await
-      updateBalances()
-    })
-  }
-
-  // todo не исправлено
-  const initTransaction = async (amount: string | number) => {
-    // $toast.clear()
-    try {
-      // $toast.info('Pending...', {
-      //   duration: 0,
-      // })
-      // const wasTransfered = await connectedContract.buy(String(amount))
-      // await wasTransfered.wait()
-      isTransfering.value = false
-      await updateBalances()
-
-      // $toast.clear()
-      // $toast.success('Transaction complete', {
-      //   duration: 3000,
-      // })
-    } catch (error) {
-      // $toast.clear()
-      isTransfering.value = false
-      console.log(error)
-      // $toast.error('Metamask error', {
-      //   duration: 3000,
-      // })
-    }
-  }
-
   // ---- VTB wallet methods ---
-  //todo получить ключи если кошелек существует
-  const privateKey = ref('')
-  const publicKey = ref('')
+
+  const privateKey = computed(() => {
+    return cookies.get('private') || ''
+  })
+  const publicKey = computed(() => {
+    return cookies.get('public') || ''
+  })
+  const connected = ref(false)
+  // const publicKey = ref('')
 
   const createWallet = async () => {
     await API.Http(
       'post',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/new`,
     ).then((res: any) => {
-      // todo сохранить ответ (cookie?)
-      // ключи выдаются один раз, поэтому необходимо их сохранить, чтобы в дальнейшем была возможность осуществлять операции при помощи полученного кошелька.
-      // {
-      //   "privateKey": "f65eb3320a3e9dd51eaf2d67d71e609459081cf63aefd32fda79c425c296f257",
-      //     "publicKey": "0x15Cc4abzz27647ec9fE70D892E55586074263dF0"
-      // }
-
-      privateKey.value = res.data.privateKey
-      publicKey.value = res.data.publicKey
-
-      console.log('wallet created')
+      connected.value = true
+      cookies.set('private', res.data.privateKey)
+      cookies.set('public', res.data.publicKey)
     })
   }
 
@@ -377,10 +291,10 @@ export function useEthereum() {
 
   initSetup()
   checkIfWalletIsConnected()
-  setupEventListener()
+  // setupEventListener()
 
   return {
-    currentAccount,
+    // currentAccount,
     currentChainId,
     isTransfering,
     tokenId,
@@ -392,12 +306,13 @@ export function useEthereum() {
     connectWallet,
     switchChain,
     addToken,
-    approveTransaction,
-    initTransaction,
 
     /* VTB methods: */
     createWallet,
     sendCurrency,
     getBalance,
+    publicKey,
+    privateKey,
+    connected,
   }
 }
