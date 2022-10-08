@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Events\DepartureEvents\DepartureCreatedEvent;
 use App\Events\TaskEvents\TaskCreatingEvent;
 use App\Events\TaskEvents\TaskDepartureCreatedEvent;
+use App\Events\TaskEvents\TaskUpdatedToCompletedStageEvent;
 use App\Events\TaskEvents\TaskUserCreatedEvent;
 use App\Events\UserEvents\UserCreatedEvent;
 use App\Listeners\CreateWalletListener;
 use App\Listeners\GenerateUuidListener;
+use App\Listeners\TaskListeners\BonusCreditingListener;
 use App\Listeners\TaskListeners\TaskTakenPartListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
@@ -34,7 +36,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         TaskCreatingEvent::class => [
             GenerateUuidListener::class,
-        ]
+        ],
+        TaskUpdatedToCompletedStageEvent::class => [
+            BonusCreditingListener::class,
+        ],
     ];
 
     /**

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Constants\TaskStatuses;
 use App\Events\TaskEvents\TaskCreatingEvent;
+use App\Events\TaskEvents\TaskUpdatedToCompletedStageEvent;
+use App\Services\EventService\HasCustomModelEvents;
 use Carbon\Traits\Date;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +31,7 @@ use Ramsey\Uuid\Uuid;
  */
 class Task extends Model
 {
-    use HasFactory;
+    use HasCustomModelEvents, HasFactory;
 
     protected $keyType = 'string';
 
@@ -61,6 +63,7 @@ class Task extends Model
 
     protected $dispatchesEvents = [
         'creating' => TaskCreatingEvent::class,
+        'updated: status={*,completed}' => TaskUpdatedToCompletedStageEvent::class,
     ];
 
     /**

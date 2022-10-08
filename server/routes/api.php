@@ -32,6 +32,7 @@ Route::group(['prefix' => 'task', 'middleware' => 'auth'], function (Router $rou
     Route::get('/', 'TaskController@showAll');
     Route::get('/{id}', 'TaskController@show');
     Route::post('', 'TaskController@create');
+    Route::put('/{id}', 'TaskController@update');
 });
 
 Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $router) {
@@ -41,5 +42,6 @@ Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $
 
 Route::group(['prefix' => 'wallet', 'middleware' => 'auth'], function (Router $router) {
     Route::put('/{public_key}', 'WalletController@transferDigitalRubles');
+    Route::put('/system/{public_key}', 'WalletController@transferSystemDigitalRubles');
 });
 
