@@ -196,6 +196,7 @@ const updateCat = (option: any) => {
               label: 'Награда',
               modelValue: currentTask.reward,
               validators: [required],
+              type: 'number',
             }"
             :style-config="inputStyleConfig"
             v-model="currentTask.reward"
