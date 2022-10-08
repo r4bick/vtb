@@ -246,7 +246,6 @@ export function useEthereum() {
   }
 
   // ---- VTB wallet methods ---
-
   const privateKey = computed(() => {
     return cookies.get('private') || ''
   })
@@ -254,19 +253,19 @@ export function useEthereum() {
     return cookies.get('public') || ''
   })
   const connected = ref(false)
-  // const publicKey = ref('')
 
   const createWallet = async () => {
     await API.Http(
       'post',
       `${process.env.VUE_APP_POLYGON}/v1/wallets/new`,
-    ).then((res: any) => {
+    ).then(({ data }: any) => {
       connected.value = true
-      cookies.set('private', res.data.privateKey)
-      cookies.set('public', res.data.publicKey)
+      cookies.set('private', data.privateKey)
+      cookies.set('public', data.publicKey)
     })
   }
 
+  //Метод перевода с кошелька на кошелек
   const sendCurrency = async (
     amount: number,
     toPublicKey: string,
@@ -280,21 +279,69 @@ export function useEthereum() {
         toPublicKey,
         amount,
       },
-    ).then((res) => {
+    ).then(({ data }) => {
       // todo
       // для совершения переводов в валютах Rubles необходимо наличие Matic, т.к. со счета Matic берется комиссия за совершение транзакций.
       // При нулевом балансе Matic транзакция выполнена не будет!
-      console.log('send ', currency)
-      console.log('сигнатура транзакции', res.data.transactionHash)
+      console.log('currency send: ', currency)
+      console.log('сигнатура транзакции', data.transactionHash)
+    })
+  }
+
+  //Метод запроса статуса выполнения транзакции
+  const getTransactionStatus = async (transactionHash: string) => {
+    await API.Http(
+      'post',
+      `${process.env.VUE_APP_POLYGON}/v1/transfers/status/${transactionHash}`,
+    ).then(({ data }) => {
+      console.log('status: ', data.status)
+    })
+  }
+
+  //Метод получения баланса NFT по кошельку
+  const getNFTBalance = async (transactionHash: string) => {
+    await API.Http(
+      'get',
+      `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/nft/balance`,
+    ).then(({ data }) => {
+      console.log('data: ', data)
+    })
+  }
+
+  //Метод получения списка сгенерированных NFT
+  const getGeneratedNfts = async (transactionHash: string) => {
+    await API.Http(
+      'get',
+      `${process.env.VUE_APP_POLYGON}/v1/nft/generate/${transactionHash}`,
+    ).then(({ data }) => {
+      console.log('data: ', data)
+    })
+  }
+
+  //Получение истории транзакций по кошельку
+  const getWalletHistory = async (
+    page: number,
+    offset: number,
+    sort: 'asc' | 'desc',
+  ) => {
+    await API.Http(
+      'post',
+      `${process.env.VUE_APP_POLYGON}/v1/wallets/${publicKey.value}/history`,
+      {
+        page,
+        offset,
+        sort,
+      },
+    ).then(({ data }) => {
+      console.log('data: ', data)
     })
   }
 
   initSetup()
-  checkIfWalletIsConnected()
+  checkIfWalletIsConnected().then()
   // setupEventListener()
 
   return {
-    // currentAccount,
     currentChainId,
     isTransfering,
     tokenId,
@@ -314,5 +361,9 @@ export function useEthereum() {
     publicKey,
     privateKey,
     connected,
+    getTransactionStatus,
+    getNFTBalance,
+    getGeneratedNfts,
+    getWalletHistory,
   }
 }
