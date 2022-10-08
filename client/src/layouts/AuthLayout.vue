@@ -22,7 +22,9 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 65px);
+  max-height: 100vh;
+
   background: url('@/assets/img/auth-background.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -32,6 +34,7 @@
     justify-content: flex-end;
     width: 100%;
     margin-top: 19px;
+    margin-right: 195px;
   }
   .header {
     padding: 43px 0 0 50px;
