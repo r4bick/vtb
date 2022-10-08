@@ -13,3 +13,8 @@ export interface IUser {
   role: UserRoles
   middle_name?: string
 }
+
+export interface IHeaderLink {
+  to: string
+  label: string
+}

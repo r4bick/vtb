@@ -1,22 +1,10 @@
 <script setup lang="ts">
-const links = [
-  {
-    to: '/',
-    label: 'Профиль',
-  },
-  {
-    to: '/tasks',
-    label: 'Задания',
-  },
-  {
-    to: '/shop',
-    label: 'Магазин',
-  },
-  {
-    to: '/members',
-    label: 'Участники',
-  },
-]
+import { defineProps, PropType } from 'vue'
+import { IHeaderLink } from '@/types/interfaces'
+
+const props = defineProps({
+  links: { type: Array as PropType<IHeaderLink[]> },
+})
 </script>
 
 <template>

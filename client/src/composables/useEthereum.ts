@@ -2,7 +2,7 @@ import { ref } from 'vue'
 // @ts-ignore
 import { ethers } from 'ethers'
 import API from '@/api/Http'
-import { cryptoCurrency } from '@/assets/scripts/globalVariables'
+import { cryptoCurrency } from '@/types/enums'
 
 export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
 
