@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue'
+import { ref, computed, defineProps, onMounted } from 'vue'
 import { ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
 import { TaskPopup } from '@/components'
 import { outlineButton } from '@/assets/EgalStyles/EButton'
@@ -29,14 +29,24 @@ const props = defineProps<TaskCardProps>()
 
 const isOpened = ref(false)
 const isPopupShowing = ref(false)
+const imageName = ref('')
 
 const taskImage = computed(() => {
-  const imageName = Object.values(TaskImages)[getRandomInt(0, 4)]
+  if (!imageName.value) return ''
+
   const imageFullName = isOpened.value
-    ? `${imageName}-fill.png`
-    : `${imageName}-line.svg`
+    ? `${imageName.value}-fill.png`
+    : `${imageName.value}-line.svg`
 
   return require(`@/assets/img/${imageFullName}`)
+})
+
+const getRandomImageName = () => {
+  return Object.values(TaskImages)[getRandomInt(0, 4)]
+}
+
+onMounted(() => {
+  imageName.value = getRandomImageName()
 })
 
 const formattedDate = computed(() => {
