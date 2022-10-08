@@ -43,23 +43,24 @@ export const withoutBGButton = {
 }
 
 export const outlineButton = {
-  backgroundColor: '#fff',
-  borderColor: '#FEC10B',
+  backgroundColor: 'transparent',
+  borderColor: '#0066FF',
   borderStyle: 'solid',
   borderWidth: '1px',
-  color: '#FEC10B',
+  color: '#0066FF',
+  fontFamily: 'Inter',
   hover: {
-    backgroundColor: '#fff',
-    borderColor: '#FEC10B',
-    color: '#FEC10B',
+    backgroundColor: 'transparent',
+    borderColor: '#0066FF',
+    color: '#0066FF',
   },
   active: {
-    backgroundColor: '#fff',
-    borderColor: '#FFD864',
-    color: '#FFD864',
+    backgroundColor: 'transparent',
+    borderColor: '#0066FF',
+    color: '#0066FF',
   },
   disabled: {
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     borderColor: '#A0AEC0',
     color: '#A0AEC0',
   },

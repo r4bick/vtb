@@ -18,7 +18,6 @@ import { LayoutHeader } from '@/components'
   width: 100%;
   min-height: 100vh;
   height: 100%;
-  padding-top: 49px;
 
   .header {
     top: 0;
@@ -28,8 +27,10 @@ import { LayoutHeader } from '@/components'
   }
 
   .content {
-    width: 100%;
-    min-height: calc(100vh - 49px); // высота хэдера;
+    //width: 100%;
+    min-height: calc(100vh - 56px); // высота хэдера;
+    background-color: $gray-100-vtb;
+    padding: 40px 50px 170px 50px;
   }
 }
 </style>

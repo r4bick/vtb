@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import TasksView from '../views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -12,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sign-in',
     name: 'Sign In',
     component: SignIn,
+  },
+  {
+    path: '/tasks',
+    name: 'Tasks',
+    component: TasksView,
   },
 ]
 
