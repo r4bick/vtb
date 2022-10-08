@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 import { orangeButton, outlineWhiteButton } from '@/assets/EgalStyles/EButton'
 import { OnClickOutside } from '@vueuse/components'
 import { productTypeAPIConstants } from '@/helpers/apiConstantsDictionary'
@@ -13,6 +13,11 @@ interface GoodCardProps {
   type: string
 }
 defineProps<GoodCardProps>()
+
+interface GoodCardEmits {
+  (e: 'send-gift'): void
+}
+const emits = defineEmits<GoodCardEmits>()
 
 const isOpened = ref(false)
 </script>
@@ -76,6 +81,7 @@ const isOpened = ref(false)
           <EButton
             class="footer__button footer__button--give"
             :style-config="outlineWhiteButton"
+            @click="emits('send-gift')"
           >
             Подарить
           </EButton>

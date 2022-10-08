@@ -80,6 +80,7 @@ const { coinBalance, createWallet, connected, currentChainId, switchChain } =
     &__value {
       @include h3();
       color: $default-accent-vtb;
+      margin-right: 50px;
     }
   }
 }
