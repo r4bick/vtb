@@ -27,7 +27,7 @@ const links = [
     label: 'Казна',
   },
   {
-    to: '/shop',
+    to: '/admin-shop',
     label: 'Магазин мерча',
   },
 ]

@@ -40,8 +40,8 @@ const userOptions = [
   <div class="task card">
     <div class="header">
       <div class="badges">
-        <div class="header__badge">${{ item.prize }}</div>
-        <div class="header__badge">до {{ item.deadlines }}</div>
+        <div class="header__badge">${{ item.reward }}</div>
+        <div class="header__badge">до {{ item.end_at }}</div>
       </div>
 
       <div class="voices">
@@ -63,7 +63,7 @@ const userOptions = [
       <p class="body__title">Заголовок задачи</p>
       <p class="body__description">{{ item.description }}</p>
       <router-link class="link" to="#"
-        >Автор: {{ item.validatorID }}</router-link
+        >Автор: {{ item.validator_id }}</router-link
       >
     </div>
     <div class="footer"></div>
