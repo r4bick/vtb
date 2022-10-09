@@ -1,0 +1,29 @@
+CloseSVG.vue
+<script setup lang="ts">
+import { defineProps } from 'vue'
+
+interface CheckVGProps {
+  fill?: string
+}
+
+defineProps<CheckVGProps>()
+</script>
+
+<template>
+  <svg
+    width="18"
+    height="34"
+    viewBox="0 0 18 34"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M17.3839 32.8839C16.8957 33.372 16.1043 33.372 15.6161 32.8839L0.616119 17.8839C0.127962 17.3957 0.127962 16.6043 0.616119 16.1161L15.6161 1.11612C16.1043 0.62796 16.8957 0.62796 17.3839 1.11612C17.872 1.60427 17.872 2.39573 17.3839 2.88388L3.26777 17L17.3839 31.1161C17.872 31.6043 17.872 32.3957 17.3839 32.8839Z"
+      fill="#718096"
+    />
+  </svg>
+</template>
+
+<style scoped lang="scss"></style>

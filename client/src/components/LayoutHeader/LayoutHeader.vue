@@ -10,8 +10,7 @@ const props = defineProps({
   links: { type: Array as PropType<IHeaderLink[]> },
 })
 
-const { coinBalance, createWallet, connected, currentChainId, switchChain } =
-  useEthereum()
+const { coinBalance } = useEthereum()
 const userStore = useUserStore()
 const router = useRouter()
 
@@ -25,7 +24,7 @@ const logout = () => {
   <div class="layout-header">
     <div class="info">
       <span class="info__label">Баланс</span>
-      <span class="info__value">{{ coinBalance || '0.00' }}</span>
+      <span class="info__value">{{ coinBalance.toFixed(2) || '0.00' }}</span>
     </div>
 
     <div class="links-list">
