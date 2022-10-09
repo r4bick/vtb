@@ -5,19 +5,33 @@ import TaskCard from '@/components/TaskCard/TaskCard'
 import { orangeButton, outlineButton } from '@/assets/EgalStyles/EButton'
 import NftCard from '@/components/NFT/NftCard.vue'
 import { useUserStore } from '@/store/userStore'
+import { useCookies } from 'vue3-cookies'
+import { useEthereum } from '@/composables/useEthereum'
+import BadgesCard from '@/components/BadgesCard/BadgesCard.vue'
+
 const taskStore = useTaskStore()
 const userStore = useUserStore()
-const name = ref('')
-onMounted(async () => {
-  // let currentUser
+const { cookies } = useCookies()
+const { coinBalance } = useEthereum()
 
-  const res = await userStore.getCurrentUser()
-  const currentUser = await userStore.getUserById(res.id)
+const name = ref('')
+const currentUser = ref()
+
+onMounted(async () => {
+  if (Object.keys(userStore.user).length) {
+    currentUser.value = userStore.user
+  } else {
+    const uid = cookies.get('id')
+    currentUser.value = await userStore.getUserById(uid)
+  }
 
   await taskStore.getTasks()
   name.value =
-    currentUser.account.first_name + ' ' + currentUser.account.last_name
+    currentUser.value.account.first_name +
+    ' ' +
+    currentUser.value.account.last_name
 })
+
 const nfts = [
   { title: '200 релизов', image: '1' },
   { title: 'Поднял продакшн', image: '2' },
@@ -65,20 +79,19 @@ const config = {
     <div class="profile">
       <div class="info">
         <div class="info--personal">
-          <div class="card card--person">
-            <div class="header">
-              {{ name }}
-            </div>
-            <div class="badges">
-              <div class="badge">ivanovsergey@mail.ru</div>
-              <div class="badge">12 уровень</div>
-              <div class="badge">Клан захватчиков</div>
-            </div>
-          </div>
+          <BadgesCard
+            :name="name"
+            :badges="[
+              currentUser?.email,
+              `${currentUser?.account.level || 0} уровень`,
+              `Клан захватчиков`,
+            ]"
+          />
+
           <div class="card card--balance">
             <div class="header">
               <span class="title">Баланс</span>
-              <span class="balance">254.00 Р</span>
+              <span class="balance">{{ coinBalance || '0.00' }} &#8381; </span>
             </div>
             <div class="buttons">
               <EButton :style-config="orangeButton">Перевести монеты</EButton>
@@ -92,7 +105,6 @@ const config = {
         </div>
       </div>
       <div class="card--image card">
-        <!--        todo передалть отображение images чтобы не терялось качетсво -->
         <img class="rounds" src="@/assets/img/orbit.svg" alt="" />
         <img class="spaceman" src="@/assets/img/Frock_3.svg" alt="" />
       </div>
@@ -107,6 +119,7 @@ const config = {
         :reward="task.reward"
         :author_email="task.author.email"
         :category="task.category"
+        :status="task.status"
         :type="task.type"
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"
@@ -134,15 +147,12 @@ const config = {
   font-weight: 700;
   font-size: 36px;
   line-height: 44px;
-  /* identical to box height */
 
   display: flex;
   align-items: center;
   text-align: center;
 
-  /* Gray/Grey 700 */
-
-  color: #4a5568;
+  color: $gray-700;
   margin-bottom: 24px;
 }
 .profile {
@@ -186,7 +196,6 @@ const config = {
   @include card();
   display: flex;
   flex-direction: column;
-
   padding: 24px;
   background: $base-white;
 
@@ -199,36 +208,27 @@ const config = {
       font-weight: 700;
       font-size: 36px;
       line-height: 44px;
-
+      height: 44px;
       display: flex;
       align-items: center;
       text-align: center;
-
       margin-bottom: 28px;
-      color: #2d3748;
+      color: $gray-800;
     }
     .badges {
       display: flex;
       gap: 10px;
       .badge {
         padding: 4px 8px;
-
-        /* Gray/Grey 400 */
-
-        border: 0.5px solid #cbd5e0;
+        border: 0.5px solid $gray-400;
         border-radius: 8px;
         font-weight: 700;
         font-size: 12px;
         line-height: 15px;
-        /* identical to box height */
-
         display: flex;
         align-items: center;
         text-align: center;
-
-        /* Gray/Grey 600 */
-
-        color: #718096;
+        color: $gray-600;
       }
     }
   }
@@ -243,6 +243,7 @@ const config = {
     .rounds {
       top: -3px;
       left: -78px;
+      //width: 125%;
     }
     .spaceman {
       top: 20px;
@@ -259,7 +260,7 @@ const config = {
       line-height: 22px;
       align-items: center;
       text-align: center;
-      color: #4a5568;
+      color: $gray-700;
 
       .balance {
         font-weight: 700;
@@ -278,15 +279,10 @@ const config = {
       font-weight: 700;
       font-size: 18px;
       line-height: 22px;
-
-      color: #4a5568;
+      color: $gray-700;
     }
   }
 }
-
-//:deep(.chart-wrapper) {
-//  padding: 0 !important;
-//}
 
 .chart-wrapper {
   padding: 0 !important;
