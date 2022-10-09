@@ -7,6 +7,10 @@ const links = [
     label: 'Профиль',
   },
   {
+    to: '/team',
+    label: 'Команда',
+  },
+  {
     to: '/tasks',
     label: 'Задания',
   },
