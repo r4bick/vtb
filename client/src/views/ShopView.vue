@@ -6,8 +6,10 @@ import { inputStyleConfigWhiteOutline } from '@/assets/EgalStyles/EInput'
 import { orangeButton } from '@/assets/EgalStyles/EButton'
 import { ref, onMounted } from 'vue'
 import { useProductStore } from '@/store/productStore'
+import { useOrderStore } from '@/store/orderStore'
 
 const productStore = useProductStore()
+const orderStore = useOrderStore()
 
 const selectedCategory = ref<GoodCategories>()
 
@@ -21,6 +23,10 @@ const closeModal = () => {
 onMounted(() => {
   productStore.getProducts()
 })
+
+const createOrder = (productId: string) => {
+  orderStore.createOrder(productId)
+}
 </script>
 
 <template>
@@ -60,6 +66,7 @@ onMounted(() => {
         :price="product.price"
         :type="product.type"
         :key="product.id"
+        @create-order="createOrder(product.id)"
         @send-gift="isModalOpen = true"
         v-for="product in productStore.products"
       />
