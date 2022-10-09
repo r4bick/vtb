@@ -123,7 +123,7 @@ const changeStatus = async (taskId: string, status: TaskStatuses) => {
 
   .tasks-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(344px, 1fr));
     grid-column-gap: 24px;
     grid-row-gap: 32px;
     margin-top: 64px;

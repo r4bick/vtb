@@ -16,6 +16,7 @@ defineProps<GoodCardProps>()
 
 interface GoodCardEmits {
   (e: 'send-gift'): void
+  (e: 'create-order'): void
 }
 const emits = defineEmits<GoodCardEmits>()
 
@@ -75,6 +76,7 @@ const isOpened = ref(false)
           <EButton
             class="footer__button footer__button--buy"
             :style-config="orangeButton"
+            @click="emits('create-order')"
           >
             Взять себе
           </EButton>
@@ -232,10 +234,14 @@ const isOpened = ref(false)
       justify-content: center;
 
       &__button {
+        justify-content: center;
+
         &--buy {
+          width: 50%;
           padding: 11.5px 32px;
         }
         &--give {
+          width: 35%;
           padding-top: 11.5px;
           padding-bottom: 11.5px;
         }
