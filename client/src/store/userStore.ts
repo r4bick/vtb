@@ -50,6 +50,7 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async login(authData: IAuthData) {
+      console.log(1)
       cookies.remove('bearer')
 
       return UserAPI.login(authData)

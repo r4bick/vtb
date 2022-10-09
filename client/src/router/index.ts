@@ -36,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Leader Board',
     component: LeaderBoard,
   },
+  {
+    path: '/team',
+    name: 'Team',
+    component: () => import('@/views/TeamView.vue'),
+  },
 
   //  admin routes
   {
@@ -58,6 +63,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin-tasks',
     name: 'Admin Tasks',
     component: () => import('@/views/Admin/AdminTasks.vue'),
+    meta: {
+      layout: 'admin',
+    },
+  },
+  {
+    path: '/admin-users',
+    name: 'Admin Users',
+    component: () => import('@/views/Admin/AdminUsers.vue'),
     meta: {
       layout: 'admin',
     },

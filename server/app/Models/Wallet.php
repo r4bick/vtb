@@ -24,6 +24,18 @@ class Wallet extends Model
     ];
 
     /**
+     * @return static
+     */
+    public static function getCurrentUserWallet(): self
+    {
+        $id = auth()->user()->getAuthIdentifier();
+        /** @var Wallet $wallet */
+        $wallet = Wallet::whereId($id)->firstOrFail();
+
+        return $wallet;
+    }
+
+    /**
      * @return MorphTo
      */
     public function owner(): MorphTo

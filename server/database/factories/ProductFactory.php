@@ -15,7 +15,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Зонт',
             'description' => ' Прямой, как стрела, несгибаемый и немного консервативный зонт прекрасно подойдет, чтобы выразить уверенность и устойчивость компании.',
-            'photo' => 'https://gifts.ru/id/184819',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/52/13039.40_1_500.jpg',
             'price' => '400',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -28,7 +28,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Лонгслив',
             'description' => 'Футболка из спортивной сетки с длинным рукавом реглан и круглым вырезом. Низ изделия и низ рукавов с двойной отстрочкой, горловина обработана бейкой.',
-            'photo' => 'https://gifts.ru/id/107338',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/63/02071241_2_500.jpg',
             'price' => '600',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -45,7 +45,7 @@ class ProductFactory extends Factory
                 Литий-ионный аккумулятор (Li-ion), емкость 2000 мАч
                 Количество циклов заряда-разряда: не менее 350
             EOL,
-            'photo' => 'https://gifts.ru/id/82015',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/36/5740.40_15_500.jpg',
             'price' => '200',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -56,7 +56,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Термокружка',
             'description' => 'Стакан с крышкой Color Cap Black — идеальный компаньон для тех, кто не стоит на месте. Благодаря оптимальным размерам стакан удобно брать с собой на учебу, работу или прогулку. Стакан подходит как для горячих, так и холодных напитков, абсолютно безопасен для здоровья и подлежит повторной переработке.',
-            'photo' => 'https://gifts.ru/id/208375',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/95/20996.40_1_500.jpg',
             'price' => '150',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -67,7 +67,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Плед',
             'description' => 'Плед прошел обработку средствами антипилл и антистатик, препятствующими образованию катышков и частично снимающими статическое электричество. ',
-            'photo' => 'https://gifts.ru/id/172773',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/64/11248.44_1_500.jpg',
             'price' => '350',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -78,7 +78,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Набор для пикника',
             'description' => 'Мягкий плед и яркий термос, которые пригодятся и на летней полянке, и в прохладном офисе: осталось только назначить место встречи.',
-            'photo' => 'https://gifts.ru/id/198437',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/69/13909.40_1.jpg',
             'price' => '650',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -89,7 +89,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Магнитный антистресс',
             'description' => 'Металлические шарики на магнитной подставке помогут снять напряжение и стресс, отвлечься и расслабиться. Просто придайте горстке шариков любую форму. Фантазируйте без ограничений!',
-            'photo' => 'https://gifts.ru/id/65496',
+            'photo' => 'https://files.gifts.ru/reviewer/tb/46/z54041_1_500.jpg',
             'price' => '350',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -100,7 +100,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Python разработчик (Skillbox)',
             'description' => 'Python — идеальный язык для новичка. Код на Python легко писать и читать, язык стабильно занимает высокие места в рейтингах популярности, а «питонисты» востребованы почти во всех сферах IT — программировании, анализе данных, системном администрировании и тестировании. Курс рассчитан на 10 месяцев.',
-            'photo' => 'https://skillbox.ru/course/profession-python/',
+            'photo' => 'https://248006.selcdn.ru/LandGen/desktop_2_38091a2b7d6a668ee6206c5b3e7aa59afc5ec1e2.webp',
             'price' => '13550',
             'type' => ProductTypes::DIGITAL,
             'features' => [],
@@ -108,7 +108,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Data-Scientist разработчик (Skillbox)',
             'description' => 'Освойте Data Science с нуля. Вы попробуете силы в аналитике данных, машинном обучении, дата-инженерии и подробно изучите направление, которое нравится вам больше. Отточите навыки на реальных проектах и станете востребованным специалистом.',
-            'photo' => 'https://skillbox.ru/course/profession-data-analyst/',
+            'photo' => 'https://248006.selcdn.ru/LandGen/desktop_2_7351fa1997c812099b25f8e2abe52a26c6244461.webp',
             'price' => '15600',
             'type' => ProductTypes::DIGITAL,
             'features' => [],
@@ -116,7 +116,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Java-разработчик (Skillbox)',
             'description' => 'Java — один из самых популярных языков программирования в мире. На нём создают надёжные приложения для банков, IT-корпораций и стриминговых сервисов, разрабатывают интернет-магазины, игры и облачные решения. ',
-            'photo' => 'https://skillbox.ru/course/profession-1c/',
+            'photo' => 'https://248006.selcdn.ru/LandGen/desktop_2_5df6b6516eb2604c7f99a5236b90e097217fae1f.webp',
             'price' => '15600',
             'type' => ProductTypes::DIGITAL,
             'features' => [],

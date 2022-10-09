@@ -26,6 +26,7 @@ const isSubmitDisabled = computed(() => {
 })
 
 const login = () => {
+  console.log('g')
   userStore
     .login(authData)
     .then(async () => {
