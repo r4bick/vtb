@@ -28,7 +28,7 @@ class OrderTableSeeder extends Seeder
                         ];
                     },
                 ))
-                ->create([
+                ->createQuietly([
                     'user_id' => $users[$i]['id'],
                 ]);
         }
