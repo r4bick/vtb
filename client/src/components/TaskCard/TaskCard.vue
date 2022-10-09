@@ -140,7 +140,7 @@ const formattedDate = computed(() => {
               class="controls__button"
               :data="{ disabled: status === TaskStatuses.Done }"
               :style-config="outlineSuccessButton"
-              @click="emits('change-status', TaskStatuses.Done)"
+              @click="emits('change-status', TaskStatuses.Completed)"
             >
               {{
                 status === TaskStatuses.Done
@@ -155,7 +155,7 @@ const formattedDate = computed(() => {
               <XIconSVG class="controls__button-icon" fill="#A0AEC0" />
             </EButton>
           </div>
-          <div class="controls" v-else>
+          <div class="controls" v-else-if="status !== TaskStatuses.Completed">
             <EButton
               class="controls__button"
               :style-config="outlineButton"
@@ -181,6 +181,8 @@ const formattedDate = computed(() => {
       :like_number="like_number"
       :dislike_number="dislike_number"
       :status="status"
+      @change-status="emits('change-status', $event)"
+      @accept-task="emits('accept-task')"
       @close="isPopupShowing = false"
       v-if="isPopupShowing"
     />
@@ -406,7 +408,10 @@ const formattedDate = computed(() => {
   &--in-processing {
     .card {
       &--opened {
-        background: $radiant-gradient-green-2-vtb;
+        &::before {
+          background: $radiant-gradient-green-2-vtb;
+          opacity: 1;
+        }
       }
     }
 

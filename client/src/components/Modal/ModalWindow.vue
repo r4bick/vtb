@@ -1,6 +1,6 @@
 <template>
   <Transition name="modal">
-    <div v-if="show" class="modal-mask">
+    <div v-if="show" class="modal-mask" :class="{ blur: useBlur }">
       <div class="modal-wrapper">
         <div class="modal-container" ref="modal" id="modal">
           <OnClickOutside @trigger="close">
@@ -38,6 +38,10 @@ const props = defineProps({
   showCloseIcon: {
     type: Boolean,
     default: true,
+  },
+  useBlur: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -136,8 +140,6 @@ const close = (e: any) => {
 
 .modal-enter-from .modal-container,
 .modal-leave-to .modal-container {
-  //  -webkit-transform: scale(1.1);
-  //  transform: scale(1.1);
   transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
@@ -154,6 +156,19 @@ const close = (e: any) => {
     h3 {
       font-size: 16px;
       font-weight: 500;
+    }
+  }
+}
+
+//blur
+.modal-mask {
+  &.blur {
+    background: rgba(198, 216, 239, 0.5);
+    backdrop-filter: blur(6px);
+
+    .modal-container {
+      box-shadow: none;
+      background: #f7fafc;
     }
   }
 }
