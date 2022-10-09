@@ -270,6 +270,7 @@ const sendCoins = () => {
   text-align: center;
 
   color: $gray-700;
+  margin-top: 50px;
   margin-bottom: 24px;
 }
 .profile {

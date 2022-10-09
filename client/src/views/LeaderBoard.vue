@@ -42,6 +42,7 @@ const sendCurrency = () => {
 
 const isTeamRatingSelected = ref(false)
 const toggleRating = (value: boolean) => {
+  value ? userStore.getDepartures() : userStore.getAllUsers()
   isTeamRatingSelected.value = value
 }
 
@@ -49,6 +50,12 @@ const ratingItemImage = computed(() => {
   return isTeamRatingSelected.value
     ? require('@/assets/img/shuttle.svg')
     : require('@/assets/img/astronaut.svg')
+})
+
+const ratingByType = computed(() => {
+  return isTeamRatingSelected.value
+    ? userStore.departureList
+    : userStore.userList
 })
 </script>
 
@@ -95,7 +102,7 @@ const ratingItemImage = computed(() => {
           :class="{ 'toggle__item--active': isTeamRatingSelected }"
           @click="toggleRating(true)"
         >
-          <p class="toggle__label">Лидеры месяца</p>
+          <p class="toggle__label">Команды месяца</p>
         </div>
       </div>
       <ul class="leaders">
@@ -104,7 +111,7 @@ const ratingItemImage = computed(() => {
           :class="{
             'leader-item--is-team-rating-showing': isTeamRatingSelected,
           }"
-          v-for="(user, index) in userStore.userList"
+          v-for="(item, index) in ratingByType"
           :key="index"
         >
           <div class="leader-side">
@@ -118,22 +125,26 @@ const ratingItemImage = computed(() => {
           <div class="leader-body">
             <div class="user-info">
               <p class="user-info__title">
-                {{ `${user.account.last_name} ${user.account.first_name}` }}
+                {{
+                  isTeamRatingSelected
+                    ? item.name
+                    : `${item?.account.last_name} ${item?.account.first_name}`
+                }}
               </p>
-              <div class="badge-list">
-                <div class="badge-list__badge">{{ user.email }}</div>
+              <div class="badge-list" v-if="!isTeamRatingSelected">
+                <div class="badge-list__badge">{{ item.email }}</div>
                 <!--                <div class="badge-list__badge">{{ user.role }}</div>-->
                 <div class="badge-list__badge">
-                  {{ user.account.level }} уровень
+                  {{ item.account.level }} уровень
                 </div>
                 <!--                <div class="badge-list__badge">12 NFT</div>-->
               </div>
             </div>
-            <div class="controls">
+            <div class="controls" v-if="!isTeamRatingSelected">
               <EButton
                 class="controls__button"
                 :style-config="primaryButton"
-                @click="openModal(user.wallet?.public_key)"
+                @click="openModal(item.wallet?.public_key)"
               >
                 Перевести монеты
               </EButton>
@@ -314,6 +325,11 @@ const ratingItemImage = computed(() => {
         }
 
         &--is-team-rating-showing {
+          .leader-side {
+            &__image {
+              transform: scale(0.9) translateY(-50%);
+            }
+          }
           .leader-body {
             margin-left: 150px;
           }
