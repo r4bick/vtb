@@ -56,20 +56,22 @@ const createOrder = (productId: string) => {
       />
     </div>
 
-    <div class="goods-list">
-      <GoodCard
-        class="goods-list__task"
-        :name="product.name"
-        :photo="product.photo"
-        :description="product.description"
-        :features="product.features"
-        :price="product.price"
-        :type="product.type"
-        :key="product.id"
-        @create-order="createOrder(product.id)"
-        @send-gift="isModalOpen = true"
-        v-for="product in productStore.products"
-      />
+    <div class="test">
+      <div class="goods-list">
+        <GoodCard
+          class="goods-list__task"
+          :name="product.name"
+          :photo="product.photo"
+          :description="product.description"
+          :features="product.features"
+          :price="product.price"
+          :type="product.type"
+          :key="product.id"
+          @create-order="createOrder(product.id)"
+          @send-gift="isModalOpen = true"
+          v-for="product in productStore.products"
+        />
+      </div>
     </div>
 
     <ModalWindow
@@ -119,6 +121,7 @@ const createOrder = (productId: string) => {
 
       &__list {
         display: flex;
+        flex-wrap: wrap;
         gap: 16px;
         margin-top: 16px;
       }
@@ -134,7 +137,7 @@ const createOrder = (productId: string) => {
 
   .goods-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(344px, 1fr));
     grid-column-gap: 24px;
     grid-row-gap: 32px;
     margin-top: 64px;
