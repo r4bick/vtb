@@ -113,7 +113,9 @@ const closeHistoryModal = () => {
             <button class="history" @click="openHistoryModal">история</button>
             <div class="header">
               <span class="title">Баланс</span>
-              <span class="balance">{{ coinBalance || '0.00' }} &#8381; </span>
+              <span class="balance"
+                >{{ coinBalance.toFixed(2) || '0.00' }} &#8381;
+              </span>
             </div>
             <div class="buttons">
               <EButton :style-config="orangeButton">Перевести монеты</EButton>
