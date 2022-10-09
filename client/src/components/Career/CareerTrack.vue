@@ -65,9 +65,9 @@ import ArrowSVG from '@/components/SvgIcons/ArrowSVG.vue'
 
 .career-wrapper {
   display: flex;
-
+  margin-top: 40px;
   align-items: center;
-  gap: 50px;
+  gap: 40px;
 }
 .track {
   display: flex;
@@ -92,7 +92,8 @@ import ArrowSVG from '@/components/SvgIcons/ArrowSVG.vue'
 }
 .arrow {
   cursor: pointer;
-  margin-bottom: 40px;
+
+  margin: 0 25px 40px 25px;
   &.right {
     transform: rotate(180deg);
   }
