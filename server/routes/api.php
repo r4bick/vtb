@@ -55,3 +55,9 @@ Route::group(['prefix' => 'wallet', 'middleware' => 'auth'], function (Router $r
     Route::put('/matic/system/{public_key}', 'WalletController@transferSystemMatic');
 });
 
+Route::group(['prefix' => 'order', 'middleware' => 'auth'], function (Router $router) {
+    Route::get('/', 'OrderController@showAll');
+    Route::get('/{id}', 'OrderController@show');
+    Route::post('/', 'OrderController@create');
+    Route::put('/{id}', 'OrderController@update');
+});
