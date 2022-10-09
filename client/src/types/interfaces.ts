@@ -10,6 +10,7 @@ export interface IUser {
   email: string
   status: string
   account: IAccount
+  wallet?: IWallet
 }
 
 export interface IAccount {
@@ -19,6 +20,14 @@ export interface IAccount {
   family_name: string
   level: string | number
   departure_id: string
+}
+
+export interface IWallet {
+  id: string
+  public_key: string
+  type: string
+  created_at: string
+  updated_at: string
 }
 
 export interface ITask {

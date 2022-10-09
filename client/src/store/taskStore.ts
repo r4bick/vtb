@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { ITask } from '@/types/interfaces'
 import { TaskAPI } from '@/api/TaskAPI'
+import { TaskStatuses } from '@/types/enums'
+import { useUserStore } from '@/store/userStore'
 
 interface TaskStoreState {
   tasks: ITask[]
@@ -25,7 +27,14 @@ export const useTaskStore = defineStore('useTaskStore', {
     },
 
     async acceptTask(taskId: string) {
-      return TaskAPI.acceptTask(taskId).catch((error) => {
+      const userId = useUserStore().currentUser.id
+      return TaskAPI.acceptTask(taskId, userId).catch((error) => {
+        throw error
+      })
+    },
+
+    async changeStatus(taskId: string, status: TaskStatuses) {
+      return TaskAPI.changeStatus(taskId, status).catch((error) => {
         throw error
       })
     },
