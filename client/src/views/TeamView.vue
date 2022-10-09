@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { useTaskStore } from '@/store/taskStore'
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import TaskCard from '@/components/TaskCard/TaskCard'
-import { orangeButton, outlineButton } from '@/assets/EgalStyles/EButton'
 import NftCard from '@/components/NFT/NftCard.vue'
 import { useUserStore } from '@/store/userStore'
 import { useCookies } from 'vue3-cookies'
 import { useEthereum } from '@/composables/useEthereum'
 import BadgesCard from '@/components/BadgesCard/BadgesCard.vue'
-import PartyCard from '@/components/Team/PartyCard.vue'
+import PartyCard from '@/components/VerticalCard.vue'
+import { primaryButton, outlineButton } from '@/assets/EgalStyles/EButton'
+import { inputDataConfig } from '@/assets/EgalData/EInput'
+import {
+  inputStyleConfig,
+  inputStyleConfigWhiteOutline,
+} from '@/assets/EgalStyles/EInput'
+import ModalWindow from '@/components/Modal/ModalWindow.vue'
+import VerticalCard from '@/components/VerticalCard.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
@@ -73,6 +80,34 @@ const config = {
     background: '#ffffff',
   },
 }
+
+const sendCurrencyData = reactive({
+  recipientPublicKey: '',
+  amount: null,
+})
+
+const isModalOpen = ref(false)
+const openModal = (key: string | undefined) => {
+  sendCurrencyData.recipientPublicKey = key || ''
+  isModalOpen.value = true
+}
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
+onMounted(() => {
+  userStore.getAllUsers()
+})
+
+const sendCoins = () => {
+  if (!sendCurrencyData.recipientPublicKey || !sendCurrencyData.amount) return
+
+  userStore
+    .sendCurrency(sendCurrencyData.recipientPublicKey, sendCurrencyData.amount)
+    .then(() => {
+      isModalOpen.value = false
+    })
+}
 </script>
 
 <template>
@@ -130,7 +165,29 @@ const config = {
 
     <div class="title-list">Участники</div>
     <div class="party">
-      <PartyCard />
+      <VerticalCard
+        first-name="Иванов"
+        last-name="Сергей"
+        :badges="[
+          'ivanovsergey@mail.ru',
+          'Начальник отдела тестирования департамента разработки ПО ВТБ',
+          '12 уровень',
+        ]"
+        :show-rating="false"
+      >
+        <template #controls>
+          <EButton
+            class="controls__button"
+            :style-config="primaryButton"
+            @click="openModal"
+          >
+            Перевести монеты
+          </EButton>
+          <EButton class="controls__button" :style-config="outlineButton">
+            Написать
+          </EButton>
+        </template>
+      </VerticalCard>
     </div>
 
     <div class="title-list">Задачи</div>
@@ -148,8 +205,10 @@ const config = {
         :dislike_number="task.dislike_number"
         :key="task.id"
         v-for="task in taskStore.tasks"
+        :status="task.status"
       />
     </div>
+
     <div class="title-list">NFT</div>
     <div class="nft">
       <NftCard
@@ -160,6 +219,41 @@ const config = {
       />
     </div>
   </div>
+
+  <ModalWindow
+    class="modal modal--send-currency"
+    :show="isModalOpen"
+    @click.stop
+    @close="closeModal"
+  >
+    <template #header>
+      <span class="title">Перевод</span>
+    </template>
+    <template #body>
+      <div class="modal-body">
+        <div class="modal-form">
+          <EInput
+            class="modal-form__input"
+            :data="{
+              ...inputDataConfig,
+              label: 'Сумма перевода?',
+              modelValue: sendCurrencyData.amount,
+              type: 'number',
+            }"
+            :style-config="inputStyleConfigWhiteOutline"
+            v-model="sendCurrencyData.amount"
+          />
+        </div>
+        <EButton
+          class="modal-body__submit"
+          :style-config="primaryButton"
+          @click="sendCoins"
+        >
+          Перевести
+        </EButton>
+      </div>
+    </template>
+  </ModalWindow>
 </template>
 
 <style scoped lang="scss">
@@ -337,23 +431,34 @@ const config = {
       gap: 16px;
     }
   }
+}
 
-  &--skills {
-    .header {
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 22px;
-      color: $gray-700;
+.modal {
+  &--send-currency {
+    :deep(.modal-container) {
+      @include modalBlue();
+    }
+
+    .title {
+      @include h3();
+      color: $base-white;
+    }
+
+    .modal-body {
+      margin-top: 32px;
+
+      .modal-form {
+        display: flex;
+        flex-flow: column;
+        gap: 24px;
+      }
+
+      &__submit {
+        margin-top: 32px;
+      }
     }
   }
 }
-
-.chart-wrapper {
-  padding: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
 @media (max-width: 1240px) {
   .rounds {
     display: none;

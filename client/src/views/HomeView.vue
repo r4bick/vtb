@@ -83,7 +83,7 @@ const config = {
             :name="name"
             :badges="[
               currentUser?.email,
-              `${currentUser?.account.level} уровень`,
+              `${currentUser?.account.level || 0} уровень`,
               `Клан захватчиков`,
             ]"
           />
@@ -119,6 +119,7 @@ const config = {
         :reward="task.reward"
         :author_email="task.author.email"
         :category="task.category"
+        :status="task.status"
         :type="task.type"
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"

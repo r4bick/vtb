@@ -9,13 +9,8 @@ import { useDateFormat } from '@vueuse/core'
 import { productTypeAPIConstants } from '@/helpers/apiConstantsDictionary'
 
 interface BadgesCardProps {
-  currentUser: Record<string, string>
   name: string
   badges: string[]
-  // description: string
-  // features: Record<string, string>
-  // price: number
-  // type: string
 }
 const props = defineProps<BadgesCardProps>()
 </script>
@@ -26,7 +21,9 @@ const props = defineProps<BadgesCardProps>()
       {{ name }}
     </div>
     <div class="badges">
-      <div class="badge" v-for="badge in badges" :key="badge">{{ badge }}</div>
+      <div class="badge" v-for="badge in badges" :key="badge">
+        {{ badge }}
+      </div>
     </div>
   </div>
 </template>
