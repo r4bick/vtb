@@ -63,7 +63,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function getJWTCustomClaims(): array
     {
-        return [];
+        return [
+            'roles' => $this->role()->pluck('role_id')->toArray(),
+        ];
     }
 
     /**
@@ -72,6 +74,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class, 'id', 'id');
+    }
+
+    public function role(): HasOne
+    {
+        return $this->hasOne(Role::class, 'user_id', 'id');
     }
 
     /**

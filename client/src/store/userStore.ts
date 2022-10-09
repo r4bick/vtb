@@ -63,6 +63,10 @@ export const useUserStore = defineStore('userStore', {
         })
     },
 
+    async logout() {
+      cookies.remove('bearer')
+    },
+
     async getAllUsers() {
       return UserAPI.getAll()
         .then((users) => {

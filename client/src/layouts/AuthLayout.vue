@@ -34,7 +34,7 @@
     position: absolute;
     display: flex;
     justify-content: flex-end;
-    width: 100%;
+    width: fit-content;
     top: 10%;
     right: 15%;
   }

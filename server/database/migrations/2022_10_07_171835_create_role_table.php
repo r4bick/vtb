@@ -15,7 +15,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->enum('id', UserRoles::toArray())->primary();
+            $table->uuid('id')->primary();
+            $table->enum('role_id', UserRoles::toArray());
             $table->uuid('user_id');
 
             $table->foreign('user_id')->on('users')->references('id')->restrictOnDelete();

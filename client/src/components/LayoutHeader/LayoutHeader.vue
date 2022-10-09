@@ -2,7 +2,9 @@
 import { defineProps, PropType } from 'vue'
 import { IHeaderLink } from '@/types/interfaces'
 import { useEthereum } from '@/composables/useEthereum'
+import { useUserStore } from '@/store/userStore'
 import { MAIN_CHAIN } from '@/types/enums'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   links: { type: Array as PropType<IHeaderLink[]> },
@@ -10,10 +12,22 @@ const props = defineProps({
 
 const { coinBalance, createWallet, connected, currentChainId, switchChain } =
   useEthereum()
+const userStore = useUserStore()
+const router = useRouter()
+
+const logout = () => {
+  userStore.logout()
+  router.push('/sign-in')
+}
 </script>
 
 <template>
   <div class="layout-header">
+    <div class="info">
+      <span class="info__label">Баланс</span>
+      <span class="info__value">{{ coinBalance || '0.00' }}</span>
+    </div>
+
     <div class="links-list">
       <router-link
         class="links-list__item"
@@ -26,9 +40,8 @@ const { coinBalance, createWallet, connected, currentChainId, switchChain } =
       </router-link>
     </div>
 
-    <div class="info">
-      <span class="info__label">Баланс</span>
-      <span class="info__value">{{ coinBalance || '0.00' }}</span>
+    <div class="exit-button">
+      <button class="exit-button__button" @click="logout">Выйти</button>
     </div>
   </div>
 </template>
@@ -43,13 +56,13 @@ const { coinBalance, createWallet, connected, currentChainId, switchChain } =
   justify-content: center;
   background: #ffffff;
   border-bottom: 1px solid $gray-300;
+  padding: 0 50px;
 
   .links-list {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 86px;
-    flex: 1 1 85%;
-    //margin-left: auto;
+    flex: 1 1 50%;
 
     &__item {
       @include p6();
@@ -70,8 +83,6 @@ const { coinBalance, createWallet, connected, currentChainId, switchChain } =
     display: flex;
     align-items: center;
     gap: 12px;
-    justify-content: flex-end;
-    margin-left: auto;
 
     &__label {
       @include h6();
@@ -81,6 +92,21 @@ const { coinBalance, createWallet, connected, currentChainId, switchChain } =
       @include h3();
       color: $default-accent-vtb;
       margin-right: 50px;
+    }
+  }
+
+  .exit-button {
+    display: flex;
+    flex: 1 1 50%;
+    justify-content: flex-end;
+
+    &__button {
+      @include p6();
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: $gray-500;
+      padding: 15px;
     }
   }
 }
