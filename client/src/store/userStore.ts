@@ -4,6 +4,7 @@ import { IAuthData, IUser } from '@/types/interfaces'
 import { useCookies } from 'vue3-cookies'
 import API from '@/api/Http'
 import { API_URL } from '@/helpers/globalVariables'
+import { WalletAPI } from '@/api/WalletAPI'
 
 const { cookies } = useCookies()
 
@@ -49,6 +50,7 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async login(authData: IAuthData) {
+      console.log(1)
       cookies.remove('bearer')
 
       return UserAPI.login(authData)
@@ -69,6 +71,14 @@ export const useUserStore = defineStore('userStore', {
         .catch((error) => {
           throw error
         })
+    },
+
+    async sendCurrency(publicKey: string, amount: number | string) {
+      return WalletAPI.sendCurrency(publicKey, Number(amount)).catch(
+        (error) => {
+          throw error
+        },
+      )
     },
   },
 

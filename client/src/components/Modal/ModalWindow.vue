@@ -2,8 +2,6 @@
   <Transition name="modal">
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
-        <!--        v-click-out="close" -->
-
         <div class="modal-container" ref="modal" id="modal">
           <OnClickOutside @trigger="close">
             <div class="wrapper">

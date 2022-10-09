@@ -205,13 +205,29 @@ const formattedDate = computed(() => {
     padding: 16px;
     background: $base-white;
     box-shadow: $shadow-default;
-    transition: 0.1s ease-in-out !important;
+    transition: 0.1s ease-out;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: $all-sides-2xl;
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      left: 0;
+      background: $radiant-gradient-2-vtb;
+      z-index: 0;
+      transition: 0.13s ease-out;
+    }
 
     &:hover {
       box-shadow: $shadow-2xl;
     }
 
     .header {
+      position: relative;
       display: flex;
       gap: 16px;
 
@@ -221,6 +237,7 @@ const formattedDate = computed(() => {
     }
 
     .body {
+      position: relative;
       margin-top: 24px;
       flex: 1;
 
@@ -231,11 +248,12 @@ const formattedDate = computed(() => {
       &__image {
         position: absolute;
         right: 16px;
-        bottom: 16px;
+        bottom: -16px;
       }
     }
 
     .footer {
+      position: relative;
       margin-top: 10px;
 
       .voices {
@@ -282,9 +300,12 @@ const formattedDate = computed(() => {
     }
 
     &--opened {
-      background: $radiant-gradient-2-vtb;
       box-shadow: $shadow-2xl;
       z-index: 1;
+
+      &::before {
+        opacity: 1;
+      }
 
       .header {
         &__badge {

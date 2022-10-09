@@ -36,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Leader Board',
     component: LeaderBoard,
   },
+  {
+    path: '/team',
+    name: 'Team',
+    component: () => import('@/views/TeamView.vue'),
+  },
 
   //  admin routes
   {

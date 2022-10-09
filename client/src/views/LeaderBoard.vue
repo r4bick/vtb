@@ -12,11 +12,16 @@ import { useUserStore } from '@/store/userStore'
 
 const userStore = useUserStore()
 
-const sendCoinsData = reactive({
+const sendCurrencyData = reactive({
+  recipientPublicKey: '',
   amount: null,
 })
 
 const isModalOpen = ref(false)
+const openModal = (key: string | undefined) => {
+  sendCurrencyData.recipientPublicKey = key || ''
+  isModalOpen.value = true
+}
 const closeModal = () => {
   isModalOpen.value = false
 }
@@ -24,6 +29,16 @@ const closeModal = () => {
 onMounted(() => {
   userStore.getAllUsers()
 })
+
+const sendCurrency = () => {
+  if (!sendCurrencyData.recipientPublicKey || !sendCurrencyData.amount) return
+
+  userStore
+    .sendCurrency(sendCurrencyData.recipientPublicKey, sendCurrencyData.amount)
+    .then(() => {
+      isModalOpen.value = false
+    })
+}
 </script>
 
 <template>
@@ -92,7 +107,7 @@ onMounted(() => {
               <EButton
                 class="controls__button"
                 :style-config="primaryButton"
-                @click="isModalOpen = true"
+                @click="openModal(user.wallet?.public_key)"
               >
                 Перевести монеты
               </EButton>
@@ -132,13 +147,18 @@ onMounted(() => {
               :data="{
                 ...inputDataConfig,
                 label: 'Сумма перевода?',
-                modelValue: sendCoinsData.amount,
+                modelValue: sendCurrencyData.amount,
+                type: 'number',
               }"
               :style-config="inputStyleConfigWhiteOutline"
-              v-model="sendCoinsData.amount"
+              v-model="sendCurrencyData.amount"
             />
           </div>
-          <EButton class="modal-body__submit" :style-config="orangeButton">
+          <EButton
+            class="modal-body__submit"
+            :style-config="orangeButton"
+            @click="sendCurrency"
+          >
             Перевести
           </EButton>
         </div>
