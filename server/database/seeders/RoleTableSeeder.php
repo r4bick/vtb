@@ -18,7 +18,7 @@ class RoleTableSeeder extends Seeder
             Role::factory()
                 ->state(new Sequence(
                     fn (Sequence $sequence) => [
-                        'user_id' => $users[$sequence->index]['id'],
+                        'user_id' => $users[$i]['id'],
                         'role_id' => RoleFactory::$stubRoles[intdiv(random_int(1, 10), 8)]['role_id'],
                     ],
                 ))
