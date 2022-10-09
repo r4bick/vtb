@@ -5,6 +5,7 @@ import { useCookies } from 'vue3-cookies'
 import API from '@/api/Http'
 import { API_URL } from '@/helpers/globalVariables'
 import { WalletAPI } from '@/api/WalletAPI'
+import { DepartureAPI } from '@/api/DepartureAPI'
 
 const { cookies } = useCookies()
 
@@ -12,6 +13,7 @@ interface UserStoreState {
   currentUser: IUser
   user: any
   userList: IUser[]
+  departureList: any[]
 }
 
 export const useUserStore = defineStore('userStore', {
@@ -20,6 +22,7 @@ export const useUserStore = defineStore('userStore', {
       currentUser: {} as IUser,
       user: {},
       userList: [],
+      departureList: [],
     }
   },
 
@@ -50,7 +53,6 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async login(authData: IAuthData) {
-      console.log(1)
       cookies.remove('bearer')
 
       return UserAPI.login(authData)
@@ -71,6 +73,16 @@ export const useUserStore = defineStore('userStore', {
       return UserAPI.getAll()
         .then((users) => {
           this.userList = users
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
+
+    async getDepartures() {
+      return DepartureAPI.getAll()
+        .then((departures) => {
+          this.departureList = departures
         })
         .catch((error) => {
           throw error

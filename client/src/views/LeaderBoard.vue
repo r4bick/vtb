@@ -7,14 +7,14 @@ import {
 import { orangeButton } from '@/assets/EgalStyles/EButton'
 import { primaryButton, outlineButton } from '@/assets/EgalStyles/EButton'
 import { ModalWindow } from '@/components'
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useUserStore } from '@/store/userStore'
 
 const userStore = useUserStore()
 
 const sendCurrencyData = reactive({
   recipientPublicKey: '',
-  amount: null,
+  amount: '',
 })
 
 const isModalOpen = ref(false)
@@ -39,6 +39,24 @@ const sendCurrency = () => {
       isModalOpen.value = false
     })
 }
+
+const isTeamRatingSelected = ref(false)
+const toggleRating = (value: boolean) => {
+  value ? userStore.getDepartures() : userStore.getAllUsers()
+  isTeamRatingSelected.value = value
+}
+
+const ratingItemImage = computed(() => {
+  return isTeamRatingSelected.value
+    ? require('@/assets/img/shuttle.svg')
+    : require('@/assets/img/astronaut.svg')
+})
+
+const ratingByType = computed(() => {
+  return isTeamRatingSelected.value
+    ? userStore.departureList
+    : userStore.userList
+})
 </script>
 
 <template>
@@ -71,43 +89,62 @@ const sendCurrency = () => {
     </div>
 
     <div class="body">
-      <div class="titles">
-        <p class="titles__title">Лидеры месяца</p>
-        <p class="titles__title">Команды месяца</p>
+      <div class="toggle">
+        <div
+          class="toggle__item"
+          :class="{ 'toggle__item--active': !isTeamRatingSelected }"
+          @click="toggleRating(false)"
+        >
+          <p class="toggle__label">Лидеры месяца</p>
+        </div>
+        <div
+          class="toggle__item"
+          :class="{ 'toggle__item--active': isTeamRatingSelected }"
+          @click="toggleRating(true)"
+        >
+          <p class="toggle__label">Команды месяца</p>
+        </div>
       </div>
       <ul class="leaders">
         <li
           class="leader-item"
-          v-for="(user, index) in userStore.userList"
+          :class="{
+            'leader-item--is-team-rating-showing': isTeamRatingSelected,
+          }"
+          v-for="(item, index) in ratingByType"
           :key="index"
         >
           <div class="leader-side">
             <span class="leader-side__rating">{{ index + 1 }}</span>
             <img
-              class="leader-side__astronaut"
-              :src="require('@/assets/img/astronaut.svg')"
-              alt="Astronaut"
+              class="leader-side__image"
+              :src="ratingItemImage"
+              alt="Rating icon"
             />
           </div>
           <div class="leader-body">
             <div class="user-info">
               <p class="user-info__title">
-                {{ `${user.account.last_name} ${user.account.first_name}` }}
+                {{
+                  isTeamRatingSelected
+                    ? item.name
+                    : `${item?.account.last_name} ${item?.account.first_name}`
+                }}
               </p>
-              <div class="badge-list">
-                <div class="badge-list__badge">{{ user.email }}</div>
+              <div class="badge-list" v-if="!isTeamRatingSelected">
+                <div class="badge-list__badge">{{ item.email }}</div>
                 <!--                <div class="badge-list__badge">{{ user.role }}</div>-->
                 <div class="badge-list__badge">
-                  {{ user.account.level }} уровень
+                  {{ item.account.level }} уровень
                 </div>
                 <!--                <div class="badge-list__badge">12 NFT</div>-->
               </div>
             </div>
-            <div class="controls">
+            <div class="controls" v-if="!isTeamRatingSelected">
               <EButton
                 class="controls__button"
                 :style-config="primaryButton"
-                @click="openModal(user.wallet?.public_key)"
+                @click="openModal(item.wallet?.public_key)"
               >
                 Перевести монеты
               </EButton>
@@ -206,11 +243,21 @@ const sendCurrency = () => {
   .body {
     margin-top: 92px;
 
-    .titles {
+    .toggle {
       display: flex;
-      gap: 85px;
+      gap: 26px;
 
-      &__title {
+      &__item {
+        cursor: pointer;
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 24px;
+
+        &--active {
+          @include card();
+        }
+      }
+      &__label {
         @include h1();
       }
     }
@@ -238,7 +285,7 @@ const sendCurrency = () => {
             left: 9px;
             transform: translateY(-60%);
           }
-          &__astronaut {
+          &__image {
             position: absolute;
             top: 0;
             transform: translateY(-20%);
@@ -274,6 +321,17 @@ const sendCurrency = () => {
             display: flex;
             gap: 16px;
             margin-left: auto;
+          }
+        }
+
+        &--is-team-rating-showing {
+          .leader-side {
+            &__image {
+              transform: scale(0.9) translateY(-50%);
+            }
+          }
+          .leader-body {
+            margin-left: 150px;
           }
         }
       }

@@ -72,6 +72,7 @@ const login = () => {
           label: 'Пароль',
           placeholder: 'Введите пароль',
           modelValue: authData.password,
+          type: 'password',
         }"
         :style-config="inputStyleConfigWhiteOutline"
         @update:modelValue="
