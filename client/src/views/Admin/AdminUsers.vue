@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useUserStore } from '@/store/userStore'
 import ModalWindow from '@/components/Modal/ModalWindow.vue'
-import { primaryButton, outlineButton } from '@/assets/EgalStyles/EButton'
+import { primaryButton } from '@/assets/EgalStyles/EButton'
 import { inputDataConfig } from '@/assets/EgalData/EInput'
 
 const userStore = useUserStore()

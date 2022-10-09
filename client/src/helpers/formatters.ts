@@ -18,3 +18,17 @@ export function formatWordEnding(
     ]
   )
 }
+
+/**
+ * Форматирование timeStamp в дату вида DD.MM.YYY
+ * @param timestamp
+ */
+export function timestampToDate(timestamp: number): string {
+  const dtFormat = new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+
+  return dtFormat.format(new Date(timestamp * 1e3))
+}

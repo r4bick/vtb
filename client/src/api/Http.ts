@@ -21,6 +21,9 @@ const Http = async (
       url,
       data,
       params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
     })
   } catch (e) {
     console.error(e)
