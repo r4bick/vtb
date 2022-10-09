@@ -67,6 +67,14 @@ const routes: Array<RouteRecordRaw> = [
       layout: 'admin',
     },
   },
+  {
+    path: '/admin-users',
+    name: 'Admin Users',
+    component: () => import('@/views/Admin/AdminUsers.vue'),
+    meta: {
+      layout: 'admin',
+    },
+  },
   // {
   //   path: '/admin-shop',
   //   name: 'Admin Shop',
