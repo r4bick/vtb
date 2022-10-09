@@ -30,6 +30,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Shop',
     component: ShopView,
   },
+  {
+    path: '/team',
+    name: 'Team',
+    component: () => import('@/views/TeamView.vue'),
+  },
 
   //  admin routes
   {

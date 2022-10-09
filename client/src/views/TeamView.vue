@@ -8,6 +8,7 @@ import { useUserStore } from '@/store/userStore'
 import { useCookies } from 'vue3-cookies'
 import { useEthereum } from '@/composables/useEthereum'
 import BadgesCard from '@/components/BadgesCard/BadgesCard.vue'
+import PartyCard from '@/components/Team/PartyCard.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
@@ -77,38 +78,61 @@ const config = {
 <template>
   <div class="home">
     <div class="profile">
+      <div class="card--image card">
+        <img class="rounds" src="@/assets/img/orbit.svg" alt="" />
+        <img class="mascot" src="@/assets/img/clan.svg" alt="" />
+      </div>
+
       <div class="info">
         <div class="info--personal">
           <BadgesCard
-            :name="name"
+            name="Клан захватчиков"
             :badges="[
-              currentUser?.email,
-              `${currentUser?.account.level} уровень`,
-              `Клан захватчиков`,
+              'ivanovsergey@mail.ru',
+              'Лидер - Иванов Сергей',
+              'Отдел тестирования департамента разработки ПО ВТБ',
             ]"
           />
 
-          <div class="card card--balance">
-            <div class="header">
-              <span class="title">Баланс</span>
-              <span class="balance">{{ coinBalance || '0.00' }} &#8381; </span>
+          <div class="row">
+            <div class="card card--balance">
+              <span class="text--regular">Баланс</span>
+              <span class="text--big"
+                >{{ coinBalance || '0.00' }} &#8381;
+              </span>
             </div>
-            <div class="buttons">
-              <EButton :style-config="orangeButton">Перевести монеты</EButton>
-              <EButton :style-config="outlineButton">Вывести</EButton>
+            <div class="card card--rating">
+              <span class="text--regular">Рейтинг</span>
+              <span class="text--big">4 место</span>
+            </div>
+            <div class="card card--nft-amount">
+              <span class="text--big">5</span>
+              <span class="text--regular">NFT</span>
+            </div>
+          </div>
+          <div class="row row--reverse">
+            <div class="card card--level">
+              <span class="text--regular">Уровень</span>
+              <span class="text--big">16</span>
+            </div>
+            <div class="card card--completed">
+              <span class="text--big">1257</span>
+              <span class="text--regular">Выполненных задач</span>
+            </div>
+            <div class="card card--participants">
+              <span class="text--big">12</span>
+              <span class="text--regular">Участников</span>
             </div>
           </div>
         </div>
-        <div class="card card--skills">
-          <div class="header">Скиллы</div>
-          <Chart :data="config" />
-        </div>
-      </div>
-      <div class="card--image card">
-        <img class="rounds" src="@/assets/img/orbit.svg" alt="" />
-        <img class="spaceman" src="@/assets/img/Frock_3.svg" alt="" />
       </div>
     </div>
+
+    <div class="title-list">Участники</div>
+    <div class="party">
+      <PartyCard />
+    </div>
+
     <div class="title-list">Задачи</div>
     <div class="tasks">
       <TaskCard
@@ -166,10 +190,50 @@ const config = {
     gap: 24px;
     &--personal {
       display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
       gap: 24px;
     }
   }
-  .image {
+  .row {
+    display: grid;
+    grid-template-columns: 2.5fr 2fr 1fr;
+    gap: 24px;
+    .card {
+      padding: 32px 20px;
+    }
+    &--reverse {
+      grid-template-columns: 1fr 2.5fr 2fr;
+      .card {
+        padding: 24px;
+      }
+    }
+    .card {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      color: $gray-700;
+      font-weight: 700;
+      align-items: center;
+
+      &--nft-amount {
+        gap: 10px;
+      }
+      &--completed {
+        gap: 24px;
+      }
+
+      .text {
+        &--big {
+          font-size: 32px;
+          line-height: 39px;
+        }
+        &--regular {
+          font-size: 18px;
+          line-height: 18px;
+        }
+      }
+    }
   }
 }
 .tasks {
@@ -198,11 +262,12 @@ const config = {
   padding: 24px;
   background: $base-white;
 
-  &--person {
+  &--clan {
     display: flex;
     flex-direction: column;
     min-width: 398px;
     min-height: 100px;
+    flex-grow: 1;
     .header {
       font-weight: 700;
       font-size: 36px;
@@ -233,20 +298,20 @@ const config = {
   }
 
   &--image {
-    width: 528px;
+    width: 502px;
     height: 372px;
     position: relative;
+    flex-shrink: 0;
     img {
       position: absolute;
     }
     .rounds {
-      top: -3px;
-      left: -78px;
-      //width: 125%;
+      top: -4%;
+      left: -17%;
     }
-    .spaceman {
+    .mascot {
       top: 20px;
-      left: 23%;
+      left: 7%;
     }
   }
   &--balance {

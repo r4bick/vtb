@@ -56,9 +56,6 @@ const taskImage = computed(() => {
       }
 
       &__image {
-        //position: absolute;
-        //right: 16px;
-        //bottom: 16px;
       }
     }
 
@@ -67,14 +64,11 @@ const taskImage = computed(() => {
       font-weight: 700;
       font-size: 18px;
       line-height: 22px;
-      /* identical to box height */
 
       display: flex;
       align-items: center;
 
-      /* Gray/Grey 700 */
-
-      color: #4a5568;
+      color: $gray-700;
     }
   }
 }
