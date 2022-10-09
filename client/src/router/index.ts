@@ -4,6 +4,7 @@ import TasksView from '@/views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
 import ShopView from '@/views/ShopView.vue'
 import LeaderBoard from '@/views/LeaderBoard.vue'
+import { useUserStore } from '@/store/userStore'
 
 const routes: Array<RouteRecordRaw> = [
   // auth
@@ -98,13 +99,10 @@ const router = createRouter({
   routes,
 })
 
-// router.beforeEach((to) => {
-//   if (
-//     // !userStore.checkAuth() &&
-//     to.name !== 'Sign In'
-//   ) {
-//     return { name: 'Login' }
-//   }
-// })
+router.beforeEach((to) => {
+  if (!useUserStore().isLoggedIn && to.name !== 'Sign In') {
+    return { name: 'Sign In' }
+  }
+})
 
 export default router
