@@ -140,7 +140,7 @@ const formattedDate = computed(() => {
               class="controls__button"
               :data="{ disabled: status === TaskStatuses.Done }"
               :style-config="outlineSuccessButton"
-              @click="emits('change-status', TaskStatuses.Done)"
+              @click="emits('change-status', TaskStatuses.Completed)"
             >
               {{
                 status === TaskStatuses.Done
@@ -155,7 +155,7 @@ const formattedDate = computed(() => {
               <XIconSVG class="controls__button-icon" fill="#A0AEC0" />
             </EButton>
           </div>
-          <div class="controls" v-else>
+          <div class="controls" v-else-if="status !== TaskStatuses.Completed">
             <EButton
               class="controls__button"
               :style-config="outlineButton"

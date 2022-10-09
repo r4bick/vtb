@@ -129,7 +129,7 @@ const taskDeadline = computed(() => {
                       disabled: status === TaskStatuses.Done,
                     }"
                     :style-config="primaryButton"
-                    @click="emits('change-status', TaskStatuses.Done)"
+                    @click="emits('change-status', TaskStatuses.Completed)"
                   >
                     {{
                       status === TaskStatuses.Done
@@ -147,7 +147,10 @@ const taskDeadline = computed(() => {
                     Отменить
                   </EButton>
                 </div>
-                <div class="controls" v-else>
+                <div
+                  class="controls"
+                  v-else-if="status !== TaskStatuses.Completed"
+                >
                   <EButton
                     class="controls__button"
                     :data="{ size: 'lg' }"
