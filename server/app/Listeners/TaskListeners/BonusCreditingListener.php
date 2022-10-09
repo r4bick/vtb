@@ -11,6 +11,7 @@ use App\Models\TaskUser;
 use App\Models\Wallet;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class BonusCreditingListener extends Listener
 {
@@ -65,7 +66,10 @@ class BonusCreditingListener extends Listener
     protected function transfer(string $from_private_key, string $to_public_key, float $amount): array
     {
         $response = MaticFacade::transferDigitalRubles($from_private_key, $to_public_key, $amount);
+        $response = $response->getResponse();
 
-        return $response->getResponse();
+        Log::debug('transaction', $response);
+
+        return $response;
     }
 }

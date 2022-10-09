@@ -15,7 +15,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Зонт',
             'description' => ' Прямой, как стрела, несгибаемый и немного консервативный зонт прекрасно подойдет, чтобы выразить уверенность и устойчивость компании.',
-            'photo' => 'https://files.gifts.ru/reviewer/tb/52/13039.40_1_500.jpg',
+            'photo' => 'https://images.zakupka.com/i3/firms/27/38/38252/muzhskoy-zont-trost-poluavtomat-knirps-siniy_ad225af8e09bef5_500x500.webp',
             'price' => '400',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -56,7 +56,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Термокружка',
             'description' => 'Стакан с крышкой Color Cap Black — идеальный компаньон для тех, кто не стоит на месте. Благодаря оптимальным размерам стакан удобно брать с собой на учебу, работу или прогулку. Стакан подходит как для горячих, так и холодных напитков, абсолютно безопасен для здоровья и подлежит повторной переработке.',
-            'photo' => 'https://files.gifts.ru/reviewer/tb/95/20996.40_1_500.jpg',
+            'photo' => 'https://promo-market.ru/upload/resize_cache/webp/iblock/276/bi0677ngzkfjx1qoqfg182qvnkuo82pm/.webp',
             'price' => '150',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -67,7 +67,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Плед',
             'description' => 'Плед прошел обработку средствами антипилл и антистатик, препятствующими образованию катышков и частично снимающими статическое электричество. ',
-            'photo' => 'https://files.gifts.ru/reviewer/tb/64/11248.44_1_500.jpg',
+            'photo' => 'https://ormatek.com/upload/resize_webp/products/260/d2d/260d2da6fa2311e898252c768a5115e1/main/680_510_1/260d2da6-fa23-11e8-9825-2c768a5115e1_526c6984-2a05-11e9-9800-2c768a5115e1.webp',
             'price' => '350',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
