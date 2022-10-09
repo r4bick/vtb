@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import TasksView from '../views/TasksView.vue'
+import HomeView from '@/views/HomeView.vue'
+import TasksView from '@/views/TasksView.vue'
 import SignIn from '@/views/SignIn.vue'
 import ShopView from '@/views/ShopView.vue'
+import LeaderBoard from '@/views/LeaderBoard.vue'
 
 const routes: Array<RouteRecordRaw> = [
   // auth
@@ -29,6 +30,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/shop',
     name: 'Shop',
     component: ShopView,
+  },
+  {
+    path: '/leader-board',
+    name: 'Leader Board',
+    component: LeaderBoard,
   },
   {
     path: '/team',

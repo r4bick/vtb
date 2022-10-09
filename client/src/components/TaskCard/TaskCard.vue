@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, onMounted } from 'vue'
-import { ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
+import { ref, computed, defineProps, defineEmits, onMounted } from 'vue'
+import { ThumbUpSVG, ThumbDownSVG, XIconSVG } from '@/components/SvgIcons'
 import { TaskPopup } from '@/components'
-import { outlineButton } from '@/assets/EgalStyles/EButton'
+import {
+  outlineButton,
+  outlineSuccessButton,
+  outlineGrayButton,
+} from '@/assets/EgalStyles/EButton'
 import { OnClickOutside } from '@vueuse/components'
 import { getRandomInt } from '@/helpers/mixins'
-import { TaskImages } from '@/types/enums'
+import { TaskImages, TaskStatuses } from '@/types/enums'
 import { useDateFormat } from '@vueuse/core'
 import {
   taskTypeAPIConstants,
@@ -24,8 +28,15 @@ interface TaskCardProps {
   author_email: string
   like_number: number
   dislike_number: number
+  status: TaskStatuses
 }
 const props = defineProps<TaskCardProps>()
+
+interface TaskCardEmits {
+  (e: 'change-status', status: TaskStatuses): void
+  (e: 'accept-task'): void
+}
+const emits = defineEmits<TaskCardEmits>()
 
 const isOpened = ref(false)
 const isPopupShowing = ref(false)
@@ -56,7 +67,14 @@ const formattedDate = computed(() => {
 
 <template>
   <OnClickOutside @trigger="isOpened = false">
-    <div class="task-card" :style="`${isOpened ? 'z-index: 1' : ''}`">
+    <div
+      class="task-card"
+      :class="{
+        'task-card--in-processing':
+          status === TaskStatuses.InProcess || status === TaskStatuses.Done,
+      }"
+      :style="`${isOpened ? 'z-index: 1' : ''}`"
+    >
       <div
         class="card"
         :class="{ 'card--opened': isOpened }"
@@ -98,6 +116,7 @@ const formattedDate = computed(() => {
               {{ taskTypeAPIConstants[type] }}
             </div>
           </div>
+          <router-link class="header__link" to="#">Автор</router-link>
         </div>
 
         <div class="body">
@@ -111,10 +130,40 @@ const formattedDate = computed(() => {
         </div>
 
         <div class="footer">
-          <EButton class="footer__button" :style-config="outlineButton">
-            Принять вызов
-          </EButton>
-          <router-link class="footer__link" to="#">Автор</router-link>
+          <div
+            class="controls"
+            v-if="
+              status === TaskStatuses.InProcess || status === TaskStatuses.Done
+            "
+          >
+            <EButton
+              class="controls__button"
+              :data="{ disabled: status === TaskStatuses.Done }"
+              :style-config="outlineSuccessButton"
+              @click="emits('change-status', TaskStatuses.Done)"
+            >
+              {{
+                status === TaskStatuses.Done
+                  ? 'Подтверждение отправлено'
+                  : 'Подтвердить выполнение'
+              }}
+            </EButton>
+            <EButton
+              class="controls__button controls__button--cancel"
+              :style-config="outlineGrayButton"
+            >
+              <XIconSVG class="controls__button-icon" fill="#A0AEC0" />
+            </EButton>
+          </div>
+          <div class="controls" v-else>
+            <EButton
+              class="controls__button"
+              :style-config="outlineButton"
+              @click="emits('accept-task')"
+            >
+              Принять вызов
+            </EButton>
+          </div>
         </div>
       </div>
     </div>
@@ -131,6 +180,7 @@ const formattedDate = computed(() => {
       :author_email="author_email"
       :like_number="like_number"
       :dislike_number="dislike_number"
+      :status="status"
       @close="isPopupShowing = false"
       v-if="isPopupShowing"
     />
@@ -154,6 +204,12 @@ const formattedDate = computed(() => {
     min-height: 255px;
     padding: 16px;
     background: $base-white;
+    box-shadow: $shadow-default;
+    transition: 0.1s ease-in-out !important;
+
+    &:hover {
+      box-shadow: $shadow-2xl;
+    }
 
     .header {
       display: flex;
@@ -225,10 +281,9 @@ const formattedDate = computed(() => {
       }
     }
 
-    transition: 1s ease-in-out !important;
-
     &--opened {
-      background: $radiant-gradient-vtb;
+      background: $radiant-gradient-2-vtb;
+      box-shadow: $shadow-2xl;
       z-index: 1;
 
       .header {
@@ -264,6 +319,10 @@ const formattedDate = computed(() => {
     z-index: 0;
 
     .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
       .task-directions {
         display: flex;
         gap: 8px;
@@ -276,6 +335,14 @@ const formattedDate = computed(() => {
           font-size: 10px;
           line-height: 12px;
         }
+      }
+
+      &__link {
+        font-weight: 700;
+        font-size: 10px;
+        line-height: 12px;
+        text-decoration-line: underline;
+        color: $gray-500;
       }
     }
 
@@ -303,12 +370,34 @@ const formattedDate = computed(() => {
       margin-top: 35px;
       align-items: flex-end;
 
-      &__link {
-        font-weight: 700;
-        font-size: 10px;
-        line-height: 12px;
-        text-decoration-line: underline;
-        color: $gray-500;
+      .controls {
+        width: 100%;
+        display: flex;
+
+        &__button-icon {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+
+  &--in-processing {
+    .card {
+      &--opened {
+        background: $radiant-gradient-green-2-vtb;
+      }
+    }
+
+    .under-card {
+      .footer {
+        .controls {
+          gap: 16px;
+
+          &__button:first-child {
+            flex-grow: 1;
+          }
+        }
       }
     }
   }

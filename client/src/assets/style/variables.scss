@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Open+Sans:wght@400;500;700&family=Raleway:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Open+Sans:wght@400;500;700&family=Raleway:wght@400;500;700&display=swap');
 
 $primary: #FEC10B;
 $secondary: #e4ecf7;
@@ -37,8 +37,14 @@ $default-accent-vtb: #0066FF;
 $pressed-accent-vtb: #005CE4;
 $pressed-secondary-vtb: #76ACFB;
 
+$default-success-vtb: #11998E;
+
+$default-cyan-vtb: #063E57;
+
 $radiant-gradient-vtb: radial-gradient(124.2% 212.6% at 100% 0%, #0085FF 0%, #0039FF 100%);
-$radiant-gradient-2-vtb: radial-gradient(188.5% 544.38% at 3% 100%, #0085FF 0%, #001356 100%) ;
+$radiant-gradient-2-vtb: radial-gradient(188.5% 544.38% at 3% 100%, #0085FF 0%, #001356 100%);
+$radiant-gradient-green-2-vtb: radial-gradient(188.5% 544.38% at 3% 100%, #11998E 0%, #000536 100%);
+
 $linear-gradient-vtb: linear-gradient(180deg, #009CFF 0%, #0063FF 100%);
 
 // yellow colors

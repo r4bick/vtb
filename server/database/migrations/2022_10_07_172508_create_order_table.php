@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\OrderTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +14,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
-            $table->id();
+        Schema::create('orders', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('product_id')->index();
+            $table->uuid('user_id')->index();
+            $table->enum('status', OrderTypes::toArray());
+
+            $table->bigInteger('price');
+
+            $table->foreign('product_id')->on('products')->references('id')->restrictOnDelete();
+            $table->foreign('user_id')->on('users')->references('id')->restrictOnDelete();
+
             $table->timestamps();
         });
     }
@@ -26,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('orders');
     }
 };

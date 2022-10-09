@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, onMounted } from 'vue'
-import { TaskPopup } from '@/components'
+import { ref, defineProps, defineEmits } from 'vue'
 import { orangeButton, outlineWhiteButton } from '@/assets/EgalStyles/EButton'
 import { OnClickOutside } from '@vueuse/components'
-import { getRandomInt } from '@/helpers/mixins'
-import { TaskImages } from '@/types/enums'
-import { useDateFormat } from '@vueuse/core'
 import { productTypeAPIConstants } from '@/helpers/apiConstantsDictionary'
 
 interface GoodCardProps {
@@ -16,18 +12,14 @@ interface GoodCardProps {
   price: number
   type: string
 }
-const props = defineProps<GoodCardProps>()
+defineProps<GoodCardProps>()
+
+interface GoodCardEmits {
+  (e: 'send-gift'): void
+}
+const emits = defineEmits<GoodCardEmits>()
 
 const isOpened = ref(false)
-
-const image = computed(() => {
-  return `background-image: url(${props.photo})`
-})
-
-const infoList = [
-  'диаметр купола 104 см, длина 83 см',
-  'полиэстер, 170T; металл; дерево',
-]
 </script>
 
 <template>
@@ -44,7 +36,12 @@ const infoList = [
           </div>
           <!--          <div class="header__badge header__badge&#45;&#45;amount">2458 шт</div>-->
         </div>
-        <div class="body" :style="{ backgroundImage: `url(${photo})` }">
+        <div class="body">
+          <div
+            class="product-photo"
+            :style="{ backgroundImage: `url(${photo})` }"
+          ></div>
+
           <div class="info">
             <p class="info__title">{{ name }}</p>
             <div class="info__price">{{ price }}₽</div>
@@ -84,6 +81,7 @@ const infoList = [
           <EButton
             class="footer__button footer__button--give"
             :style-config="outlineWhiteButton"
+            @click="emits('send-gift')"
           >
             Подарить
           </EButton>
@@ -110,8 +108,15 @@ const infoList = [
     min-height: 255px;
     padding: 16px;
     background: $base-white;
+    box-shadow: $shadow-default;
+    transition: 0.1s ease-in-out !important;
+
+    &:hover {
+      box-shadow: $shadow-2xl;
+    }
 
     &--opened {
+      box-shadow: $shadow-2xl;
       z-index: 1;
     }
 
@@ -140,10 +145,16 @@ const infoList = [
 
     .body {
       display: flex;
+      flex-direction: column;
       flex: 1;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
+
+      .product-photo {
+        flex: 1;
+        min-width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
 
       .info {
         background-color: white;
@@ -151,6 +162,7 @@ const infoList = [
         display: flex;
         width: 100%;
         justify-content: space-between;
+        align-items: center;
         margin-top: auto;
 
         &__title {

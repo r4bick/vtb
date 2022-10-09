@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BadgeToggle, TaskCard } from '@/components'
-import { TaskDirections, TaskTypes } from '@/types/enums'
+import { TaskDirections, TaskTypes, TaskStatuses } from '@/types/enums'
 import { onMounted, ref } from 'vue'
 import { useTaskStore } from '@/store/taskStore'
 
@@ -28,6 +28,16 @@ const toggleTaskDirection = (direction: TaskDirections) => {
   } else {
     selectedTaskDirections.value.splice(foundDirectionIndex, 1)
   }
+}
+
+const acceptTask = async (taskId: string) => {
+  await taskStore.acceptTask(taskId)
+  taskStore.getTasks()
+}
+
+const changeStatus = async (taskId: string, status: TaskStatuses) => {
+  await taskStore.changeStatus(taskId, status)
+  taskStore.getTasks()
 }
 </script>
 
@@ -77,7 +87,10 @@ const toggleTaskDirection = (direction: TaskDirections) => {
         :type="task.type"
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"
+        :status="task.status"
         :key="task.id"
+        @accept-task="acceptTask(task.id)"
+        @change-status="changeStatus(task.id, $event)"
         v-for="task in taskStore.tasks"
       />
     </div>
@@ -114,10 +127,6 @@ const toggleTaskDirection = (direction: TaskDirections) => {
     grid-column-gap: 24px;
     grid-row-gap: 32px;
     margin-top: 64px;
-
-    &__task {
-      //flex: 1 1 25%;
-    }
   }
 }
 </style>

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\DepartureEvents\DepartureCreatedEvent;
+use App\Events\OrderEvents\OrderCreatingEvent;
 use App\Events\TaskEvents\TaskCreatingEvent;
 use App\Events\TaskEvents\TaskDepartureCreatedEvent;
 use App\Events\TaskEvents\TaskUpdatedToCompletedStageEvent;
@@ -10,6 +11,8 @@ use App\Events\TaskEvents\TaskUserCreatedEvent;
 use App\Events\UserEvents\UserCreatedEvent;
 use App\Listeners\CreateWalletListener;
 use App\Listeners\GenerateUuidListener;
+use App\Listeners\OrderListeners\PurchaseProductListener;
+use App\Listeners\OrderListeners\SetPriceProductListener;
 use App\Listeners\TaskListeners\BonusCreditingListener;
 use App\Listeners\TaskListeners\TaskTakenPartListener;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
@@ -40,6 +43,11 @@ class EventServiceProvider extends ServiceProvider
         TaskUpdatedToCompletedStageEvent::class => [
             BonusCreditingListener::class,
         ],
+        OrderCreatingEvent::class => [
+            GenerateUuidListener::class,
+            SetPriceProductListener::class,
+            PurchaseProductListener::class,
+        ]
     ];
 
     /**

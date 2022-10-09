@@ -35,13 +35,29 @@ Route::group(['prefix' => 'task', 'middleware' => 'auth'], function (Router $rou
     Route::put('/{id}', 'TaskController@update');
 });
 
+Route::group(['prefix' => 'task_user', 'middleware' => 'auth'], function (Router $router) {
+    Route::post('', 'TaskUserController@create');
+});
+
+Route::group(['prefix' => 'task_departure', 'middleware' => 'auth'], function (Router $router) {
+    Route::post('', 'TaskDepartureController@create');
+});
+
 Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $router) {
     Route::get('/', 'ProductController@showAll');
     Route::get('/{id}', 'ProductController@show');
 });
 
 Route::group(['prefix' => 'wallet', 'middleware' => 'auth'], function (Router $router) {
-    Route::put('/{public_key}', 'WalletController@transferDigitalRubles');
-    Route::put('/system/{public_key}', 'WalletController@transferSystemDigitalRubles');
+    Route::put('/digital_ruble/{public_key}', 'WalletController@transferDigitalRubles');
+    Route::put('/digital_ruble/system/{public_key}', 'WalletController@transferSystemDigitalRubles');
+    Route::put('/matic/{public_key}', 'WalletController@transferMatic');
+    Route::put('/matic/system/{public_key}', 'WalletController@transferSystemMatic');
 });
 
+Route::group(['prefix' => 'order', 'middleware' => 'auth'], function (Router $router) {
+    Route::get('/', 'OrderController@showAll');
+    Route::get('/{id}', 'OrderController@show');
+    Route::post('/', 'OrderController@create');
+    Route::put('/{id}', 'OrderController@update');
+});

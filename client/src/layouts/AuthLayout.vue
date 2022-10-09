@@ -20,24 +20,27 @@
 
 .layout-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 100%;
-  min-height: calc(100vh - 65px);
+  min-height: 100vh;
   max-height: 100vh;
 
   background: url('@/assets/img/auth-background.png');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 
   &__image {
+    position: absolute;
     display: flex;
     justify-content: flex-end;
     width: 100%;
-    margin-top: 19px;
-    margin-right: 195px;
+    top: 10%;
+    right: 15%;
   }
+
   .header {
-    padding: 43px 0 0 50px;
+    padding: 43px 0 50px 50px;
 
     &__title {
       @include p2();
@@ -46,10 +49,13 @@
   }
 
   .content {
+    display: flex;
+    align-items: flex-end;
     background-color: transparent;
+    flex: 1;
+    margin-top: auto;
     margin-left: 224px;
     margin-bottom: 224px;
-    transform: translateY(-16px);
   }
 }
 </style>

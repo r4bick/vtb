@@ -6,6 +6,7 @@ use App\Constants\TaskTypes;
 use App\Facades\MaticFacade;
 use App\Listeners\Listener;
 use App\Models\Task;
+use App\Models\TaskDeparture;
 use App\Models\TaskUser;
 use App\Models\Wallet;
 use Exception;
@@ -46,9 +47,19 @@ class BonusCreditingListener extends Listener
         $this->transfer(config('matic.private_key'), $wallet->public_key, $model->reward);
     }
 
+    /**
+     * @param Task $model
+     *
+     * @return void
+     */
     protected function executeDepartureTask(Task $model): void
     {
+        /** @var TaskDeparture $task_departure */
+        $task_departure = TaskDeparture::whereTaskId($model->id)->firstOrFail();
+        /** @var Wallet $wallet */
+        $wallet = Wallet::whereId($task_departure->departure_id)->firstOrFail();
 
+        $this->transfer(config('matic.private_key'), $wallet->public_key, $model->reward);
     }
 
     protected function transfer(string $from_private_key, string $to_public_key, float $amount): array

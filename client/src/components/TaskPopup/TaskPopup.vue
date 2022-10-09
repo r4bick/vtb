@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, defineEmits, defineProps } from 'vue'
 import { XIconSVG, ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
-import { TaskDirections, TaskImages, TaskTypes } from '@/types/enums'
-import { orangeButton } from '@/assets/EgalStyles/EButton'
+import {
+  TaskDirections,
+  TaskImages,
+  TaskStatuses,
+  TaskTypes,
+} from '@/types/enums'
+import {
+  orangeButton,
+  primaryButton,
+  outlineLightGrayButton,
+} from '@/assets/EgalStyles/EButton'
 import { getRandomInt } from '@/helpers/mixins'
 import { OnClickOutside } from '@vueuse/components'
 import { useDateFormat } from '@vueuse/core'
@@ -23,6 +32,7 @@ interface TaskPopupProps {
   type: string
   like_number: number
   dislike_number: number
+  status: TaskStatuses
 }
 const props = defineProps<TaskPopupProps>()
 
@@ -66,7 +76,13 @@ const taskDeadline = computed(() => {
 <template>
   <OnClickOutside @trigger="emits('close')">
     <div class="task-popup-wrapper">
-      <div class="task-popup">
+      <div
+        class="task-popup"
+        :class="{
+          'task-popup--in-processing':
+            status === TaskStatuses.InProcess || status === TaskStatuses.Done,
+        }"
+      >
         <div class="header">
           <div class="header__badge">{{ reward }}₽</div>
           <div class="header__badge">
@@ -100,13 +116,44 @@ const taskDeadline = computed(() => {
 
             <div class="accept">
               <span class="accept__price">{{ reward }} RU</span>
-              <EButton
-                class="accept__button"
-                :data="{ size: 'lg' }"
-                :style-config="orangeButton"
+
+              <div
+                class="controls"
+                v-if="
+                  status === TaskStatuses.InProcess ||
+                  status === TaskStatuses.Done
+                "
               >
-                Принять вызов
-              </EButton>
+                <EButton
+                  class="controls__button"
+                  :data="{ size: 'lg', disabled: status === TaskStatuses.Done }"
+                  :style-config="primaryButton"
+                >
+                  {{
+                    status === TaskStatuses.Done
+                      ? 'Подтверждение отправлено'
+                      : 'Подтвердить выполнение'
+                  }}
+                </EButton>
+
+                <EButton
+                  class="controls__button"
+                  :data="{ size: 'lg' }"
+                  :style-config="outlineLightGrayButton"
+                >
+                  <XIconSVG class="controls__button-icon" />
+                  Отменить
+                </EButton>
+              </div>
+              <div class="controls" v-else>
+                <EButton
+                  class="controls__button"
+                  :data="{ size: 'lg' }"
+                  :style-config="orangeButton"
+                >
+                  Принять вызов
+                </EButton>
+              </div>
             </div>
           </div>
         </div>
@@ -131,7 +178,7 @@ const taskDeadline = computed(() => {
           <div class="orbit-collage">
             <img
               class="orbit-collage__orbit"
-              :src="require('@/assets/img/orbit.svg')"
+              :src="require('@/assets/img/orbit-collage.png')"
               alt="orbit"
             />
             <img
@@ -245,8 +292,13 @@ const taskDeadline = computed(() => {
           color: $base-white;
         }
 
-        &__button {
-          padding: 14.5px 46px;
+        .controls {
+          display: flex;
+          gap: 16px;
+
+          &__button {
+            padding: 14.5px 46px;
+          }
         }
       }
     }
@@ -308,11 +360,11 @@ const taskDeadline = computed(() => {
         &__orbit {
           right: 0;
           bottom: 0;
+          width: 100%;
+          height: 100%;
         }
 
         &__object-sm {
-          //width: 60px;
-          //height: 60px;
           left: 0;
           top: 50%;
           transform: translate(-30%, -30%) scale(0.6);
@@ -332,6 +384,28 @@ const taskDeadline = computed(() => {
           bottom: 0;
           left: 50%;
           transform: translateY(10%) scale(1);
+        }
+      }
+    }
+
+    &--in-processing {
+      background: $radiant-gradient-green-2-vtb;
+
+      .body {
+        .badges {
+          &__badge {
+            background-color: $default-cyan-vtb;
+          }
+        }
+
+        .accept {
+          .controls {
+            &__button-icon {
+              width: 10px;
+              height: 10px;
+              margin-right: 13px;
+            }
+          }
         }
       }
     }
