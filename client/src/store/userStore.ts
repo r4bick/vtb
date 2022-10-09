@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { UserAPI } from '@/api/UserAPI'
-import { IAuthData } from '@/types/interfaces'
+import { IAuthData, IUser } from '@/types/interfaces'
 import { useCookies } from 'vue3-cookies'
 import API from '@/api/Http'
 import { API_URL } from '@/helpers/globalVariables'
@@ -8,13 +8,17 @@ import { API_URL } from '@/helpers/globalVariables'
 const { cookies } = useCookies()
 
 interface UserStoreState {
+  currentUser: IUser
   user: any
+  userList: IUser[]
 }
 
 export const useUserStore = defineStore('userStore', {
   state: (): UserStoreState => {
     return {
+      currentUser: {} as IUser,
       user: {},
+      userList: [],
     }
   },
 
@@ -33,14 +37,17 @@ export const useUserStore = defineStore('userStore', {
         return data
       })
     },
+
     async getCurrentUser() {
       return await API.Http('get', `${API_URL}/user/me`, true).then(
         ({ data }) => {
           cookies.set('id', data.id)
+          this.currentUser = data
           return data
         },
       )
     },
+
     async login(authData: IAuthData) {
       cookies.remove('bearer')
 
@@ -48,6 +55,16 @@ export const useUserStore = defineStore('userStore', {
         .then((response) => {
           //@ts-ignore
           cookies.set('bearer', response.access_token)
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
+
+    async getAllUsers() {
+      return UserAPI.getAll()
+        .then((users) => {
+          this.userList = users
         })
         .catch((error) => {
           throw error

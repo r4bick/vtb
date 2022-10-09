@@ -34,6 +34,11 @@ const acceptTask = async (taskId: string) => {
   await taskStore.acceptTask(taskId)
   taskStore.getTasks()
 }
+
+const changeStatus = async (taskId: string, status: TaskStatuses) => {
+  await taskStore.changeStatus(taskId, status)
+  taskStore.getTasks()
+}
 </script>
 
 <template>
@@ -82,9 +87,10 @@ const acceptTask = async (taskId: string) => {
         :type="task.type"
         :like_number="task.like_number"
         :dislike_number="task.dislike_number"
-        :status="TaskStatuses.Done"
+        :status="task.status"
         :key="task.id"
         @accept-task="acceptTask(task.id)"
+        @change-status="changeStatus(task.id, $event)"
         v-for="task in taskStore.tasks"
       />
     </div>

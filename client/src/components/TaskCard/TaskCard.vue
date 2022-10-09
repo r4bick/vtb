@@ -33,6 +33,7 @@ interface TaskCardProps {
 const props = defineProps<TaskCardProps>()
 
 interface TaskCardEmits {
+  (e: 'change-status', status: TaskStatuses): void
   (e: 'accept-task'): void
 }
 const emits = defineEmits<TaskCardEmits>()
@@ -139,6 +140,7 @@ const formattedDate = computed(() => {
               class="controls__button"
               :data="{ disabled: status === TaskStatuses.Done }"
               :style-config="outlineSuccessButton"
+              @click="emits('change-status', TaskStatuses.Done)"
             >
               {{
                 status === TaskStatuses.Done

@@ -162,6 +162,7 @@ const isOpened = ref(false)
         display: flex;
         width: 100%;
         justify-content: space-between;
+        align-items: center;
         margin-top: auto;
 
         &__title {
