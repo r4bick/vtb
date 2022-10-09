@@ -49,7 +49,9 @@ Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $
 });
 
 Route::group(['prefix' => 'wallet', 'middleware' => 'auth'], function (Router $router) {
-    Route::put('/{public_key}', 'WalletController@transferDigitalRubles');
-    Route::put('/system/{public_key}', 'WalletController@transferSystemDigitalRubles');
+    Route::put('/digital_ruble/{public_key}', 'WalletController@transferDigitalRubles');
+    Route::put('/digital_ruble/system/{public_key}', 'WalletController@transferSystemDigitalRubles');
+    Route::put('/matic/{public_key}', 'WalletController@transferMatic');
+    Route::put('/matic/system/{public_key}', 'WalletController@transferSystemMatic');
 });
 
