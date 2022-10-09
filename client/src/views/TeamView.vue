@@ -7,7 +7,7 @@ import { useUserStore } from '@/store/userStore'
 import { useCookies } from 'vue3-cookies'
 import { useEthereum } from '@/composables/useEthereum'
 import BadgesCard from '@/components/BadgesCard/BadgesCard.vue'
-import PartyCard from '@/components/VerticalCard.vue'
+
 import { primaryButton, outlineButton } from '@/assets/EgalStyles/EButton'
 import { inputDataConfig } from '@/assets/EgalData/EInput'
 import {
