@@ -20,7 +20,7 @@ return new class extends Migration
             $table->uuid('user_id')->index();
             $table->jsonb('progress');
             $table->enum('status', GradeUserStatus::toArray());
-            $table->dateTimeTz('end_at');
+            $table->dateTimeTz('end_at')->nullable();
 
             $table->foreign('grade_id')->on('grades')->references('id')->restrictOnDelete();
             $table->foreign('user_id')->on('users')->references('id')->restrictOnDelete();

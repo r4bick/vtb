@@ -28,7 +28,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Лонгслив',
             'description' => 'Футболка из спортивной сетки с длинным рукавом реглан и круглым вырезом. Низ изделия и низ рукавов с двойной отстрочкой, горловина обработана бейкой.',
-            'photo' => 'https://files.gifts.ru/reviewer/tb/63/02071241_2_500.jpg',
+            'photo' => 'https://awww.moscow/upload/resize_cache/webp/upload/iblock/8e6/k795zi661zbmcqeu0u2w21cqe700i4vv.webp',
             'price' => '600',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -45,7 +45,7 @@ class ProductFactory extends Factory
                 Литий-ионный аккумулятор (Li-ion), емкость 2000 мАч
                 Количество циклов заряда-разряда: не менее 350
             EOL,
-            'photo' => 'https://files.gifts.ru/reviewer/tb/36/5740.40_15_500.jpg',
+            'photo' => 'https://www.yamaguchi.ru/images/product/power-bank/02_0_xl.webp',
             'price' => '200',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -78,7 +78,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Набор для пикника',
             'description' => 'Мягкий плед и яркий термос, которые пригодятся и на летней полянке, и в прохладном офисе: осталось только назначить место встречи.',
-            'photo' => 'https://files.gifts.ru/reviewer/tb/69/13909.40_1.jpg',
+            'photo' => 'https://xn--80atghcl3a.xn--p1ai/upload/resize_cache/webp/iblock/b99/220_200_1/dz7s5k5qaai8ryf5q632o4w09acvtpti.webp',
             'price' => '650',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
@@ -89,7 +89,7 @@ class ProductFactory extends Factory
         [
             'name' => 'Магнитный антистресс',
             'description' => 'Металлические шарики на магнитной подставке помогут снять напряжение и стресс, отвлечься и расслабиться. Просто придайте горстке шариков любую форму. Фантазируйте без ограничений!',
-            'photo' => 'https://files.gifts.ru/reviewer/tb/46/z54041_1_500.jpg',
+            'photo' => 'https://promo-market.ru/upload/resize_cache/webp/iblock/41c/al2gwm0lhr2e72ee8wv484whi3i3erkb/z54041_1_tif_1000x1000.webp',
             'price' => '350',
             'type' => ProductTypes::PHYSICAL,
             'features' => [
