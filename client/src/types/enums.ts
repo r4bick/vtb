@@ -53,3 +53,9 @@ export enum cryptoCurrency {
 }
 
 export const MAIN_CHAIN = '0x13881' // Chain Polygon Mumbai testnet
+
+export enum CareerTrackStatus {
+  Completed = 'completed',
+  InProgress = 'progress',
+  Future = 'future',
+}

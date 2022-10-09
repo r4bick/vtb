@@ -48,6 +48,12 @@ Route::group(['prefix' => 'product', 'middleware' => 'auth'], function (Router $
     Route::get('/{id}', 'ProductController@show');
 });
 
+Route::group(['prefix' => 'departure', 'middleware' => 'auth'], function (Router $router) {
+    Route::get('/', 'DepartureController@showAll');
+    Route::get('/{id}', 'DepartureController@show');
+});
+
+
 Route::group(['prefix' => 'wallet', 'middleware' => 'auth'], function (Router $router) {
     Route::put('/digital_ruble/{public_key}', 'WalletController@transferDigitalRubles');
     Route::put('/digital_ruble/system/{public_key}', 'WalletController@transferSystemDigitalRubles');

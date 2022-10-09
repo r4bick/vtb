@@ -10,6 +10,7 @@ import { useEthereum } from '@/composables/useEthereum'
 import BadgesCard from '@/components/BadgesCard/BadgesCard.vue'
 import ModalWindow from '@/components/Modal/ModalWindow.vue'
 import TransationCard from '@/components/Transaction/TransationCard.vue'
+import CareerTrack from '@/components/Career/CareerTrack.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
@@ -112,7 +113,9 @@ const closeHistoryModal = () => {
             <button class="history" @click="openHistoryModal">история</button>
             <div class="header">
               <span class="title">Баланс</span>
-              <span class="balance">{{ coinBalance || '0.00' }} &#8381; </span>
+              <span class="balance"
+                >{{ coinBalance.toFixed(2) || '0.00' }} &#8381;
+              </span>
             </div>
             <div class="buttons">
               <EButton :style-config="orangeButton">Перевести монеты</EButton>
@@ -157,6 +160,10 @@ const closeHistoryModal = () => {
         :title="nft.title"
       />
     </div>
+
+    <!--     career -->
+    <div class="title-list">Карьерный трек</div>
+    <CareerTrack />
   </div>
   <ModalWindow
     :use-blur="true"
@@ -225,6 +232,7 @@ const closeHistoryModal = () => {
 .nft {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 40px;
   gap: 24px;
 }
 

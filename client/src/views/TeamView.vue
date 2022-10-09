@@ -133,7 +133,7 @@ const sendCoins = () => {
             <div class="card card--balance">
               <span class="text--regular">Баланс</span>
               <span class="text--big"
-                >{{ coinBalance || '0.00' }} &#8381;
+                >{{ coinBalance.toFixed(2) || '0.00' }} &#8381;
               </span>
             </div>
             <div class="card card--rating">

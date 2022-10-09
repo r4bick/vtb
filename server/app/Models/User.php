@@ -104,4 +104,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function grades(): HasMany
+    {
+        return $this->hasMany(GradeUser::class, 'user_id', 'id');
+    }
 }
