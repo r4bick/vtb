@@ -7,14 +7,14 @@ import {
 import { orangeButton } from '@/assets/EgalStyles/EButton'
 import { primaryButton, outlineButton } from '@/assets/EgalStyles/EButton'
 import { ModalWindow } from '@/components'
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useUserStore } from '@/store/userStore'
 
 const userStore = useUserStore()
 
 const sendCurrencyData = reactive({
   recipientPublicKey: '',
-  amount: null,
+  amount: '',
 })
 
 const isModalOpen = ref(false)
@@ -39,6 +39,17 @@ const sendCurrency = () => {
       isModalOpen.value = false
     })
 }
+
+const isTeamRatingSelected = ref(false)
+const toggleRating = (value: boolean) => {
+  isTeamRatingSelected.value = value
+}
+
+const ratingItemImage = computed(() => {
+  return isTeamRatingSelected.value
+    ? require('@/assets/img/shuttle.svg')
+    : require('@/assets/img/astronaut.svg')
+})
 </script>
 
 <template>
@@ -71,22 +82,37 @@ const sendCurrency = () => {
     </div>
 
     <div class="body">
-      <div class="titles">
-        <p class="titles__title">Лидеры месяца</p>
-        <p class="titles__title">Команды месяца</p>
+      <div class="toggle">
+        <div
+          class="toggle__item"
+          :class="{ 'toggle__item--active': !isTeamRatingSelected }"
+          @click="toggleRating(false)"
+        >
+          <p class="toggle__label">Лидеры месяца</p>
+        </div>
+        <div
+          class="toggle__item"
+          :class="{ 'toggle__item--active': isTeamRatingSelected }"
+          @click="toggleRating(true)"
+        >
+          <p class="toggle__label">Лидеры месяца</p>
+        </div>
       </div>
       <ul class="leaders">
         <li
           class="leader-item"
+          :class="{
+            'leader-item--is-team-rating-showing': isTeamRatingSelected,
+          }"
           v-for="(user, index) in userStore.userList"
           :key="index"
         >
           <div class="leader-side">
             <span class="leader-side__rating">{{ index + 1 }}</span>
             <img
-              class="leader-side__astronaut"
-              :src="require('@/assets/img/astronaut.svg')"
-              alt="Astronaut"
+              class="leader-side__image"
+              :src="ratingItemImage"
+              alt="Rating icon"
             />
           </div>
           <div class="leader-body">
@@ -206,11 +232,21 @@ const sendCurrency = () => {
   .body {
     margin-top: 92px;
 
-    .titles {
+    .toggle {
       display: flex;
-      gap: 85px;
+      gap: 26px;
 
-      &__title {
+      &__item {
+        cursor: pointer;
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 24px;
+
+        &--active {
+          @include card();
+        }
+      }
+      &__label {
         @include h1();
       }
     }
@@ -238,7 +274,7 @@ const sendCurrency = () => {
             left: 9px;
             transform: translateY(-60%);
           }
-          &__astronaut {
+          &__image {
             position: absolute;
             top: 0;
             transform: translateY(-20%);
@@ -274,6 +310,12 @@ const sendCurrency = () => {
             display: flex;
             gap: 16px;
             margin-left: auto;
+          }
+        }
+
+        &--is-team-rating-showing {
+          .leader-body {
+            margin-left: 150px;
           }
         }
       }
