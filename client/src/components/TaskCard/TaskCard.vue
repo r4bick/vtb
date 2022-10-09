@@ -181,6 +181,8 @@ const formattedDate = computed(() => {
       :like_number="like_number"
       :dislike_number="dislike_number"
       :status="status"
+      @change-status="emits('change-status', $event)"
+      @accept-task="emits('accept-task')"
       @close="isPopupShowing = false"
       v-if="isPopupShowing"
     />
@@ -406,7 +408,10 @@ const formattedDate = computed(() => {
   &--in-processing {
     .card {
       &--opened {
-        background: $radiant-gradient-green-2-vtb;
+        &::before {
+          background: $radiant-gradient-green-2-vtb;
+          opacity: 1;
+        }
       }
     }
 

@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, defineEmits, defineProps } from 'vue'
 import { XIconSVG, ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
-import {
-  TaskDirections,
-  TaskImages,
-  TaskStatuses,
-  TaskTypes,
-} from '@/types/enums'
+import { TaskImages, TaskStatuses } from '@/types/enums'
 import {
   orangeButton,
   primaryButton,
@@ -38,6 +33,8 @@ const props = defineProps<TaskPopupProps>()
 
 interface TaskPopupEmits {
   (e: 'close'): void
+  (e: 'change-status', status: TaskStatuses): void
+  (e: 'accept-task'): void
 }
 const emits = defineEmits<TaskPopupEmits>()
 
@@ -74,8 +71,8 @@ const taskDeadline = computed(() => {
 </script>
 
 <template>
-  <OnClickOutside @trigger="emits('close')">
-    <div class="task-popup-backdrop">
+  <div class="task-popup-backdrop">
+    <OnClickOutside @trigger="emits('close')">
       <div class="task-popup-wrapper">
         <div
           class="task-popup"
@@ -132,6 +129,7 @@ const taskDeadline = computed(() => {
                       disabled: status === TaskStatuses.Done,
                     }"
                     :style-config="primaryButton"
+                    @click="emits('change-status', TaskStatuses.Done)"
                   >
                     {{
                       status === TaskStatuses.Done
@@ -154,6 +152,7 @@ const taskDeadline = computed(() => {
                     class="controls__button"
                     :data="{ size: 'lg' }"
                     :style-config="orangeButton"
+                    @click="emits('accept-task')"
                   >
                     Принять вызов
                   </EButton>
@@ -206,8 +205,8 @@ const taskDeadline = computed(() => {
           </div>
         </div>
       </div>
-    </div>
-  </OnClickOutside>
+    </OnClickOutside>
+  </div>
 </template>
 
 <style scoped lang="scss">
