@@ -99,10 +99,6 @@ onMounted(() => {
 @import '@/assets/style/variables.scss';
 @import '@/assets/style/mixins.scss';
 
-:deep(.modal-container) {
-  @include modalBlue();
-}
-
 .goods {
   .filters {
     display: flex;
@@ -138,6 +134,10 @@ onMounted(() => {
   }
 
   .modal {
+    :deep(.modal-container) {
+      @include modalBlue();
+    }
+
     &--send-gift {
       .title {
         @include h3();

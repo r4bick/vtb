@@ -1,31 +1,29 @@
 <script setup lang="ts">
 import { inputDataConfig } from '@/assets/EgalData/EInput'
-import { inputStyleConfig } from '@/assets/EgalStyles/EInput'
+import {
+  inputStyleConfig,
+  inputStyleConfigWhiteOutline,
+} from '@/assets/EgalStyles/EInput'
+import { orangeButton } from '@/assets/EgalStyles/EButton'
 import { primaryButton, outlineButton } from '@/assets/EgalStyles/EButton'
+import { ModalWindow } from '@/components'
+import { onMounted, reactive, ref } from 'vue'
+import { useUserStore } from '@/store/userStore'
 
-const mock = [
-  {
-    name: 'Иванов Сергей',
-    email: 'ivanovsergey@mail.ru',
-    role: 'Начальник отдела тестирования департамента разработки ПО ВТБ',
-    level: 12,
-    nft_amount: 12,
-  },
-  {
-    name: 'Иванов Сергей',
-    email: 'ivanovsergey@mail.ru',
-    role: 'Начальник отдела тестирования департамента разработки ПО ВТБ',
-    level: 12,
-    nft_amount: 12,
-  },
-  {
-    name: 'Иванов Сергей',
-    email: 'ivanovsergey@mail.ru',
-    role: 'Начальник отдела тестирования департамента разработки ПО ВТБ',
-    level: 12,
-    nft_amount: 12,
-  },
-]
+const userStore = useUserStore()
+
+const sendCoinsData = reactive({
+  amount: null,
+})
+
+const isModalOpen = ref(false)
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
+onMounted(() => {
+  userStore.getAllUsers()
+})
 </script>
 
 <template>
@@ -63,7 +61,11 @@ const mock = [
         <p class="titles__title">Команды месяца</p>
       </div>
       <ul class="leaders">
-        <li class="leader-item" v-for="(user, index) in mock" :key="index">
+        <li
+          class="leader-item"
+          v-for="(user, index) in userStore.userList"
+          :key="index"
+        >
           <div class="leader-side">
             <span class="leader-side__rating">{{ index + 1 }}</span>
             <img
@@ -74,16 +76,24 @@ const mock = [
           </div>
           <div class="leader-body">
             <div class="user-info">
-              <p class="user-info__title">{{ user.name }}</p>
+              <p class="user-info__title">
+                {{ `${user.account.last_name} ${user.account.first_name}` }}
+              </p>
               <div class="badge-list">
                 <div class="badge-list__badge">{{ user.email }}</div>
-                <div class="badge-list__badge">{{ user.role }}</div>
-                <div class="badge-list__badge">{{ user.level }} уровень</div>
-                <div class="badge-list__badge">{{ user.nft_amount }} NFT</div>
+                <!--                <div class="badge-list__badge">{{ user.role }}</div>-->
+                <div class="badge-list__badge">
+                  {{ user.account.level }} уровень
+                </div>
+                <!--                <div class="badge-list__badge">12 NFT</div>-->
               </div>
             </div>
             <div class="controls">
-              <EButton class="controls__button" :style-config="primaryButton">
+              <EButton
+                class="controls__button"
+                :style-config="primaryButton"
+                @click="isModalOpen = true"
+              >
                 Перевести монеты
               </EButton>
               <EButton class="controls__button" :style-config="outlineButton">
@@ -94,6 +104,46 @@ const mock = [
         </li>
       </ul>
     </div>
+
+    <ModalWindow
+      class="modal modal--send-currency"
+      :show="isModalOpen"
+      @click.stop
+      @close="closeModal"
+    >
+      <template #header>
+        <span class="title">Перевод</span>
+      </template>
+      <template #body>
+        <div class="modal-body">
+          <div class="modal-form">
+            <!--            <EInput-->
+            <!--              class="modal-form__input"-->
+            <!--              :data="{-->
+            <!--                ...inputDataConfig,-->
+            <!--                label: 'Кому перевести монеты',-->
+            <!--                modelValue: sendCoinsData.recipient,-->
+            <!--              }"-->
+            <!--              :style-config="inputStyleConfigWhiteOutline"-->
+            <!--              v-model="sendCoinsData.recipient"-->
+            <!--            />-->
+            <EInput
+              class="modal-form__input"
+              :data="{
+                ...inputDataConfig,
+                label: 'Сумма перевода?',
+                modelValue: sendCoinsData.amount,
+              }"
+              :style-config="inputStyleConfigWhiteOutline"
+              v-model="sendCoinsData.amount"
+            />
+          </div>
+          <EButton class="modal-body__submit" :style-config="orangeButton">
+            Перевести
+          </EButton>
+        </div>
+      </template>
+    </ModalWindow>
   </div>
 </template>
 
@@ -114,6 +164,7 @@ const mock = [
         @include card();
         display: flex;
         align-items: center;
+        gap: 24px;
         padding: 24px;
 
         &__value {
@@ -204,6 +255,33 @@ const mock = [
             gap: 16px;
             margin-left: auto;
           }
+        }
+      }
+    }
+  }
+
+  .modal {
+    &--send-currency {
+      :deep(.modal-container) {
+        @include modalBlue();
+      }
+
+      .title {
+        @include h3();
+        color: $base-white;
+      }
+
+      .modal-body {
+        margin-top: 32px;
+
+        .modal-form {
+          display: flex;
+          flex-flow: column;
+          gap: 24px;
+        }
+
+        &__submit {
+          margin-top: 32px;
         }
       }
     }
