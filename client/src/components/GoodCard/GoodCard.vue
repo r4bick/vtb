@@ -234,10 +234,14 @@ const isOpened = ref(false)
       justify-content: center;
 
       &__button {
+        justify-content: center;
+
         &--buy {
+          width: 50%;
           padding: 11.5px 32px;
         }
         &--give {
+          width: 35%;
           padding-top: 11.5px;
           padding-bottom: 11.5px;
         }
