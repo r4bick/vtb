@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, defineEmits, defineProps } from 'vue'
 import { XIconSVG, ThumbUpSVG, ThumbDownSVG } from '@/components/SvgIcons'
-import {
-  TaskDirections,
-  TaskImages,
-  TaskStatuses,
-  TaskTypes,
-} from '@/types/enums'
+import { TaskImages, TaskStatuses } from '@/types/enums'
 import {
   orangeButton,
   primaryButton,
@@ -38,6 +33,8 @@ const props = defineProps<TaskPopupProps>()
 
 interface TaskPopupEmits {
   (e: 'close'): void
+  (e: 'change-status', status: TaskStatuses): void
+  (e: 'accept-task'): void
 }
 const emits = defineEmits<TaskPopupEmits>()
 
@@ -74,146 +71,169 @@ const taskDeadline = computed(() => {
 </script>
 
 <template>
-  <OnClickOutside @trigger="emits('close')">
-    <div class="task-popup-wrapper">
-      <div
-        class="task-popup"
-        :class="{
-          'task-popup--in-processing':
-            status === TaskStatuses.InProcess || status === TaskStatuses.Done,
-        }"
-      >
-        <div class="header">
-          <div class="header__badge">{{ reward }}₽</div>
-          <div class="header__badge">
-            {{ taskDirectionsAPIConstants[category] }}
+  <div class="task-popup-backdrop">
+    <OnClickOutside @trigger="emits('close')">
+      <div class="task-popup-wrapper">
+        <div
+          class="task-popup"
+          :class="{
+            'task-popup--in-processing':
+              status === TaskStatuses.InProcess || status === TaskStatuses.Done,
+          }"
+        >
+          <div class="header">
+            <div class="header__badge">{{ reward }}₽</div>
+            <div class="header__badge">
+              {{ taskDirectionsAPIConstants[category] }}
+            </div>
+            <div class="header__badge">{{ taskTypeAPIConstants[type] }}</div>
+            <div class="header__badge">{{ taskDeadline }}</div>
+            <button class="header__close" @click="emits('close')">
+              <XIconSVG />
+            </button>
           </div>
-          <div class="header__badge">{{ taskTypeAPIConstants[type] }}</div>
-          <div class="header__badge">{{ taskDeadline }}</div>
-          <button class="header__close" @click="emits('close')">
-            <XIconSVG />
-          </button>
-        </div>
 
-        <div class="body">
-          <div class="main-info">
-            <h1 class="body__title">
-              {{ name }}
-            </h1>
-            <div class="body__description">
-              {{ description }}
-            </div>
-            <div class="badges">
-              <div class="badges__badge">
-                <span>Автор:</span>
-                <span>{{ author_email }}</span>
+          <div class="body">
+            <div class="main-info">
+              <h1 class="body__title">
+                {{ name }}
+              </h1>
+              <div class="body__description">
+                {{ description }}
               </div>
-              <div class="badges__badge">
-                <span>Срок задачи:</span>
-                <span>{{ taskDeadline }}</span>
+              <div class="badges">
+                <div class="badges__badge">
+                  <span>Автор:</span>
+                  <span>{{ author_email }}</span>
+                </div>
+                <div class="badges__badge">
+                  <span>Срок задачи:</span>
+                  <span>{{ taskDeadline }}</span>
+                </div>
               </div>
-            </div>
 
-            <div class="accept">
-              <span class="accept__price">{{ reward }} RU</span>
+              <div class="accept">
+                <span class="accept__price">{{ reward }} RU</span>
 
-              <div
-                class="controls"
-                v-if="
-                  status === TaskStatuses.InProcess ||
-                  status === TaskStatuses.Done
-                "
-              >
-                <EButton
-                  class="controls__button"
-                  :data="{ size: 'lg', disabled: status === TaskStatuses.Done }"
-                  :style-config="primaryButton"
-                >
-                  {{
+                <div
+                  class="controls"
+                  v-if="
+                    status === TaskStatuses.InProcess ||
                     status === TaskStatuses.Done
-                      ? 'Подтверждение отправлено'
-                      : 'Подтвердить выполнение'
-                  }}
-                </EButton>
+                  "
+                >
+                  <EButton
+                    class="controls__button"
+                    :data="{
+                      size: 'lg',
+                      disabled: status === TaskStatuses.Done,
+                    }"
+                    :style-config="primaryButton"
+                    @click="emits('change-status', TaskStatuses.Completed)"
+                  >
+                    {{
+                      status === TaskStatuses.Done
+                        ? 'Подтверждение отправлено'
+                        : 'Подтвердить выполнение'
+                    }}
+                  </EButton>
 
-                <EButton
-                  class="controls__button"
-                  :data="{ size: 'lg' }"
-                  :style-config="outlineLightGrayButton"
+                  <EButton
+                    class="controls__button"
+                    :data="{ size: 'lg' }"
+                    :style-config="outlineLightGrayButton"
+                  >
+                    <XIconSVG class="controls__button-icon" />
+                    Отменить
+                  </EButton>
+                </div>
+                <div
+                  class="controls"
+                  v-else-if="status !== TaskStatuses.Completed"
                 >
-                  <XIconSVG class="controls__button-icon" />
-                  Отменить
-                </EButton>
-              </div>
-              <div class="controls" v-else>
-                <EButton
-                  class="controls__button"
-                  :data="{ size: 'lg' }"
-                  :style-config="orangeButton"
-                >
-                  Принять вызов
-                </EButton>
+                  <EButton
+                    class="controls__button"
+                    :data="{ size: 'lg' }"
+                    :style-config="orangeButton"
+                    @click="emits('accept-task')"
+                  >
+                    Принять вызов
+                  </EButton>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="footer">
-          <div class="voices">
-            <div class="positive-voices">
-              <span class="positive-voices__amount">{{ like_number }}</span>
-              <button class="positive-voices__button">
-                <ThumbUpSVG fill="#ffffff" />
-              </button>
-            </div>
-            <div class="negative-voices">
-              <span class="negative-voices__amount">{{ dislike_number }}</span>
-              <button class="negative-voices__button">
-                <ThumbDownSVG fill="#ffffff" />
-              </button>
+          <div class="footer">
+            <div class="voices">
+              <div class="positive-voices">
+                <span class="positive-voices__amount">{{ like_number }}</span>
+                <button class="positive-voices__button">
+                  <ThumbUpSVG fill="#ffffff" />
+                </button>
+              </div>
+              <div class="negative-voices">
+                <span class="negative-voices__amount">{{
+                  dislike_number
+                }}</span>
+                <button class="negative-voices__button">
+                  <ThumbDownSVG fill="#ffffff" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="orbit-collage-wrapper">
-          <div class="orbit-collage">
-            <img
-              class="orbit-collage__orbit"
-              :src="require('@/assets/img/orbit-collage.png')"
-              alt="orbit"
-            />
-            <img
-              class="orbit-collage__object-sm"
-              :src="orbitObjectImages[0]"
-              alt="orbit object 1"
-            />
-            <img
-              class="orbit-collage__object-md"
-              :src="orbitObjectImages[1]"
-              alt="orbit object 2"
-            />
-            <img
-              class="orbit-collage__object-lg"
-              :src="orbitObjectImages[2]"
-              alt="orbit object 3"
-            />
+          <div class="orbit-collage-wrapper">
+            <div class="orbit-collage">
+              <img
+                class="orbit-collage__orbit"
+                :src="require('@/assets/img/orbit-collage.png')"
+                alt="orbit"
+              />
+              <img
+                class="orbit-collage__object-sm"
+                :src="orbitObjectImages[0]"
+                alt="orbit object 1"
+              />
+              <img
+                class="orbit-collage__object-md"
+                :src="orbitObjectImages[1]"
+                alt="orbit object 2"
+              />
+              <img
+                class="orbit-collage__object-lg"
+                :src="orbitObjectImages[2]"
+                alt="orbit object 3"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </OnClickOutside>
+    </OnClickOutside>
+  </div>
 </template>
 
 <style scoped lang="scss">
 @import '@/assets/style/mixins.scss';
 @import '@/assets/style/variables.scss';
 
+.task-popup-backdrop {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  //background: white;
+  backdrop-filter: blur(4.5px);
+  z-index: 5;
+}
 .task-popup-wrapper {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: calc(100% - 100px); // сумма боковых паддингов лэйаута
-  z-index: 2;
+  backdrop-filter: blur(4.5px);
+  z-index: 10;
 
   .task-popup {
     @include card();
