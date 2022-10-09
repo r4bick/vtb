@@ -5,7 +5,6 @@ namespace App\Http\Clients;
 use App\Curl\CurlException;
 use App\Curl\CurlInterface;
 use App\Curl\Response;
-use Illuminate\Support\Facades\Log;
 use JsonException;
 
 class MaticClient extends AbstractClient
