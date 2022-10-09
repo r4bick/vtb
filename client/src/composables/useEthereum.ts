@@ -3,6 +3,7 @@ import API from '@/api/Http'
 import { cryptoCurrency } from '@/types/enums'
 import { useCookies } from 'vue3-cookies'
 import { API_POLYGON } from '@/helpers/globalVariables'
+import axios from 'axios'
 
 const { cookies } = useCookies()
 
@@ -87,9 +88,11 @@ export function useEthereum() {
     offset: number,
     sort: 'asc' | 'desc',
   ) => {
-    await API.Http(
+    const key = cookies.get('public')
+
+    return await API.Http(
       'post',
-      `${API_POLYGON}/v1/wallets/${publicKey}/history`,
+      `${API_POLYGON}/v1/wallets/${key}/history`,
       false,
       {
         page,
@@ -97,7 +100,7 @@ export function useEthereum() {
         sort,
       },
     ).then(({ data }) => {
-      // console.log('data: ', data)
+      return data.history
     })
   }
 

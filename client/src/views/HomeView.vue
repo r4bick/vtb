@@ -8,6 +8,8 @@ import { useUserStore } from '@/store/userStore'
 import { useCookies } from 'vue3-cookies'
 import { useEthereum } from '@/composables/useEthereum'
 import BadgesCard from '@/components/BadgesCard/BadgesCard.vue'
+import ModalWindow from '@/components/Modal/ModalWindow.vue'
+import TransationCard from '@/components/Transaction/TransationCard.vue'
 
 const taskStore = useTaskStore()
 const userStore = useUserStore()
@@ -72,6 +74,24 @@ const config = {
     background: '#ffffff',
   },
 }
+
+// history modal
+const { getWalletHistory } = useEthereum()
+
+const historyModal = ref(false)
+const transactions = ref()
+
+const openHistoryModal = () => {
+  if (currentUser.value) {
+    getWalletHistory(1, 20, 'asc').then((res) => {
+      transactions.value = res
+    })
+    historyModal.value = true
+  }
+}
+const closeHistoryModal = () => {
+  historyModal.value = false
+}
 </script>
 
 <template>
@@ -89,6 +109,7 @@ const config = {
           />
 
           <div class="card card--balance">
+            <button class="history" @click="openHistoryModal">история</button>
             <div class="header">
               <span class="title">Баланс</span>
               <span class="balance">{{ coinBalance || '0.00' }} &#8381; </span>
@@ -137,6 +158,23 @@ const config = {
       />
     </div>
   </div>
+  <ModalWindow
+    :use-blur="true"
+    :show="historyModal"
+    @close="closeHistoryModal"
+    class="transaction-modal"
+  >
+    <template #header>История движения монет</template>
+    <template #body>
+      <div class="history-list">
+        <TransationCard
+          v-for="transaction in transactions"
+          :transaction="transaction"
+          :key="transaction"
+        />
+      </div>
+    </template>
+  </ModalWindow>
 </template>
 
 <style scoped lang="scss">
@@ -251,10 +289,31 @@ const config = {
     }
   }
   &--balance {
+    position: relative;
+    //padding: 0 0 22px 24px;
+    .history {
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 12px;
+      color: $gray-500;
+      display: flex;
+      justify-content: flex-end;
+      cursor: pointer;
+      margin: 10px 16px;
+      z-index: 2;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: transparent;
+      &:hover {
+        color: $gray-700;
+      }
+    }
     .header {
       display: flex;
       justify-content: space-between;
       margin-bottom: 22px;
+      margin-top: 5px;
       font-weight: 700;
       font-size: 18px;
       line-height: 22px;
@@ -290,6 +349,31 @@ const config = {
   box-shadow: none !important;
 }
 
+.transaction-modal {
+  :deep(.modal-container) {
+    min-width: 1200px;
+    max-height: 441px;
+    width: fit-content;
+    .modal-header {
+      margin-bottom: 32px;
+      h3 {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 29px;
+        color: $gray-700;
+      }
+      .close {
+        stroke: #a0aec0;
+      }
+    }
+  }
+
+  .history-list {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 @media (max-width: 1240px) {
   .rounds {
     display: none;
